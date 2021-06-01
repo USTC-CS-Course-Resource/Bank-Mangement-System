@@ -1,0 +1,6 @@
+class StillHasAccount(Exception):
+    ...
+
+
+class StillHasLoan(Exception):
+    ...
