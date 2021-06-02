@@ -2,9 +2,7 @@ import pymysql
 import os.path as osp
 from pymysql.connections import Connection
 from bankdb.err import *
-from utils.logger import Logger
-
-logger = Logger.get_logger(osp.join(osp.dirname(__file__), '..', 'log', 'bankdb.log'))
+from bankdb import logger
 
 
 def insert_customer_with_contacts(
@@ -96,7 +94,7 @@ def update_customer_with_contacts(
         logger.warn(f'drop keys: {dropped_keys}')
     with conn.cursor() as cursor:
         # update customer or contacts
-        # we can directly write k into the query sql because it is constrained by `_key`
+        # It is safe to write k into the query sql because it is constrained by `*_key`
         for k, v in cus_kwargs.items():
             query = f"""
                 update customer set {k} = %s

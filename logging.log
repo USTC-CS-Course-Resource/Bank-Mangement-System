@@ -1,0 +1,6 @@
+2021-06-02 Wednesday 11:48:30  main.py : DEBUG  logger debug message
+2021-06-02 Wednesday 11:48:30  main.py : INFO  logger info message
+2021-06-02 Wednesday 11:48:30  main.py : WARNING  logger warning message
+2021-06-02 Wednesday 11:48:30  main.py : ERROR  logger error message
+2021-06-02 Wednesday 11:48:30  main.py : CRITICAL  logger critical message
+2021-06-02 Wednesday 11:48:30  customer.py : INFO  [{'id': '350500200001011111', 'name': '´óº©º©', 'phone': '123456', 'address': 'º©º©¼Ò', 'cus_id': '350500200001011111', 'contacts.name': '´ó¿ÖÁú', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': 'ÇéÂÂ'}]

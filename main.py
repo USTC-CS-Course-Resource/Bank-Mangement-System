@@ -2,6 +2,8 @@ import pymysql
 import argparse
 from pymysql.connections import Connection
 from bankdb import customer
+from test.testBankdb import TestBankdb
+from utils.logger import *
 
 
 def parse_args():
@@ -16,21 +18,10 @@ def parse_args():
 
 if __name__ == '__main__':
     args = parse_args()
-    connection = Connection(host='localhost',
-                            user='root',
-                            password='',
-                            database='bank',
-                            charset='utf8mb4',
-                            cursorclass=pymysql.cursors.DictCursor)
-    # customer.remove_customer_with_contacts(connection, '350500200001011111')
-    # customer.get_customer_with_contacts(connection, '350500200001011111')
-    # customer.insert_customer_with_contacts(connection,
-    #                                        '350500200001011111',
-    #                                        '小憨憨',
-    #                                        '123456',
-    #                                        '憨憨家',
-    #                                        '小恐龙',
-    #                                        '181111',
-    #                                        '666@hanhan.com',
-    #                                        '情侣')
-    # customer.get_customer_with_contacts(connection, '350500200001011111')
+    conn = Connection(host='localhost',
+                      user='root',
+                      password='',
+                      database='bank',
+                      charset='utf8mb4',
+                      cursorclass=pymysql.cursors.DictCursor)
+

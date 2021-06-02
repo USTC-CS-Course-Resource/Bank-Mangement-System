@@ -245,3 +245,227 @@
 2021-06-01 23:42:56,891 - INFO: ()
 2021-06-01 23:42:56,979 - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
 2021-06-01 23:42:57,050 - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-01 23:45:57,533 - INFO: ()
+2021-06-01 23:45:57,731 - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-01 23:45:57,805 - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 10:38:01,383 - INFO: ()
+2021-06-02 10:38:01,457 - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 10:38:01,506 - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+()
+[{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+[{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+()
+[{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+[{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 10:39:58,034 - INFO: ()
+2021-06-02 10:39:58,084 - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 10:39:58,133 - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:34:39,744 - INFO: ()
+2021-06-02 11:34:39,793 - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:34:39,867 - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:35:09,235 - INFO: ()
+2021-06-02 11:35:09,333 - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:35:09,333 - DEBUG: 
+                update customer set name = '大憨憨'
+                where id = '350500200001011111';
+            
+2021-06-02 11:35:09,334 - DEBUG: 
+                update contacts set name = '大恐龙'
+                where cus_id = '350500200001011111';
+            
+2021-06-02 11:35:09,431 - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:35:45,349 - INFO: ()
+2021-06-02 11:35:45,399 - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:35:45,473 - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:35:58,131 - INFO: ()
+2021-06-02 11:35:58,181 - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:35:58,181 - DEBUG: 
+                update customer set name = '大憨憨'
+                where id = '350500200001011111';
+            
+2021-06-02 11:35:58,182 - DEBUG: 
+                update contacts set name = '大恐龙'
+                where cus_id = '350500200001011111';
+            
+2021-06-02 11:35:58,230 - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:36:42,732 - INFO: ()
+2021-06-02 11:36:42,782 - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:36:42,782 - DEBUG: 
+                update customer set name = '大憨憨'
+                where id = '350500200001011111';
+            
+2021-06-02 11:36:42,782 - DEBUG: 
+                update contacts set name = '大恐龙'
+                where cus_id = '350500200001011111';
+            
+2021-06-02 11:36:42,832 - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:36:46,549 - INFO: ()
+2021-06-02 11:36:46,599 - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:36:46,648 - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:37:08,914 - INFO: ()
+2021-06-02 11:37:08,963 - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:37:09,012 - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:37:35,772 - INFO: ()
+2021-06-02 11:37:35,772 - INFO: fuck
+2021-06-02 11:37:35,821 - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:37:35,821 - INFO: fuck
+2021-06-02 11:37:35,871 - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:37:35,871 - INFO: fuck
+2021-06-02 11:37:44,397 - INFO: ()
+2021-06-02 11:37:44,496 - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:37:44,581 - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:37:50,537 - INFO: ()
+2021-06-02 11:37:50,537 - INFO: fuck
+
+2021-06-02 11:37:50,585 - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:37:50,585 - INFO: fuck
+
+2021-06-02 11:37:50,758 - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:37:50,758 - INFO: fuck
+
+2021-06-02 11:38:22,367 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: ()
+2021-06-02 11:38:22,367 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:38:22,416 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:38:22,416 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:38:22,465 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:38:22,465 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:41:01,508 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: ()
+2021-06-02 11:41:01,508 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:41:01,583 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:41:01,583 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:41:01,632 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:41:01,632 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:41:29,356 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: ()
+2021-06-02 11:41:29,356 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:41:29,431 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:41:29,431 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:41:29,505 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:41:29,505 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:41:56,638 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: ()
+2021-06-02 11:41:56,638 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:41:56,688 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:41:56,688 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:41:56,761 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:41:56,762 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:42:14,879 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: ()
+2021-06-02 11:42:14,880 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:42:14,929 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:42:14,929 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:42:14,979 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:42:14,979 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:42:29,580 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: ()
+2021-06-02 11:42:29,580 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:42:29,654 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:42:29,654 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:42:29,728 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:42:29,729 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:43:34,312 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: ()
+2021-06-02 11:43:34,312 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:43:34,386 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:43:34,387 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:43:34,460 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:85] - INFO: [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:43:34,460 - F:\Data\USTC-CS-Resources\CS\Database\lab\Bank-Mangement-System\bankdb\customer.py[line:86] - INFO: fuck
+
+2021-06-02 11:45:01,058  customer.py : INFO  ()
+2021-06-02 11:45:01,058  customer.py : INFO  fuck
+
+2021-06-02 11:45:01,301  customer.py : INFO  [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:45:01,301  customer.py : INFO  fuck
+
+2021-06-02 11:45:01,452  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:45:01,452  customer.py : INFO  fuck
+
+2021-06-02 11:45:25,517  customer.py : INFO  ()
+2021-06-02 11:45:25,591  customer.py : INFO  [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:45:25,665  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:47:34,882  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:48:30,930  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:50:05,007  customer.py : INFO  ()
+2021-06-02 11:50:05,082  customer.py : INFO  [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:50:05,180  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:50:32,558  customer.py : INFO  ()
+2021-06-02 11:50:32,632  customer.py : INFO  [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:50:32,682  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:51:16,376  customer.py : INFO  ()
+2021-06-02 11:51:16,426  customer.py : INFO  [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:51:16,591  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:52:13,931  customer.py : INFO  ()
+2021-06-02 11:52:14,005  customer.py : INFO  [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:52:14,054  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:52:25,300  customer.py : INFO  ()
+2021-06-02 11:52:25,349  customer.py : INFO  [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:52:25,423  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:52:30,586  customer.py : INFO  ()
+2021-06-02 11:52:30,735  customer.py : INFO  [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:52:30,784  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:53:51,004  customer.py : INFO  ()
+2021-06-02 11:53:51,079  customer.py : INFO  [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:53:51,152  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:54:50,925  customer.py : INFO  ()
+2021-06-02 11:54:50,999  customer.py : INFO  [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:54:51,048  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:55:05,440  customer.py : INFO  ()
+2021-06-02 11:55:05,513  customer.py : INFO  [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:55:05,562  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:56:56,083  customer.py : INFO  ()
+2021-06-02 11:56:56,156  customer.py : INFO  [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:56:56,230  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:58:28,896  customer.py : INFO  ()
+2021-06-02 11:58:28,946  customer.py : INFO  [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 11:58:29,020  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 12:00:52,323  customer.py : INFO  ()
+2021-06-02 12:00:52,372  customer.py : INFO  [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 12:00:52,422  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 12:00:57,481  customer.py : INFO  ()
+2021-06-02 12:00:57,556  customer.py : INFO  [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 12:00:57,605  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 12:02:08,344  customer.py : INFO  ()
+2021-06-02 12:02:08,393  customer.py : INFO  [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 12:02:08,394  customer.py : DEBUG  
+                update customer set name = '大憨憨'
+                where id = '350500200001011111';
+            
+2021-06-02 12:02:08,394  customer.py : DEBUG  
+                update contacts set name = '大恐龙'
+                where cus_id = '350500200001011111';
+            
+2021-06-02 12:02:08,442  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 12:02:20,430  customer.py : INFO  ()
+2021-06-02 12:02:20,480  customer.py : INFO  [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 12:02:20,529  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 12:03:13,601  customer.py : INFO  ()
+2021-06-02 12:03:13,739  customer.py : INFO  [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 12:03:13,788  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 12:03:48,872  customer.py : INFO  ()
+2021-06-02 12:03:48,945  customer.py : INFO  [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 12:03:48,994  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 12:03:59,532  customer.py : INFO  ()
+2021-06-02 12:03:59,606  customer.py : INFO  [{'id': '350500200001011111', 'name': '小憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 12:03:59,680  customer.py : INFO  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家', 'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111', 'email': '666@hanhan.com', 'relation': '情侣'}]
+2021-06-02 12:04:49,963  main.py : INFO  fuckinfo
+2021-06-02 12:05:54,534  main.py : INFO  fuck info
+2021-06-02 12:05:54,535  main.py : DEBUG  fuck debug
+2021-06-02 12:06:19,200  main.py : INFO  fuck info
+2021-06-02 12:06:19,200  main.py : DEBUG  fuck debug
+2021-06-02 12:06:48,950  main.py : INFO  fuck info
+2021-06-02 12:06:48,950  main.py : DEBUG  fuck debug

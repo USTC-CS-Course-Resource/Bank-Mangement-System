@@ -5,16 +5,22 @@ class Logger:
     logger = None
 
     @staticmethod
-    def get_logger(filename: str = None):
+    def get_logger(level: int = None, filename: str = None):
         if not Logger.logger:
             Logger.init_logger(filename=filename)
+        if level:
+            assert filename and 'please provide filename as well'
+            Logger.logger = None
+            Logger.init_logger(level=level, filename=filename)
         return Logger.logger
 
     @staticmethod
     def init_logger(level=logging.INFO,
-                    # fmt='%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s: %(message)s',
-                    fmt='%(asctime)s - %(levelname)s: %(message)s',
-                    filename: str = None):
+                    fmt='%(asctime)s  %(filename)s : %(levelname)s  %(message)s',
+                    filename: str = None,
+                    overwrite=False):
+        if Logger.logger and not overwrite:
+            return Logger.logger
         logger = logging.getLogger(filename)
         logger.setLevel(level)
 

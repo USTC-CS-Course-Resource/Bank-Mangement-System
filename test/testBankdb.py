@@ -2,6 +2,8 @@ import unittest
 import pymysql
 from pymysql.connections import Connection
 from bankdb import customer
+from utils.logger import *
+from bankdb import logger
 
 
 class TestBankdb(unittest.TestCase):
@@ -20,11 +22,10 @@ class TestBankdb(unittest.TestCase):
     def test_update_customer(self):
         customer.update_customer_with_contacts(self.conn, cus_id='350500200001011111', cus_name='大憨憨', con_name='大恐龙')
         result = customer.get_customer_with_contacts(self.conn, '350500200001011111')
-        self.assertEqual(1, 1)
-        # self.assertEqual(result,
-        #                  [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家',
-        #                    'cus_id': '350500200001011111', 'contacts.name': '小恐龙', 'contacts.phone': '181111',
-        #                    'email': '666@hanhan.com', 'relation': '情侣'}])
+        self.assertEqual(result,
+                         [{'id': '350500200001011111', 'name': '大憨憨', 'phone': '123456', 'address': '憨憨家',
+                           'cus_id': '350500200001011111', 'contacts.name': '大恐龙', 'contacts.phone': '181111',
+                           'email': '666@hanhan.com', 'relation': '情侣'}])
 
     def test_remove_customer(self):
         customer.insert_customer_with_contacts(self.conn,
@@ -38,4 +39,7 @@ class TestBankdb(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    logging.disable(logging.CRITICAL)
     unittest.main()
+    logging.disable(logging.NOTSET)
+
