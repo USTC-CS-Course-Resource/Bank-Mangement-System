@@ -1,8 +1,10 @@
 import pymysql
-import os.path as osp
 from pymysql.connections import Connection
 from bankdb.err import *
-from bankdb import logger
+from checker import is_valid_arg
+from utils.logger import Logger
+
+logger = Logger.get_logger()
 
 
 def insert_customer_with_contacts(
@@ -14,15 +16,18 @@ def insert_customer_with_contacts(
             'cus_id': cus_id, 'cus_name': cus_name, 'cus_phone': cus_phone, 'cus_address': cus_address,
             'con_name': con_name, 'con_phone': con_phone, 'con_email': con_email, 'con_relation': con_relation
         }
+        for k, v in kwargs.items():
+            if not is_valid_arg(k):
+                raise ArgFormatException
         # insert customer
         query = """
-            insert into customer (id, name, phone, address)
+            insert into customer (cus_id, cus_name, cus_phone, cus_address)
             values (%(cus_id)s, %(cus_name)s, %(cus_phone)s, %(cus_address)s);
         """
         cursor.execute(query, kwargs)
         # insert corresponding contacts
         query = """
-            insert into contacts (cus_id, name, phone, email, relation)
+            insert into contacts (cus_id, con_name, con_phone, con_email, con_relation)
             values (%(cus_id)s, %(con_name)s, %(con_phone)s, %(con_email)s, %(con_relation)s);
         """
         cursor.execute(query, kwargs)
@@ -62,9 +67,9 @@ def remove_customer_with_contacts(conn: Connection, cus_id: str):
         try:
             query = "delete from contacts where contacts.cus_id = %(cus_id)s;"
             cursor.execute(query, {'cus_id': cus_id})
-            query = "delete from customer where customer.id = %(cus_id)s;"
+            query = "delete from customer where customer.cus_id = %(cus_id)s;"
             cursor.execute(query, {'cus_id': cus_id})
-        except pymysql.err.MySQLError as e:
+        except pymysql.err.MySQLError:
             conn.rollback()
         else:
             conn.commit()
@@ -73,12 +78,24 @@ def remove_customer_with_contacts(conn: Connection, cus_id: str):
 def get_customer_with_contacts(conn: Connection, cus_id: str = None):
     with conn.cursor() as cursor:
         if cus_id:
-            query = "select * from customer, contacts where customer.id = contacts.cus_id and customer.id = %s;"
+            query = """
+                select cus.cus_id as cus_id, cus_name, cus_phone, cus_address, 
+                con_name, con_phone, con_email, con_relation
+                from customer as cus, contacts as con
+                where con.cus_id = cus.cus_id and cus.cus_id = %s;
+            """
             cursor.execute(query, cus_id)
         else:
-            query = "select * from customer, contacts where customer.id = contacts.cus_id;"
+            query = """
+                select cus.cus_id as cus_id, cus_name, cus_phone, cus_address, 
+                con_name, con_phone, con_email, con_relation
+                from customer as cus, contacts as con
+                where cus.cus_id = con.cus_id;
+            """
             cursor.execute(query)
         result = cursor.fetchall()
+        if cus_id:
+            assert len(result) <= 1
         logger.info(result)
     return result
 
@@ -87,8 +104,8 @@ def update_customer_with_contacts(
         conn: Connection, cus_id: str, **kwargs):
     cus_keys = ['cus_name', 'cus_phone', 'cus_address']
     con_keys = ['con_name', 'con_phone', 'con_email', 'con_relation']
-    cus_kwargs = {k[4:]: v for k, v in kwargs.items() if k in cus_keys}
-    con_kwargs = {k[4:]: v for k, v in kwargs.items() if k in con_keys}
+    cus_kwargs = {k: v for k, v in kwargs.items() if k in cus_keys}
+    con_kwargs = {k: v for k, v in kwargs.items() if k in con_keys}
     dropped_keys = [k for k in kwargs if k not in cus_keys and k not in con_keys]
     if dropped_keys:
         logger.warn(f'drop keys: {dropped_keys}')
@@ -96,13 +113,17 @@ def update_customer_with_contacts(
         # update customer or contacts
         # It is safe to write k into the query sql because it is constrained by `*_key`
         for k, v in cus_kwargs.items():
+            if not is_valid_arg(k):
+                raise ArgFormatException
             query = f"""
                 update customer set {k} = %s
-                where id = %s;
+                where cus_id = %s;
             """
             logger.debug(cursor.mogrify(query, (v, cus_id)))
             cursor.execute(query, (v, cus_id))
         for k, v in con_kwargs.items():
+            if not is_valid_arg(k):
+                raise ArgFormatException
             query = f"""
                 update contacts set {k} = %s
                 where cus_id = %s;

@@ -1,17 +1,37 @@
 import logging
+import os.path as osp
+import yaml
 
 
 class Logger:
     logger = None
+    level = None
+    fmt = None
+    filename = None
 
     @staticmethod
-    def get_logger(level: int = None, filename: str = None):
+    def get_logger():
         if not Logger.logger:
-            Logger.init_logger(filename=filename)
-        if level:
-            assert filename and 'please provide filename as well'
-            Logger.logger = None
-            Logger.init_logger(level=level, filename=filename)
+            with open(osp.join(osp.dirname(__file__), '..', 'etc', 'logger.yaml'), 'r') as f:
+                config = yaml.load(f.read(), Loader=yaml.BaseLoader)
+                level_map = {'debug': logging.DEBUG,
+                             'info': logging.INFO,
+                             'warn': logging.WARN,
+                             'warning': logging.WARN,
+                             'error': logging.ERROR,
+                             'fatal': logging.FATAL,
+                             'critical': logging.CRITICAL}
+
+                level = level_map[config['level'].lower()]
+                Logger.init_logger(level=level, fmt=config['fmt'], filename=config['filename'])
+        return Logger.logger
+
+    @staticmethod
+    def update(level=None, fmt: str = None, filename: str = None):
+        Logger.init_logger(level=level or Logger.level,
+                           fmt=fmt or Logger.fmt,
+                           filename=filename or Logger.filename,
+                           overwrite=True)
         return Logger.logger
 
     @staticmethod
