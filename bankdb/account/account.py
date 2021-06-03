@@ -21,7 +21,7 @@ def get_acc_type(cursor: Cursor, acc_id: int):
 def open_account(conn: Connection,
                  acc_type: AccountType,
                  cus_id: str, bra_name: str, sto_interest_rate: float, sto_currency_type: str = 'CNY'):
-    with conn.cursor() as cursor:
+    with cursor_with_exception_handler(conn, tx=True) as cursor:
         # check is customer exists
         query = "select cus_id from customer where cus_id = %s;"
         logger.debug(cursor.mogrify(query, (cus_id,)))
@@ -41,19 +41,18 @@ def open_account(conn: Connection,
         cursor.execute("select last_insert_id() as id;")
         acc_id = cursor.fetchone().get('id')
         if acc_type == AccountType.STORE:
-            with handle_exceptions(conn, tx=True):
-                query = """
-                    insert into store_account(acc_id, sto_interest_rate, sto_currency_type)
-                    values (%s, %s, %s);
-                """
-                logger.debug(cursor.mogrify(query, (acc_id, sto_interest_rate, sto_currency_type)))
-                cursor.execute(query, (acc_id, sto_interest_rate, sto_currency_type))
-                query = """
-                    insert into have_store_account(cus_id, bra_name, acc_id, sto_last_visit_date)
-                    values (%(cus_id)s, %(bra_name)s, %(acc_id)s, now());
-                """
-                logger.debug(query, {'cus_id': cus_id, 'bra_name': bra_name, 'acc_id': acc_id})
-                cursor.execute(query, {'cus_id': cus_id, 'bra_name': bra_name, 'acc_id': acc_id})
+            query = """
+                insert into store_account(acc_id, sto_interest_rate, sto_currency_type)
+                values (%s, %s, %s);
+            """
+            logger.debug(cursor.mogrify(query, (acc_id, sto_interest_rate, sto_currency_type)))
+            cursor.execute(query, (acc_id, sto_interest_rate, sto_currency_type))
+            query = """
+                insert into have_store_account(cus_id, bra_name, acc_id, sto_last_visit_date)
+                values (%(cus_id)s, %(bra_name)s, %(acc_id)s, now());
+            """
+            logger.debug(query, {'cus_id': cus_id, 'bra_name': bra_name, 'acc_id': acc_id})
+            cursor.execute(query, {'cus_id': cus_id, 'bra_name': bra_name, 'acc_id': acc_id})
     return acc_id
 
 
@@ -89,21 +88,21 @@ def get_account_info(conn: Connection, acc_id: int):
 def update_last_visit_time(conn: Connection, acc_id: int, cus_id: int, date=None):
     if date:
         raise Unimplemented
-    with conn.cursor() as cursor:
+    with cursor_with_exception_handler(conn, tx=True) as cursor:
         acc_type = get_acc_type(cursor, acc_id)
-        with handle_exceptions(conn, tx=True):
-            if acc_type == AccountType.STORE:
-                query = """update have_store_account set sto_last_visit_date = now()
-                        where cus_id = %(cus_id)s and acc_id = %(acc_id)s"""
-                cursor.execute(query, {'cus_id': cus_id, 'acc_id': acc_id})
-            elif acc_type == AccountType.CHECK:
-                query = """update have_check_account set che_last_visit_date = now()
-                        where cus_id = %(cus_id)s and acc_id = %(acc_id)s"""
-                cursor.execute(query, {'cus_id': cus_id, 'acc_id': acc_id})
+        if acc_type == AccountType.STORE:
+            query = """update have_store_account set sto_last_visit_date = now()
+                    where cus_id = %(cus_id)s and acc_id = %(acc_id)s"""
+            cursor.execute(query, {'cus_id': cus_id, 'acc_id': acc_id})
+        elif acc_type == AccountType.CHECK:
+            query = """update have_check_account set che_last_visit_date = now()
+                    where cus_id = %(cus_id)s and acc_id = %(acc_id)s"""
+            cursor.execute(query, {'cus_id': cus_id, 'acc_id': acc_id})
+
 
 
 def remove_account(conn: Connection, acc_id: int):
-    with conn.cursor() as cursor:
+    with cursor_with_exception_handler(conn) as cursor:
         acc_type = get_acc_type(cursor, acc_id)
         if acc_type == AccountType.STORE:
             query = "delete from have_store_account where acc_id = %s;"

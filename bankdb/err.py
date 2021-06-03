@@ -7,9 +7,9 @@ logger = Logger.get_logger()
 
 
 @contextmanager
-def handle_exceptions(conn: Connection, tx=False):
+def cursor_with_exception_handler(conn: Connection, tx=False):
     try:
-        yield None
+        yield conn.cursor()
     except StillHasAccount as e:
         logger.error(e)
         if tx:
@@ -45,7 +45,8 @@ def handle_exceptions(conn: Connection, tx=False):
     else:
         if tx:
             conn.commit()
-
+    finally:
+        conn.cursor().close()
 
 
 class StillHasAccount(Exception):
