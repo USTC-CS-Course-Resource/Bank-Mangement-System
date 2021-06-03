@@ -42,6 +42,14 @@ def cursor_with_exception_handler(conn: Connection, tx=False):
         logger.error(e)
         if tx:
             conn.rollback()
+    except StillHasBalance as e:
+        logger.error(e)
+        if tx:
+            conn.rollback()
+    except StillHasOverdraft as e:
+        logger.error(e)
+        if tx:
+            conn.rollback()
     else:
         if tx:
             conn.commit()
@@ -74,5 +82,13 @@ class UnknownAccountType(Exception):
 
 
 class Unimplemented(Exception):
+    ...
+
+
+class StillHasBalance(Exception):
+    ...
+
+
+class StillHasOverdraft(Exception):
     ...
 

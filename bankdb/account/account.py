@@ -102,12 +102,23 @@ def get_balance(cursor: Cursor, acc_id: int):
     return cursor.fetchone().get('acc_balance')
 
 
+def get_overdraft(cursor: Cursor, acc_id: int):
+    cursor.execute('select che_overdraft from check_account where acc_id = %s', (acc_id, ))
+    return cursor.fetchone().get('che_overdraft')
+
+
 def remove_account(cursor: Cursor, acc_id: int):
     acc_type = get_acc_type(cursor, acc_id)
+    acc_balance = get_balance(cursor, acc_id)
+    if acc_balance != 0:
+        raise StillHasBalance
     if acc_type == AccountType.STORE:
         cursor.execute("delete from have_store_account where acc_id = %s;", (acc_id,))
         cursor.execute("delete from store_account where acc_id = %s;", (acc_id,))
     elif acc_type == AccountType.CHECK:
+        che_overdraft = get_overdraft(cursor, acc_id)
+        if che_overdraft != 0:
+            raise StillHasOverdraft
         cursor.execute("delete from have_check_account where acc_id = %s;", (acc_id,))
         cursor.execute("delete from check_account where acc_id = %s;", (acc_id,))
     else:
