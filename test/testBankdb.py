@@ -6,6 +6,7 @@ from utils.logger import *
 from utils.logger import Logger
 import bankdb
 import datetime
+from bankdb.err import *
 
 unittest.TestLoader.sortTestMethodsUsing = None
 logger = Logger.get_logger()
@@ -25,48 +26,51 @@ class TestBankdb(unittest.TestCase):
     ]
 
     def test_remove_insert_update_customer(self):
-        data = self.customer_with_contacts_data[0]
-        # clear
-        bankdb._clear_table(self.conn,
-                            ['have_store_account', 'store_account', 'account', 'branch', 'contacts', 'customer'])
-        # insert
-        customer.insert_customer_with_contacts(self.conn, **data)
-        result = customer.get_customer_with_contacts(self.conn, '350500200001011111')
-        self.assertEqual(result, [data])
-        # update
-        customer.update_customer_with_contacts(self.conn, cus_id='350500200001011111', cus_name='大憨憨', con_name='大恐龙')
-        result = customer.get_customer_with_contacts(self.conn, '350500200001011111')
-        data['cus_name'] = '大憨憨'
-        data['con_name'] = '大恐龙'
-        self.assertEqual(result, [data])
-        # remove
-        customer.remove_customer_with_contacts(self.conn, '350500200001011111')
-        result = customer.get_customer_with_contacts(self.conn, '350500200001011111')
-        self.assertEqual(result, ())
+        with cursor_with_exception_handler(self.conn) as cursor:
+            data = self.customer_with_contacts_data[0]
+            # clear
+            bankdb._clear_table(cursor,
+                                ['have_store_account', 'store_account', 'account', 'branch', 'contacts', 'customer'])
+            # insert
+            customer.insert_customer_with_contacts(cursor, **data)
+            result = customer.get_customer_with_contacts(cursor, '350500200001011111')
+            self.assertEqual(result, [data])
+            # update
+            customer.update_customer_with_contacts(cursor, cus_id='350500200001011111', cus_name='大憨憨', con_name='大恐龙')
+            result = customer.get_customer_with_contacts(cursor, '350500200001011111')
+            data['cus_name'] = '大憨憨'
+            data['con_name'] = '大恐龙'
+            self.assertEqual(result, [data])
+            # remove
+            customer.remove_customer_with_contacts(cursor, '350500200001011111')
+            result = customer.get_customer_with_contacts(cursor, '350500200001011111')
+            self.assertEqual(result, ())
 
     def test_open_account(self):
-        # 0.0. clear
-        bankdb._clear_table(self.conn,
-                            ['have_store_account', 'store_account', 'account', 'branch', 'contacts', 'customer'])
-        # 0.1. insert branch and customer
-        branch.insert_branch(self.conn, bra_name='憨憨银行合肥分行', bra_city='合肥')
-        customer.insert_customer_with_contacts(self.conn, **self.customer_with_contacts_data[0])
-        # 1. test open account
-        acc_id = account.open_account(conn=self.conn, acc_type=account.AccountType.STORE, cus_id='350500200001011111',
-                                      bra_name='憨憨银行合肥分行', sto_interest_rate=0.02, sto_currency_type='CNY')
-        result = account.get_account_info(self.conn, acc_id)
-        result.pop('sto_last_visit_date')
-        result.pop('acc_open_date')
-        self.assertEqual(result,
-                         {'cus_id': '350500200001011111', 'acc_id': acc_id, 'acc_balance': 0.0, 'acc_type': 0,
-                          'sto_interest_rate': 0.02, 'sto_currency_type': 'CNY', 'bra_name': '憨憨银行合肥分行'})
-        # 2. test remove account
-        account.remove_account(conn=self.conn, acc_id=acc_id)
-        result = customer.get_customer_with_contacts(self.conn, '350500200001011111')
-        self.assertEqual(result, self.customer_with_contacts_data)
-        # 0.2. clear
-        bankdb._clear_table(self.conn,
-                            ['have_store_account', 'store_account', 'account', 'branch', 'contacts', 'customer'])
+        with cursor_with_exception_handler(self.conn) as cursor:
+            # 0.0. clear
+            bankdb._clear_table(cursor,
+                                ['have_store_account', 'store_account', 'account', 'branch', 'contacts', 'customer'])
+            # 0.1. insert branch and customer
+            branch.insert_branch(cursor, bra_name='憨憨银行合肥分行', bra_city='合肥')
+            customer.insert_customer_with_contacts(cursor, **self.customer_with_contacts_data[0])
+            # 1. test open account
+            acc_id = account.open_account(cursor=cursor, acc_type=account.AccountType.STORE,
+                                          cus_id='350500200001011111', bra_name='憨憨银行合肥分行',
+                                          sto_interest_rate=0.02, sto_currency_type='CNY')
+            result = account.get_account_info(cursor, acc_id)
+            result.pop('sto_last_visit_date')
+            result.pop('acc_open_date')
+            self.assertEqual(result,
+                             {'cus_id': '350500200001011111', 'acc_id': acc_id, 'acc_balance': 0.0, 'acc_type': 0,
+                              'sto_interest_rate': 0.02, 'sto_currency_type': 'CNY', 'bra_name': '憨憨银行合肥分行'})
+            # 2. test remove account
+            account.remove_account(cursor=cursor, acc_id=acc_id)
+            result = customer.get_customer_with_contacts(cursor, '350500200001011111')
+            self.assertEqual(result, self.customer_with_contacts_data)
+            # 0.2. clear
+            bankdb._clear_table(cursor,
+                                ['have_store_account', 'store_account', 'account', 'branch', 'contacts', 'customer'])
 
 
 if __name__ == '__main__':
