@@ -1,6 +1,7 @@
 from bankdb.err import *
 import pymysql
 from pymysql.connections import Connection
+from pymysql.cursors import Cursor
 from enum import Enum
 from utils.logger import Logger
 
@@ -10,6 +11,11 @@ logger = Logger.get_logger()
 class AccountType(Enum):
     STORE = 0
     CHECK = 1
+
+
+def get_acc_type(cursor: Cursor, acc_id: int):
+    cursor.execute("select acc_type from account where acc_id = %s", (acc_id,))
+    return AccountType(cursor.fetchone().get('acc_type'))
 
 
 def open_account(conn: Connection,
@@ -35,7 +41,7 @@ def open_account(conn: Connection,
         cursor.execute("select last_insert_id() as id;")
         acc_id = cursor.fetchone().get('id')
         if acc_type == AccountType.STORE:
-            try:
+            with handle_exceptions(conn, tx=True):
                 query = """
                     insert into store_account(acc_id, sto_interest_rate, sto_currency_type)
                     values (%s, %s, %s);
@@ -48,19 +54,13 @@ def open_account(conn: Connection,
                 """
                 logger.debug(query, {'cus_id': cus_id, 'bra_name': bra_name, 'acc_id': acc_id})
                 cursor.execute(query, {'cus_id': cus_id, 'bra_name': bra_name, 'acc_id': acc_id})
-            except pymysql.err.MySQLError as e:
-                logger.error(e)
-                conn.rollback()
-            else:
-                conn.commit()
     return acc_id
 
 
 def get_account_info(conn: Connection, acc_id: int):
     with conn.cursor() as cursor:
-        cursor.execute("select acc_type from account where acc_id = %s", (acc_id,))
-        acc_type = cursor.fetchone().get('acc_type')
-        if acc_type == AccountType.STORE.value:
+        acc_type = get_acc_type(cursor, acc_id)
+        if acc_type == AccountType.STORE:
             query = """
                 select hsa.cus_id as cus_id, acc.acc_id as acc_id, acc_balance, acc_type,
                     sa.sto_interest_rate as sto_interest_rate, sa.sto_currency_type as sto_currency_type,
@@ -68,7 +68,7 @@ def get_account_info(conn: Connection, acc_id: int):
                     from account as acc, store_account as sa, have_store_account as hsa
                 where acc.acc_id = %s and acc.acc_id = sa.acc_id and acc.acc_id = hsa.acc_id;
             """
-        elif acc_type == AccountType.CHECK.value:
+        elif acc_type == AccountType.CHECK:
             query = """
                 select hsa.cus_id as cus_id, acc.acc_id as acc_id, acc_balance, acc_type,
                     sa.che_interest_rate as che_interest_rate, sa.che_currency_type as che_currency_type,
@@ -77,7 +77,7 @@ def get_account_info(conn: Connection, acc_id: int):
                 where acc.acc_id = %s and acc.acc_id = ca.acc_id and acc.acc_id = hca.acc_id;
             """
         else:
-            raise UnkownAccountType
+            raise UnknownAccountType
         cursor.execute(query, (acc_id,))
         result = cursor.fetchall()
     assert len(result) == 1
@@ -86,24 +86,53 @@ def get_account_info(conn: Connection, acc_id: int):
     return result
 
 
+def update_last_visit_time(conn: Connection, acc_id: int, cus_id: int, date=None):
+    if date:
+        raise Unimplemented
+    with conn.cursor() as cursor:
+        acc_type = get_acc_type(cursor, acc_id)
+        with handle_exceptions(conn, tx=True):
+            if acc_type == AccountType.STORE:
+                query = """update have_store_account set sto_last_visit_date = now()
+                        where cus_id = %(cus_id)s and acc_id = %(acc_id)s"""
+                cursor.execute(query, {'cus_id': cus_id, 'acc_id': acc_id})
+            elif acc_type == AccountType.CHECK:
+                query = """update have_check_account set che_last_visit_date = now()
+                        where cus_id = %(cus_id)s and acc_id = %(acc_id)s"""
+                cursor.execute(query, {'cus_id': cus_id, 'acc_id': acc_id})
+
+
 def remove_account(conn: Connection, acc_id: int):
     with conn.cursor() as cursor:
-        cursor.execute("select acc_type from account where acc_id = %s", (acc_id,))
-        acc_type = cursor.fetchone().get('acc_type')
-        if acc_type == AccountType.STORE.value:
+        acc_type = get_acc_type(cursor, acc_id)
+        if acc_type == AccountType.STORE:
             query = "delete from have_store_account where acc_id = %s;"
             cursor.execute(query, (acc_id,))
             query = "delete from store_account where acc_id = %s;"
             cursor.execute(query, (acc_id,))
-        elif acc_type == AccountType.CHECK.value:
+        elif acc_type == AccountType.CHECK:
             query = "delete from have_check_account where acc_id = %s;"
             cursor.execute(query, (acc_id,))
             query = "delete from check_account where acc_id = %s;"
             cursor.execute(query, (acc_id,))
         else:
-            raise UnkownAccountType
+            raise UnknownAccountType
         query = "delete from account where acc_id = %s;"
         cursor.execute(query, (acc_id,))
+        conn.commit()
+
+
+def remove_have_account(conn: Connection, acc_id: int, cus_id: str):
+    with conn.cursor() as cursor:
+        acc_type = get_acc_type(cursor, acc_id)
+        if acc_type == AccountType.STORE:
+            query = "delete from have_store_account where acc_id = %s and cus_id = %s;"
+            cursor.execute(query, (acc_id, cus_id))
+        elif acc_type == AccountType.CHECK:
+            query = "delete from have_check_account where acc_id = %s and cus_id = %s;"
+            cursor.execute(query, (acc_id, cus_id))
+        else:
+            raise UnknownAccountType
         conn.commit()
 
 

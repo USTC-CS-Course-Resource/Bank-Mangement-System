@@ -56,10 +56,10 @@ class TestBankdb(unittest.TestCase):
                                       bra_name='憨憨银行合肥分行', sto_interest_rate=0.02, sto_currency_type='CNY')
         result = account.get_account_info(self.conn, acc_id)
         result.pop('sto_last_visit_date')
+        result.pop('acc_open_date')
         self.assertEqual(result,
                          {'cus_id': '350500200001011111', 'acc_id': acc_id, 'acc_balance': 0.0, 'acc_type': 0,
-                          'sto_interest_rate': 0.02, 'sto_currency_type': 'CNY', 'bra_name': '憨憨银行合肥分行',
-                          'acc_open_date': datetime.date(2021, 6, 2)})
+                          'sto_interest_rate': 0.02, 'sto_currency_type': 'CNY', 'bra_name': '憨憨银行合肥分行'})
         # 2. test remove account
         account.remove_account(conn=self.conn, acc_id=acc_id)
         result = customer.get_customer_with_contacts(self.conn, '350500200001011111')

@@ -64,15 +64,11 @@ def remove_customer_with_contacts(conn: Connection, cus_id: str):
         if count > 0:
             raise StillHasLoan
         # if everything is ok, remove the customer and contacts
-        try:
+        with handle_exceptions(conn, tx=True):
             query = "delete from contacts where contacts.cus_id = %(cus_id)s;"
             cursor.execute(query, {'cus_id': cus_id})
             query = "delete from customer where customer.cus_id = %(cus_id)s;"
             cursor.execute(query, {'cus_id': cus_id})
-        except pymysql.err.MySQLError:
-            conn.rollback()
-        else:
-            conn.commit()
 
 
 def get_customer_with_contacts(conn: Connection, cus_id: str = None):

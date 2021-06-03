@@ -47,3 +47,9 @@ PB18111697 王章瀚
 ## Links
 
 [MySQL Error Codes](https://docs.oracle.com/cd/E17952_01/mysql-errors-8.0-en/)
+
+## 特点
+
+- 上下文管理器捕获异常, 代码更为简洁
+- 精致而有效的 logger 配置
+- 精准防止 SQL 注入攻击
