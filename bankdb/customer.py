@@ -2,7 +2,7 @@ import pymysql
 from pymysql.connections import Connection
 from pymysql.cursors import Cursor
 from bankdb.err import *
-from checker import is_valid_arg
+from bankdb.checker import is_valid_arg
 from utils.logger import Logger
 
 logger = Logger.get_logger()

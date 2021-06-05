@@ -1,4 +1,5 @@
 import logging
+import os
 import os.path as osp
 import yaml
 
@@ -23,7 +24,11 @@ class Logger:
                              'critical': logging.CRITICAL}
 
                 level = level_map[config['level'].lower()]
-                Logger.init_logger(level=level, fmt=config['fmt'], filename=config['filename'])
+                filename = osp.realpath(osp.join(osp.dirname(__file__), '..', 'etc', *osp.split(config['filename'])))
+                if not osp.exists(filename):
+                    os.makedirs(osp.dirname(filename))
+                Logger.init_logger(level=level, fmt=config['fmt'], filename=filename)
+                Logger.logger.info(f'log into {filename}')
         return Logger.logger
 
     @staticmethod

@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2021/6/2 22:28:25                            */
+/* Created on:     2021/6/5 23:29:27                            */
 /*==============================================================*/
 
 
@@ -171,7 +171,7 @@ create table pay_loan
    loa_pay_id           bigint not null auto_increment,
    loa_id               bigint not null,
    loa_pay_amount       double not null,
-   loa_pay_pay_date     datetime not null,
+   loa_pay_date         datetime not null,
    primary key (loa_pay_id)
 );
 

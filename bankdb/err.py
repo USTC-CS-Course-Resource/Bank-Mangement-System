@@ -50,6 +50,14 @@ def cursor_with_exception_handler(conn: Connection, tx=False):
         logger.error(e)
         if tx:
             conn.rollback()
+    except LoanAlreadyDone as e:
+        logger.error(e)
+        if tx:
+            conn.rollback()
+    except LoanBeingPayed as e:
+        logger.error(e)
+        if tx:
+            conn.rollback()
     else:
         if tx:
             conn.commit()
@@ -92,3 +100,10 @@ class StillHasBalance(Exception):
 class StillHasOverdraft(Exception):
     ...
 
+
+class LoanAlreadyDone(Exception):
+    ...
+
+
+class LoanBeingPayed(Exception):
+    ...

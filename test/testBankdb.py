@@ -1,7 +1,8 @@
 import unittest
 import pymysql
 from pymysql.connections import Connection
-from bankdb import customer, account, branch
+from pymysql.cursors import Cursor
+from bankdb import customer, account, branch, loan
 from utils.logger import *
 from utils.logger import Logger
 import bankdb
@@ -25,6 +26,15 @@ class TestBankdb(unittest.TestCase):
          'con_email': '666@hanhan.com', 'con_relation': '情侣'}
     ]
 
+    @staticmethod
+    def prepare_customer(cursor: Cursor):
+        # 0.0. clear
+        bankdb._clear_table(cursor,
+                            ['have_store_account', 'store_account', 'account', 'branch', 'contacts', 'customer'])
+        # 0.1. insert branch and customer
+        branch.insert_branch(cursor, bra_name='憨憨银行合肥分行', bra_city='合肥')
+        customer.insert_customer_with_contacts(cursor, **TestBankdb.customer_with_contacts_data[0])
+
     def test_remove_insert_update_customer(self):
         with cursor_with_exception_handler(self.conn) as cursor:
             data = self.customer_with_contacts_data[0]
@@ -46,14 +56,10 @@ class TestBankdb(unittest.TestCase):
             result = customer.get_customer_with_contacts(cursor, '350500200001011111')
             self.assertEqual(result, ())
 
-    def test_open_account(self):
+    def test_account(self):
         with cursor_with_exception_handler(self.conn) as cursor:
-            # 0.0. clear
-            bankdb._clear_table(cursor,
-                                ['have_store_account', 'store_account', 'account', 'branch', 'contacts', 'customer'])
-            # 0.1. insert branch and customer
-            branch.insert_branch(cursor, bra_name='憨憨银行合肥分行', bra_city='合肥')
-            customer.insert_customer_with_contacts(cursor, **self.customer_with_contacts_data[0])
+            # 0. prepare the customer
+            TestBankdb.prepare_customer(cursor)
             # 1. test open account
             acc_id = account.open_account(cursor=cursor, acc_type=account.AccountType.STORE,
                                           cus_id='350500200001011111', bra_name='憨憨银行合肥分行',
@@ -68,9 +74,27 @@ class TestBankdb(unittest.TestCase):
             account.remove_account(cursor=cursor, acc_id=acc_id)
             result = customer.get_customer_with_contacts(cursor, '350500200001011111')
             self.assertEqual(result, self.customer_with_contacts_data)
-            # 0.2. clear
+            # 3. clear used tables
             bankdb._clear_table(cursor,
                                 ['have_store_account', 'store_account', 'account', 'branch', 'contacts', 'customer'])
+
+    def test_loan(self):
+        with cursor_with_exception_handler(self.conn) as cursor:
+            # 0. prepare the customer
+            TestBankdb.prepare_customer(cursor)
+            # 1. test insert loan
+            loa_id = loan.insert_loan_with_relations(cursor,
+                                                     cus_ids=['350500200001011111'],
+                                                     bra_name='憨憨银行合肥分行',
+                                                     loa_amount=66666)
+            # 2. pay loan
+            loan.insert_pay_loan(cursor, loa_id, 66)
+            loan.insert_pay_loan(cursor, loa_id, 666)
+            # 3. get pay loan information
+            state = loan.get_loan_state(cursor, loa_id)
+            # 4. clear
+            bankdb._clear_table(cursor,
+                                ['pay_loan', 'loan_relation', 'loan', 'branch', 'contacts', 'customer'])
 
 
 if __name__ == '__main__':
