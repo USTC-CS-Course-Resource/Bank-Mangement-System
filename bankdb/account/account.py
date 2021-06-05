@@ -129,9 +129,15 @@ def remove_account(cursor: Cursor, acc_id: int):
 
 def remove_have_account(cursor: Cursor, acc_id: int, cus_id: str):
     acc_type = get_acc_type(cursor, acc_id)
+    acc_balance = get_balance(cursor, acc_id)
+    if acc_balance != 0:
+        raise StillHasBalance
     if acc_type == AccountType.STORE:
         cursor.execute("delete from have_store_account where acc_id = %s and cus_id = %s;", (acc_id, cus_id))
     elif acc_type == AccountType.CHECK:
+        che_overdraft = get_overdraft(cursor, acc_id)
+        if che_overdraft != 0:
+            raise StillHasOverdraft
         cursor.execute("delete from have_check_account where acc_id = %s and cus_id = %s;", (acc_id, cus_id))
     else:
         raise UnknownAccountType
