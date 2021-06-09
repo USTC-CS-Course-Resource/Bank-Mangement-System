@@ -42,9 +42,10 @@ def insert_loan_with_relations(cursor: Cursor, cus_ids: List[str], bra_name: str
 
 
 def get_pay_load_records(cursor: Cursor, loa_id: int) -> pd.DataFrame:
-    cursor.execute("select * from pay_loan where loa_id = %s", (loa_id,))
+    cursor.execute("select loa_pay_id, loa_id, loa_pay_amount, loa_pay_date from pay_loan where loa_id = %s", (loa_id,))
     pay_loan_records = cursor.fetchall()
-    pay_loan_records = pd.DataFrame(pay_loan_records)
+    pay_loan_records = pd.DataFrame(pay_loan_records,
+                                    columns=('loa_pay_id', 'loa_id', 'loa_pay_amount', 'loa_pay_date'))
     return pay_loan_records
 
 
@@ -56,7 +57,7 @@ def get_loa_amount(cursor: Cursor, loa_id: int) -> float:
 def get_loan_state(cursor: Cursor, loa_id: int):
     pay_loan_records = get_pay_load_records(cursor, loa_id)
     loa_amount = get_loa_amount(cursor, loa_id)
-    if pay_loan_records['loa_pay_amount'].sum() == loa_amount:
+    if pay_loan_records.get('loa_pay_amount').sum() == loa_amount:
         return LoanState.DONE
     else:
         return LoanState.PAYING

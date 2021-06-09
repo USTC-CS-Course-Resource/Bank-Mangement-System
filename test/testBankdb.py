@@ -81,6 +81,8 @@ class TestBankdb(unittest.TestCase):
     def test_loan(self):
         with cursor_with_exception_handler(self.conn) as cursor:
             # 0. prepare the customer
+            bankdb._clear_table(cursor,
+                                ['pay_loan', 'loan_relation', 'loan', 'branch', 'contacts', 'customer'])
             TestBankdb.prepare_customer(cursor)
             # 1. test insert loan
             loa_id = loan.insert_loan_with_relations(cursor,
