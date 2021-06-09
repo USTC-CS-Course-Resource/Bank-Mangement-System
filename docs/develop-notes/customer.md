@@ -1,4 +1,4 @@
-## Customer Mangement Module
+## Customer Management Module
 
 -----
 

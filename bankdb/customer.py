@@ -88,7 +88,6 @@ def get_customer_with_contacts(cursor: Cursor, cus_id: str = None):
     result = cursor.fetchall()
     if cus_id:
         assert len(result) <= 1
-    logger.info(result)
     return result
 
 

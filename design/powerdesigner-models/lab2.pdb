@@ -4638,7 +4638,7 @@ DESTINATION 0 新宋体,8,N</a:FontList>
 </o:ReferenceSymbol>
 <o:ReferenceSymbol Id="o29">
 <a:Rect>((6833,-5709), (17617,4737))</a:Rect>
-<a:ListOfPoints>((7233,4337),(11841,4337),(11841,-5084),(17217,-5084))</a:ListOfPoints>
+<a:ListOfPoints>((7233,4337),(7233,-5084),(17217,-5084))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>1</a:ArrowStyle>
 <a:LineColor>11184640</a:LineColor>

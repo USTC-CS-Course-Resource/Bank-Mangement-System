@@ -81,8 +81,6 @@ class TestBankdb(unittest.TestCase):
     def test_loan(self):
         with cursor_with_exception_handler(self.conn) as cursor:
             # 0. prepare the customer
-            bankdb._clear_table(cursor,
-                                ['pay_loan', 'loan_relation', 'loan', 'branch', 'contacts', 'customer'])
             TestBankdb.prepare_customer(cursor)
             # 1. test insert loan
             loa_id = loan.insert_loan_with_relations(cursor,
@@ -94,7 +92,16 @@ class TestBankdb(unittest.TestCase):
             loan.insert_pay_loan(cursor, loa_id, 666)
             # 3. get pay loan information
             state = loan.get_loan_state(cursor, loa_id)
-            # 4. clear
+            # 4. pay until done and test
+            loan.insert_pay_loan(cursor, loa_id, 65934)
+            exception = None
+            try:
+                loan.insert_pay_loan(cursor, loa_id, 6666)
+            except Exception as e:
+                exception = e
+            logger.info('[LoanAlreadyDone] ok')
+            self.assertIsInstance(exception, LoanAlreadyDone)
+            # 5. clear
             bankdb._clear_table(cursor,
                                 ['pay_loan', 'loan_relation', 'loan', 'branch', 'contacts', 'customer'])
 

@@ -16,6 +16,15 @@ def parse_args():
     return args
 
 
+from flask import Flask
+app = Flask(__name__)
+
+
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
+
+
 if __name__ == '__main__':
     args = parse_args()
     conn = Connection(host='localhost',
