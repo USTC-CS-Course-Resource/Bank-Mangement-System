@@ -1,7 +1,7 @@
 <template>
   <card>
     <template slot="header">
-      <h5 class="title">Edit Profile</h5>
+      <h5 class="title">Add/Edit Profile</h5>
     </template>
     <div class="row">
       <div class="col-md-5 pr-md-1 text-left">
@@ -88,10 +88,8 @@
 import { Card, BaseInput } from "@/components/index";
 
 import BaseButton from "@/components/BaseButton";
-// import NotificationTemplate from "../Notifications/NotificationTemplate";
 import axios from "axios";
 import { eventBus } from "./eventbus";
-// import NotificationTemplateVue from "../Notifications/NotificationTemplate.vue";
 
 export default {
   components: {
@@ -106,15 +104,6 @@ export default {
         return {};
       }
     }
-  },
-  data() {
-    return {
-      type: ["", "info", "success", "warning", "danger"],
-      notifications: {
-        topCenter: false
-      },
-      notificationContent: "fuck it"
-    };
   },
   methods: {
     submit() {

@@ -20,7 +20,12 @@
             <base-button type="success" size="sm" icon>
               <i class="tim-icons icon-settings"></i>
             </base-button>
-            <base-button type="danger" size="sm" icon>
+            <base-button
+              type="danger"
+              size="sm"
+              icon
+              @click="removeCustomer(item, index)"
+            >
               <i class="tim-icons icon-simple-remove"></i>
             </base-button>
           </td>
@@ -30,8 +35,14 @@
   </table>
 </template>
 <script>
+import axios from "axios";
+import BaseButton from "@/components/BaseButton";
+
 export default {
-  name: "base-table",
+  name: "search-results-table",
+  components: {
+    BaseButton
+  },
   props: {
     tableClass: {
       type: String,
@@ -60,6 +71,26 @@ export default {
     },
     itemValue(item, column) {
       return item[column.toLowerCase()];
+    },
+    removeCustomer(item, index) {
+      console.log(this.data);
+      console.log(item);
+      axios
+        .post("http://localhost:5000/customer/remove_customer", item)
+        .then(() => {
+          this.$notifyVue(
+            `Remove Customer: <b>${item.cus_name}</b>`,
+            "top",
+            "center",
+            "success",
+            2000
+          );
+          this.data.splice(index, 1);
+          this.$emit("returnResults", this.data);
+        })
+        .catch(() => {
+          this.$notifyVue(`Removing Failed!!`, "top", "center", "danger", 2000);
+        });
     }
   }
 };

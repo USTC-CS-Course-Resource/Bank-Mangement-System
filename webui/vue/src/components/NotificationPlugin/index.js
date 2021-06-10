@@ -51,10 +51,28 @@ const NotificationsPlugin = {
       methods: {
         notify(notification) {
           this.notificationStore.notify(notification);
+        },
+        notifyVue: function(
+          message,
+          verticalAlign,
+          horizontalAlign,
+          type,
+          timeout
+        ) {
+          this.$notify({
+            message: message,
+            // component: NotificationTemplateVue,
+            icon: "tim-icons icon-bell-55",
+            horizontalAlign: horizontalAlign,
+            verticalAlign: verticalAlign,
+            type: type,
+            timeout: timeout
+          });
         }
       }
     });
     Vue.prototype.$notify = app.notify;
+    Vue.prototype.$notifyVue = app.notifyVue;
     Vue.prototype.$notifications = app.notificationStore;
     Vue.component("Notifications", Notifications);
     if (options) {

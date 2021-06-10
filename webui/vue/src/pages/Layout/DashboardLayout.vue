@@ -13,6 +13,24 @@
           <p>控制面板</p>
         </template>
       </sidebar-link>
+      <sidebar-link to="/customer">
+        <i class="tim-icons icon-single-02"></i>
+        <template v-if="!isRTL">
+          <p>Customer</p>
+        </template>
+        <template v-else>
+          <p>客户</p>
+        </template>
+      </sidebar-link>
+      <sidebar-link to="/user">
+        <i class="tim-icons icon-single-02"></i>
+        <template v-if="!isRTL">
+          <p>User</p>
+        </template>
+        <template v-else>
+          <p>客户</p>
+        </template>
+      </sidebar-link>
       <sidebar-link to="/icons">
         <i class="tim-icons icon-atom"></i>
         <template v-if="!isRTL">
@@ -40,7 +58,7 @@
           <p>通知</p>
         </template>
       </sidebar-link>
-      <sidebar-link to="/user">
+      <!-- <sidebar-link to="/user">
         <i class="tim-icons icon-single-02"></i>
         <template v-if="!isRTL">
           <p>Customer</p>
@@ -48,7 +66,7 @@
         <template v-else>
           <p>客户</p>
         </template>
-      </sidebar-link>
+      </sidebar-link> -->
       <sidebar-link to="/table">
         <i class="tim-icons icon-puzzle-10"></i>
         <template v-if="!isRTL">

@@ -1,7 +1,7 @@
 <template>
   <card>
     <template slot="header">
-      <h5 class="title">Edit Profile</h5>
+      <h5 class="title">Search Conditions</h5>
     </template>
     <div class="row">
       <div class="col-md-5 pr-md-1 text-left">
@@ -80,7 +80,7 @@
     </div>
 
     <template slot="footer">
-      <base-button type="success" fill @click="submit">Save</base-button>
+      <base-button type="success" fill @click="submit">Search</base-button>
     </template>
   </card>
 </template>
@@ -88,10 +88,7 @@
 import { Card, BaseInput } from "@/components/index";
 
 import BaseButton from "@/components/BaseButton";
-// import NotificationTemplate from "../Notifications/NotificationTemplate";
 import axios from "axios";
-import { eventBus } from "./eventbus";
-// import NotificationTemplateVue from "../Notifications/NotificationTemplate.vue";
 
 export default {
   components: {
@@ -108,45 +105,27 @@ export default {
     }
   },
   data() {
-    return {
-      type: ["", "info", "success", "warning", "danger"],
-      notifications: {
-        topCenter: false
-      },
-      notificationContent: "fuck it"
-    };
+    return {};
   },
   methods: {
     submit() {
       axios
-        .post("http://localhost:5000/customer/insert_customer", this.model)
-        .then(() => {
+        .post("http://localhost:5000/customer/search_customer", this.model)
+        .then(response => {
           this.$notifyVue(
-            `Inserted Customer: <b>${this.model.cus_name}</b>`,
+            `Search Customer: <b>${this.model.cus_name}</b>`,
             "top",
             "center",
             "success",
             2000
           );
+          console.log("emit from search");
+          this.$emit("returnResults", response.data);
         })
         .catch(() => {
-          this.$notifyVue(`Inserted Failed!!`, "top", "center", "danger", 2000);
+          this.$notifyVue(`Search Failed!!`, "top", "center", "danger", 2000);
+          this.$emit("returnResults", []);
         });
-    }
-  },
-  computed: {
-    description() {
-      return {
-        cus_name: this.model.cus_name,
-        cus_id: this.model.cus_id,
-        cus_phone: this.model.cus_phone
-      };
-    }
-  },
-  watch: {
-    description: function() {
-      console.log(`change! ${this.description}`);
-      eventBus.$emit("description", this.description);
     }
   }
 };

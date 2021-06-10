@@ -32,6 +32,14 @@
       </button>
       <div class="collapse navbar-collapse show text-left" v-show="showMenu">
         <ul class="navbar-nav" :class="$rtl.isRTL ? 'mr-auto' : 'ml-auto'">
+          <!-- Clear BankDB button -->
+          <li class="search-bar input-group" @click="clearBankDB">
+            <button class="btn btn-link" id="clear-button">
+              <i class="tim-icons icon-simple-remove"></i>
+              <span class="d-lg-none d-md-block">Clear</span>
+            </button>
+          </li>
+          <!-- Search button -->
           <li class="search-bar input-group" @click="searchModalVisible = true">
             <button
               class="btn btn-link"
@@ -59,6 +67,7 @@
               placeholder="SEARCH"
             />
           </modal>
+          <!-- Notification -->
           <drop-down>
             <a
               href="javascript:void(0)"
@@ -67,9 +76,7 @@
             >
               <div class="notification d-none d-lg-block d-xl-block"></div>
               <i class="tim-icons icon-sound-wave"></i>
-              <p class="d-lg-none text-left">
-                Notifications
-              </p>
+              <p class="d-lg-none text-left">Notifications</p>
             </a>
             <ul class="dropdown-menu dropdown-menu-right dropdown-navbar">
               <li class="nav-link">
@@ -99,15 +106,14 @@
               </li>
             </ul>
           </drop-down>
+          <!-- User -->
           <drop-down>
             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
               <div class="photo">
                 <img src="@/assets/img/anime3.png" alt="Profile Photo" />
               </div>
               <b class="caret d-none d-lg-block d-xl-block"></b>
-              <p class="d-lg-none">
-                Log out
-              </p>
+              <p class="d-lg-none">Log out</p>
             </a>
             <ul class="dropdown-menu dropdown-navbar">
               <li class="nav-link">
@@ -136,13 +142,15 @@
 <script>
 import DropDown from "@/components/Dropdown.vue";
 import Modal from "@/components/Modal.vue";
-import { SidebarPlugin } from "@/components/index";
+import axios from "axios";
+
+// import { SidebarPlugin } from "@/components/index";
 
 export default {
   components: {
     DropDown,
-    Modal,
-    SidebarPlugin
+    Modal
+    // SidebarPlugin
   },
   data() {
     return {
@@ -157,6 +165,22 @@ export default {
     },
     toggleMenu() {
       this.showMenu = !this.showMenu;
+    },
+    clearBankDB() {
+      axios
+        .get("http://localhost:5000/bankdb/clear")
+        .then(() => {
+          this.$notifyVue(`Clear All Tables`, "top", "center", "success", 2000);
+        })
+        .catch(() => {
+          this.$notifyVue(
+            `Failed to Clear All Tables`,
+            "top",
+            "center",
+            "success",
+            2000
+          );
+        });
     }
   },
   computed: {
