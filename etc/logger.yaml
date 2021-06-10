@@ -1,3 +1,8 @@
-level: info
-filename: '../log/bankdb.log'
-fmt: '%(asctime)s  %(filename)s [line:%(lineno)d]: %(levelname)s  %(message)s'
+bankdb:
+  level: info
+  filename: '../log/bankdb.log'
+  fmt: '%(asctime)s [bankdb] %(filename)s [line:%(lineno)d]: %(levelname)s  %(message)s'
+web:
+  level: info
+  filename: '../log/web.log'
+  fmt: '%(asctime)s [web] %(filename)s [line:%(lineno)d]: %(levelname)s  %(message)s'

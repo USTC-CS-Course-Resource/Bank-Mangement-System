@@ -39,19 +39,19 @@ export default {
   data() {
     return {
       model: {
-        cus_id: "",
-        cus_name: "",
-        cus_phone: "",
-        cus_address: "",
-        con_name: "",
-        con_phone: "",
-        con_email: "",
-        con_relation: ""
+        cus_id: "350500200001011111",
+        cus_name: "小憨憨",
+        cus_phone: "123456",
+        cus_address: "憨憨家",
+        con_name: "小恐龙",
+        con_phone: "181111",
+        con_email: "666@hanhan.com",
+        con_relation: "情侣"
       },
       user: {
         fullName: "Mike Andrew",
-        title: "Ceo/Co-Founder",
-        description: `Do not be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...`
+        title: "Customer",
+        description: ``
       },
       key: "1"
     };

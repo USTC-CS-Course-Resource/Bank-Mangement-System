@@ -3,7 +3,7 @@ import pymysql
 from pymysql.connections import Connection
 from utils.logger import Logger
 
-logger = Logger.get_logger()
+logger = Logger.get_logger('bankdb')
 
 
 @contextmanager
@@ -55,6 +55,15 @@ def cursor_with_exception_handler(conn: Connection, tx=False):
         if tx:
             conn.rollback()
     except LoanBeingPayed as e:
+        logger.error(e)
+        if tx:
+            conn.rollback()
+    except pymysql.err.IntegrityError as e:
+        logger.error(e)
+        if tx:
+            conn.rollback()
+        yield 'fuck'
+    except Exception as e:
         logger.error(e)
         if tx:
             conn.rollback()

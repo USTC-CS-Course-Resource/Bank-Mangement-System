@@ -1,16 +1,11 @@
 import unittest
-import pymysql
-from pymysql.connections import Connection
 from pymysql.cursors import Cursor
 from bankdb import customer, account, branch, loan
-from utils.logger import *
-from utils.logger import Logger
 import bankdb
-import datetime
-from bankdb.err import *
+from utils.err import *
 
 unittest.TestLoader.sortTestMethodsUsing = None
-logger = Logger.get_logger()
+logger = Logger.get_logger('bankdb')
 
 
 class TestBankdb(unittest.TestCase):
@@ -29,7 +24,7 @@ class TestBankdb(unittest.TestCase):
     @staticmethod
     def prepare_customer(cursor: Cursor):
         # 0.0. clear
-        bankdb._clear_table(cursor,
+        bankdb.clear_table(cursor,
                             ['have_store_account', 'store_account', 'account', 'branch', 'contacts', 'customer'])
         # 0.1. insert branch and customer
         branch.insert_branch(cursor, bra_name='憨憨银行合肥分行', bra_city='合肥')
@@ -39,7 +34,7 @@ class TestBankdb(unittest.TestCase):
         with cursor_with_exception_handler(self.conn) as cursor:
             data = self.customer_with_contacts_data[0]
             # clear
-            bankdb._clear_table(cursor,
+            bankdb.clear_table(cursor,
                                 ['have_store_account', 'store_account', 'account', 'branch', 'contacts', 'customer'])
             # insert
             customer.insert_customer_with_contacts(cursor, **data)
@@ -75,7 +70,7 @@ class TestBankdb(unittest.TestCase):
             result = customer.get_customer_with_contacts(cursor, '350500200001011111')
             self.assertEqual(result, self.customer_with_contacts_data)
             # 3. clear used tables
-            bankdb._clear_table(cursor,
+            bankdb.clear_table(cursor,
                                 ['have_store_account', 'store_account', 'account', 'branch', 'contacts', 'customer'])
 
     def test_loan(self):
@@ -102,7 +97,7 @@ class TestBankdb(unittest.TestCase):
             logger.info('[LoanAlreadyDone] ok')
             self.assertIsInstance(exception, LoanAlreadyDone)
             # 5. clear
-            bankdb._clear_table(cursor,
+            bankdb.clear_table(cursor,
                                 ['pay_loan', 'loan_relation', 'loan', 'branch', 'contacts', 'customer'])
 
 

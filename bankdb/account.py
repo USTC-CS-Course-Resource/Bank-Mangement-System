@@ -1,11 +1,9 @@
-from bankdb.err import *
-import pymysql
-from pymysql.connections import Connection
+from utils.err import *
 from pymysql.cursors import Cursor
 from enum import Enum
 from utils.logger import Logger
 
-logger = Logger.get_logger()
+logger = Logger.get_logger('bankdb')
 
 
 class AccountType(Enum):

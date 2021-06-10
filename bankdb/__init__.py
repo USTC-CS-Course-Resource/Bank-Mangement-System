@@ -1,15 +1,18 @@
-import pymysql
-from pymysql.connections import Connection
 from pymysql.cursors import Cursor
-from bankdb.err import *
 from bankdb.checker import is_valid_arg
 from typing import Union, List
 from utils.logger import Logger
+from . import account
+from . import branch
+from . import checker
+from . import customer
+from utils import err
+from . import loan
 
-logger = Logger.get_logger()
+logger = Logger.get_logger('bankdb')
 
 
-def _clear_table(cursor: Cursor, names: Union[str, List[str]]):
+def clear_table(cursor: Cursor, names: Union[str, List[str]]):
     # TODO assert for table names
     if type(names) == str:
         names = [names]
@@ -17,3 +20,11 @@ def _clear_table(cursor: Cursor, names: Union[str, List[str]]):
     for name in names:
         cursor.execute(f'delete from {name};')
 
+
+__name__ = [account,
+            branch,
+            checker,
+            customer,
+            err,
+            loan,
+            clear_table]

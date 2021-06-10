@@ -2,7 +2,7 @@ from pymysql.connections import Connection
 from pymysql.cursors import Cursor
 from utils.logger import Logger
 
-logger = Logger.get_logger()
+logger = Logger.get_logger('bankdb')
 
 
 def insert_branch(cursor: Cursor, bra_name: str, bra_city: str):

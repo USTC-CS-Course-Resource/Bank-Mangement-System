@@ -5,16 +5,17 @@ import yaml
 
 
 class Logger:
-    logger = None
+    loggers = {}
     level = None
     fmt = None
     filename = None
 
     @staticmethod
-    def get_logger():
-        if not Logger.logger:
+    def get_logger(log_type='bankdb'):
+        assert log_type == 'bankdb' or log_type == 'web'
+        if log_type not in Logger.loggers:
             with open(osp.join(osp.dirname(__file__), '..', 'etc', 'logger.yaml'), 'r') as f:
-                config = yaml.load(f.read(), Loader=yaml.BaseLoader)
+                config = yaml.load(f.read(), Loader=yaml.BaseLoader)[log_type]
                 level_map = {'debug': logging.DEBUG,
                              'info': logging.INFO,
                              'warn': logging.WARN,
@@ -25,11 +26,12 @@ class Logger:
 
                 level = level_map[config['level'].lower()]
                 filename = osp.realpath(osp.join(osp.dirname(__file__), '..', 'etc', *osp.split(config['filename'])))
-                if not osp.exists(filename):
+                if not osp.exists(osp.dirname(filename)):
                     os.makedirs(osp.dirname(filename))
-                Logger.init_logger(level=level, fmt=config['fmt'], filename=filename)
-                Logger.logger.info(f'log into {filename}')
-        return Logger.logger
+                logger = Logger.init_logger(level=level, fmt=config['fmt'], filename=filename)
+                Logger.loggers[log_type] = logger
+                Logger.loggers[log_type].info(f'log into {filename}')
+        return Logger.loggers[log_type]
 
     @staticmethod
     def update(level=None, fmt: str = None, filename: str = None):
@@ -42,10 +44,7 @@ class Logger:
     @staticmethod
     def init_logger(level=logging.INFO,
                     fmt='%(asctime)s  %(filename)s : %(levelname)s  %(message)s',
-                    filename: str = None,
-                    overwrite=False):
-        if Logger.logger and not overwrite:
-            return Logger.logger
+                    filename: str = None):
         logger = logging.getLogger(filename)
         logger.setLevel(level)
 
@@ -65,5 +64,4 @@ class Logger:
             logger.addHandler(fh)
 
         logger.setLevel(level)
-        Logger.logger = logger
         return logger

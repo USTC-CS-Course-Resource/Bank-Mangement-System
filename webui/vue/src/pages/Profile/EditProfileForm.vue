@@ -88,7 +88,10 @@
 import { Card, BaseInput } from "@/components/index";
 
 import BaseButton from "@/components/BaseButton";
+// import NotificationTemplate from "../Notifications/NotificationTemplate";
 import axios from "axios";
+import { eventBus } from "./eventbus";
+// import NotificationTemplateVue from "../Notifications/NotificationTemplate.vue";
 
 export default {
   components: {
@@ -104,15 +107,57 @@ export default {
       }
     }
   },
+  data() {
+    return {
+      type: ["", "info", "success", "warning", "danger"],
+      notifications: {
+        topCenter: false
+      },
+      notificationContent: "fuck it"
+    };
+  },
   methods: {
     submit() {
-      console.log("submit begin");
-      console.log(this.model);
-      console.log("submit end");
-      let res = axios
-        .get("http://localhost:8080/#/user")
-        .catch(error => console.log(error));
-      console.log(res);
+      axios
+        .post("http://localhost:5000/customer/insert_customer", this.model)
+        .then(() => {
+          this.notifyVue(
+            `Inserted Customer: <b>${this.model.cus_name}</b>`,
+            "top",
+            "center",
+            "success",
+            2000
+          );
+        })
+        .catch(() => {
+          this.notifyVue(`Inserted Failed!!`, "top", "center", "danger", 2000);
+        });
+    },
+    notifyVue(message, verticalAlign, horizontalAlign, type, timeout) {
+      this.$notify({
+        message: message,
+        // component: NotificationTemplateVue,
+        icon: "tim-icons icon-bell-55",
+        horizontalAlign: horizontalAlign,
+        verticalAlign: verticalAlign,
+        type: type,
+        timeout: timeout
+      });
+    }
+  },
+  computed: {
+    description() {
+      return {
+        cus_name: this.model.cus_name,
+        cus_id: this.model.cus_id,
+        cus_phone: this.model.cus_phone
+      };
+    }
+  },
+  watch: {
+    description: function() {
+      console.log(`change! ${this.description}`);
+      eventBus.$emit("description", this.description);
     }
   }
 };

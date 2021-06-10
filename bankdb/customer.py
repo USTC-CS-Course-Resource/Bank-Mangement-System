@@ -1,11 +1,9 @@
-import pymysql
-from pymysql.connections import Connection
 from pymysql.cursors import Cursor
-from bankdb.err import *
+from utils.err import *
 from bankdb.checker import is_valid_arg
 from utils.logger import Logger
 
-logger = Logger.get_logger()
+logger = Logger.get_logger('bankdb')
 
 
 def insert_customer_with_contacts(
@@ -24,12 +22,14 @@ def insert_customer_with_contacts(
         insert into customer (cus_id, cus_name, cus_phone, cus_address)
         values (%(cus_id)s, %(cus_name)s, %(cus_phone)s, %(cus_address)s);
     """
+    logger.info(cursor.mogrify(query, kwargs))
     cursor.execute(query, kwargs)
     # insert corresponding contacts
     query = """
         insert into contacts (cus_id, con_name, con_phone, con_email, con_relation)
         values (%(cus_id)s, %(con_name)s, %(con_phone)s, %(con_email)s, %(con_relation)s);
     """
+    logger.info(cursor.mogrify(query, kwargs))
     cursor.execute(query, kwargs)
 
 

@@ -1,15 +1,12 @@
-import pymysql
-from pymysql.connections import Connection
 from pymysql.cursors import Cursor
-from bankdb.err import *
-from bankdb.checker import is_valid_arg
+from utils.err import *
 from utils.logger import Logger
 from typing import List
 import pandas as pd
 from enum import Enum
 
 
-logger = Logger.get_logger()
+logger = Logger.get_logger('bankdb')
 
 
 class LoanState(Enum):
