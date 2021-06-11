@@ -80,6 +80,7 @@ export default {
       axios
         .post("http://localhost:5000/account/search_account", this.model)
         .then(response => {
+          console.log(response);
           this.$notifyVue(`Search Succeed!`, "top", "center", "success", 2000);
           console.log(response.data);
           this.$emit("searchResultsTableHandle", {
@@ -87,8 +88,14 @@ export default {
             type: "updateResults"
           });
         })
-        .catch(() => {
-          this.$notifyVue(`Search Failed!`, "top", "center", "danger", 2000);
+        .catch(error => {
+          this.$notifyVue(
+            `Search Failed! (${error.response.data})`,
+            "top",
+            "center",
+            "danger",
+            2000
+          );
           this.$emit("searchResultsTableHandle", {
             data: [],
             type: "updateResults"

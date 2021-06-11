@@ -19,8 +19,8 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.errorhandler(Exception)
 def handle_bad_request(e):
-    logger.error(e)
-    return 'bad request!', 400
+    logger.error(e.__class__)
+    return e.__class__.__name__, 400
 
 
 @app.route('/customer/insert_customer', methods=['POST'])

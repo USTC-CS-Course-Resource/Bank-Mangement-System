@@ -124,8 +124,14 @@ export default {
             });
           }
         })
-        .catch(() => {
-          this.$notifyVue(`Removing Failed!!`, "top", "center", "danger", 2000);
+        .catch(error => {
+          this.$notifyVue(
+            `Removing Failed! (${error.response.data})`,
+            "top",
+            "center",
+            "danger",
+            2000
+          );
         });
     },
     showStoreAccountModal(item, index) {

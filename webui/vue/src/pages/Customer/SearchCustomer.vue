@@ -125,8 +125,14 @@ export default {
             type: "updateResults"
           });
         })
-        .catch(() => {
-          this.$notifyVue(`Search Failed!!`, "top", "center", "danger", 2000);
+        .catch(error => {
+          this.$notifyVue(
+            `Search Failed! (${error.response.data})`,
+            "top",
+            "center",
+            "danger",
+            2000
+          );
           this.$emit("searchResultsTableHandle", {
             data: [],
             type: "updateResults"

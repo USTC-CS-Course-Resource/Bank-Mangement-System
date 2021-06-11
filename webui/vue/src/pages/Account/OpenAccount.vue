@@ -135,8 +135,14 @@ export default {
             2000
           );
         })
-        .catch(() => {
-          this.$notifyVue(`Creating Failed!!`, "top", "center", "danger", 2000);
+        .catch(error => {
+          this.$notifyVue(
+            `Creating Failed! (${error.response.data})`,
+            "top",
+            "center",
+            "danger",
+            2000
+          );
         });
     }
   }

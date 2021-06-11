@@ -11,60 +11,60 @@ def cursor_with_exception_handler(conn: Connection, tx=False):
     try:
         yield conn.cursor()
     except StillHasAccount as e:
-        logger.error(e.args)
+        logger.error(e)
         if tx:
             conn.rollback()
     except StillHasLoan as e:
-        logger.error(e.args)
+        logger.error(e)
         if tx:
             conn.rollback()
     except ArgFormatException as e:
-        logger.error(e.args)
+        logger.error(e)
         if tx:
             conn.rollback()
     except CustomerNotFound as e:
-        logger.error(e.args)
+        logger.error(e)
         if tx:
             conn.rollback()
     except MultiAccount as e:
-        logger.error(e.args)
+        logger.error(e)
         if tx:
             conn.rollback()
     except UnknownAccountType as e:
-        logger.error(e.args)
+        logger.error(e)
         if tx:
             conn.rollback()
     except Unimplemented as e:
-        logger.error(e.args)
+        logger.error(e)
         if tx:
             conn.rollback()
     except pymysql.err.MySQLError as e:
-        logger.error(e.args)
+        logger.error(e)
         if tx:
             conn.rollback()
     except StillHasBalance as e:
-        logger.error(e.args)
+        logger.error(e)
         if tx:
             conn.rollback()
     except StillHasOverdraft as e:
-        logger.error(e.args)
+        logger.error(e)
         if tx:
             conn.rollback()
     except LoanAlreadyDone as e:
-        logger.error(e.args)
+        logger.error(e)
         if tx:
             conn.rollback()
     except LoanBeingPayed as e:
-        logger.error(e.args)
+        logger.error(e)
         if tx:
             conn.rollback()
     except pymysql.err.IntegrityError as e:
-        logger.error(e.args)
+        logger.error(e)
         if tx:
             conn.rollback()
         yield 'fuck'
     except Exception as e:
-        logger.error(e.args)
+        logger.error(e)
         if tx:
             conn.rollback()
     else:

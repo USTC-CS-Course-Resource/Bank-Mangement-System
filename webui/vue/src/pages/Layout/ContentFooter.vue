@@ -4,7 +4,7 @@
       <ul class="nav">
         <li class="nav-item">
           <a href="javascript:void(0)" class="nav-link">
-            Creative Tim
+            Han-Han Bank
           </a>
         </li>
         <li class="nav-item">
@@ -22,8 +22,7 @@
         &copy;
         {{ new Date().getFullYear() }} made with
         <i class="tim-icons icon-heart-2"></i> by
-        <a href="javascript:void(0)" target="_blank">Creative Tim</a> for a
-        better web.
+        <a href="javascript:void(0)" target="_blank">Hank.Z.H.Wang</a>
       </div>
     </div>
   </footer>

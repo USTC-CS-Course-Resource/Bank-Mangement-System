@@ -288,8 +288,14 @@ export default {
           console.log(this.tableData);
           this.modals.accountModal = false;
         })
-        .catch(() => {
-          this.$notifyVue(`Update Failed!`, "top", "center", "danger", 2000);
+        .catch(error => {
+          this.$notifyVue(
+            `Update Failed! (${error.response.data})`,
+            "top",
+            "center",
+            "danger",
+            2000
+          );
         });
     }
   }

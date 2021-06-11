@@ -179,9 +179,9 @@ export default {
         .then(() => {
           this.$notifyVue(`Clear All Tables`, "top", "center", "success", 2000);
         })
-        .catch(() => {
+        .catch(error => {
           this.$notifyVue(
-            `Failed to Clear All Tables`,
+            `Failed to Clear All Tables! (${error.response.data})`,
             "top",
             "center",
             "danger",
@@ -201,9 +201,9 @@ export default {
             2000
           );
         })
-        .catch(() => {
+        .catch(error => {
           this.$notifyVue(
-            `Failed to initialize`,
+            `Initialization Failed! (${error.response.data})`,
             "top",
             "center",
             "danger",
