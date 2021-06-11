@@ -80,7 +80,7 @@
     </div>
 
     <template slot="footer">
-      <base-button type="success" fill @click="submit">Search</base-button>
+      <base-button type="success" fill @click="search">Search</base-button>
     </template>
   </card>
 </template>
@@ -108,7 +108,7 @@ export default {
     return {};
   },
   methods: {
-    submit() {
+    search() {
       axios
         .post("http://localhost:5000/customer/search_customer", this.model)
         .then(response => {
@@ -120,11 +120,17 @@ export default {
             2000
           );
           console.log("emit from search");
-          this.$emit("returnResults", response.data);
+          this.$emit("searchResultsTableHandle", {
+            data: response.data,
+            type: "updateResults"
+          });
         })
         .catch(() => {
           this.$notifyVue(`Search Failed!!`, "top", "center", "danger", 2000);
-          this.$emit("returnResults", []);
+          this.$emit("searchResultsTableHandle", {
+            data: [],
+            type: "updateResults"
+          });
         });
     }
   }

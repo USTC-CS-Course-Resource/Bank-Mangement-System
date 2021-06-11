@@ -104,18 +104,12 @@ def update_customer_with_contacts(cursor: Cursor, cus_id: str, **kwargs):
     for k, v in cus_kwargs.items():
         if not is_valid_arg(k):
             raise ArgFormatException
-        query = f"""
-            update customer set {k} = %s
-            where cus_id = %s;
-        """
+        query = f"update customer set {k} = %s where cus_id = %s;"
         logger.debug(cursor.mogrify(query, (v, cus_id)))
         cursor.execute(query, (v, cus_id))
     for k, v in con_kwargs.items():
         if not is_valid_arg(k):
             raise ArgFormatException
-        query = f"""
-            update contacts set {k} = %s
-            where cus_id = %s;
-        """
+        query = f"update contacts set {k} = %s where cus_id = %s;"
         logger.debug(cursor.mogrify(query, (v, cus_id)))
         cursor.execute(query, (v, cus_id))

@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2021/6/5 23:29:27                            */
+/* Created on:     2021/6/11 12:19:06                           */
 /*==============================================================*/
 
 
@@ -39,7 +39,7 @@ drop table if exists store_account;
 /*==============================================================*/
 create table account
 (
-   acc_id               bigint not null auto_increment,
+   acc_id               char(16) not null,
    acc_balance          double not null,
    acc_type             int not null,
    acc_open_date        date not null,
@@ -63,7 +63,7 @@ create table branch
 /*==============================================================*/
 create table check_account
 (
-   acc_id               bigint not null,
+   acc_id               char(16) not null,
    che_overdraft        double not null,
    primary key (acc_id)
 );
@@ -123,7 +123,7 @@ create table have_check_account
 (
    cus_id               varchar(18) not null,
    bra_name             varchar(16) not null,
-   acc_id               bigint,
+   acc_id               char(16),
    che_last_visit_date  datetime,
    primary key (cus_id, bra_name)
 );
@@ -135,7 +135,7 @@ create table have_store_account
 (
    cus_id               varchar(18) not null,
    bra_name             varchar(16) not null,
-   acc_id               bigint,
+   acc_id               char(16),
    sto_last_visit_date  datetime,
    primary key (cus_id, bra_name)
 );
@@ -207,7 +207,7 @@ create table staff
 /*==============================================================*/
 create table store_account
 (
-   acc_id               bigint not null,
+   acc_id               char(16) not null,
    sto_interest_rate    double not null,
    sto_currency_type    varchar(16) not null,
    primary key (acc_id)

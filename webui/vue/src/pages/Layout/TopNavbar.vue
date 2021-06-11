@@ -32,6 +32,13 @@
       </button>
       <div class="collapse navbar-collapse show text-left" v-show="showMenu">
         <ul class="navbar-nav" :class="$rtl.isRTL ? 'mr-auto' : 'ml-auto'">
+          <!-- Initialize whole database -->
+          <li class="search-bar input-group" @click="initializeBankDB">
+            <button class="btn btn-link" id="initialize-button">
+              <i class="tim-icons icon-refresh-01"></i>
+              <span class="d-lg-none d-md-block">Initialize</span>
+            </button>
+          </li>
           <!-- Clear BankDB button -->
           <li class="search-bar input-group" @click="clearBankDB">
             <button class="btn btn-link" id="clear-button">
@@ -177,7 +184,29 @@ export default {
             `Failed to Clear All Tables`,
             "top",
             "center",
+            "danger",
+            2000
+          );
+        });
+    },
+    initializeBankDB() {
+      axios
+        .get("http://localhost:5000/bankdb/initialize")
+        .then(() => {
+          this.$notifyVue(
+            `Initialization succeed!`,
+            "top",
+            "center",
             "success",
+            2000
+          );
+        })
+        .catch(() => {
+          this.$notifyVue(
+            `Failed to initialize`,
+            "top",
+            "center",
+            "danger",
             2000
           );
         });

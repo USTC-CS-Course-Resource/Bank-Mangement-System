@@ -22,13 +22,22 @@
           <p>客户</p>
         </template>
       </sidebar-link>
-      <sidebar-link to="/user">
+      <!-- <sidebar-link to="/user">
         <i class="tim-icons icon-single-02"></i>
         <template v-if="!isRTL">
           <p>User</p>
         </template>
         <template v-else>
           <p>客户</p>
+        </template>
+      </sidebar-link> -->
+      <sidebar-link to="/account">
+        <i class="tim-icons icon-paper"></i>
+        <template v-if="!isRTL">
+          <p>Account</p>
+        </template>
+        <template v-else>
+          <p>账户</p>
         </template>
       </sidebar-link>
       <sidebar-link to="/icons">

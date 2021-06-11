@@ -56,10 +56,10 @@ class TestBankdb(unittest.TestCase):
             # 0. prepare the customer
             TestBankdb.prepare_customer(cursor)
             # 1. test open account
-            acc_id = account.open_account(cursor=cursor, acc_type=account.AccountType.STORE,
+            acc_id = account.open_account(cursor=cursor, acc_id="0000000000000000", acc_type=account.AccountType.STORE,
                                           cus_id='350500200001011111', bra_name='憨憨银行合肥分行',
                                           sto_interest_rate=0.02, sto_currency_type='CNY')
-            result = account.get_account_info(cursor, acc_id)
+            result = account.get_account_info(cursor, acc_id)[0]
             result.pop('sto_last_visit_date')
             result.pop('acc_open_date')
             self.assertEqual(result,

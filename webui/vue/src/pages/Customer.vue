@@ -2,8 +2,8 @@
   <div class="content">
     <div class="row"></div>
     <div class="col-md-12">
-      <a-tabs default-active-key="1">
-        <a-tab-pane key="1" tab="Insert">
+      <a-tabs default-active-key="SearchTab" v-model="activeKey">
+        <a-tab-pane key="InsertTab" tab="Insert">
           <div class="row">
             <div class="col-md-8">
               <insert-customer :model="model"> </insert-customer>
@@ -13,11 +13,11 @@
             </div>
           </div>
         </a-tab-pane>
-        <a-tab-pane key="2" tab="Search" force-render>
+        <a-tab-pane key="SearchTab" tab="Search" force-render>
           <div class="row">
             <div class="col-md-12">
               <search-customer
-                v-on:returnResults="returnResults"
+                v-on:searchResultsTableHandle="searchResultsTableHandle"
                 :model="model"
               >
               </search-customer>
@@ -31,7 +31,7 @@
                 </template>
                 <div class="table-responsive text-left">
                   <search-results-table
-                    v-on:returnResults="returnResults"
+                    v-on:searchResultsTableHandle="searchResultsTableHandle"
                     :data="table.data"
                     :columns="table.columns"
                     thead-classes="text-primary"
@@ -42,13 +42,10 @@
             </div>
           </div>
         </a-tab-pane>
-        <a-tab-pane key="3" tab="Edit" disabled>
+        <a-tab-pane key="EditTab" tab="Edit" disabled>
           <div class="row">
-            <div class="col-md-8">
-              <edit-customer :model="model"> </edit-customer>
-            </div>
-            <div class="col-md-4">
-              <customer-card :cus="cus" :model="model"></customer-card>
+            <div class="col-md-12">
+              <edit-customer :model="editCustomerModel"> </edit-customer>
             </div>
           </div>
         </a-tab-pane>
@@ -108,7 +105,9 @@ export default {
           return {};
         }
       },
-      tableData: []
+      tableData: [],
+      activeKey: "SearchTab",
+      editCustomerModel: {}
     };
   },
   computed: {
@@ -121,9 +120,14 @@ export default {
     }
   },
   methods: {
-    returnResults(results) {
-      this.tableData = results;
-      console.log(this.tableData);
+    searchResultsTableHandle(event) {
+      if (event.type == "updateResults") {
+        this.tableData = event.data;
+        console.log(this.tableData);
+      } else if (event.type == "updateCustomer") {
+        this.editCustomerModel = event.data;
+        this.activeKey = "EditTab";
+      }
     }
   }
 };

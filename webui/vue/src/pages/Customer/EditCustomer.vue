@@ -1,7 +1,7 @@
 <template>
   <card>
     <template slot="header">
-      <h5 class="title">Add/Edit Profile</h5>
+      <h5 class="title">Edit Profile</h5>
     </template>
     <div class="row">
       <div class="col-md-5 pr-md-1 text-left">
@@ -9,6 +9,9 @@
           label="Customer Id"
           placeholder="350581200001016666"
           v-model="model.cus_id"
+          type="number"
+          min="0"
+          disabled
         >
         </base-input>
       </div>

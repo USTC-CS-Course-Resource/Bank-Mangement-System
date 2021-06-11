@@ -21,10 +21,15 @@ def clear_table(cursor: Cursor, names: Union[str, List[str]]):
         cursor.execute(f'delete from {name};')
 
 
+def initialize(cursor: Cursor):
+    branch.insert_branch(cursor, bra_name='憨憨银行合肥分行', bra_city='合肥')
+
+
 __name__ = [account,
             branch,
             checker,
             customer,
             err,
             loan,
-            clear_table]
+            clear_table,
+            initialize]

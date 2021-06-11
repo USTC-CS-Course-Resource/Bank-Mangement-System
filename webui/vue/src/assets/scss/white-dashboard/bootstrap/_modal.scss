@@ -34,8 +34,11 @@
 
 // Shell div to position the modal with bottom padding
 .modal-dialog {
-  position: relative;
-  width: auto;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   margin: $modal-dialog-margin;
   // allow clicks to pass through for custom click handling to close modal
   pointer-events: none;
@@ -52,7 +55,7 @@
 
 .modal-dialog-centered {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   min-height: calc(100% - (#{$modal-dialog-margin} * 2));
 
   // Ensure `modal-dialog-centered` extends the full height of the view (IE10/11)

@@ -1,14 +1,14 @@
 import DashboardLayout from "@/pages/Layout/DashboardLayout.vue";
 
 import Dashboard from "@/pages/Dashboard.vue";
+import Customer from "@/pages/Customer.vue";
+import Account from "@/pages/Account.vue";
 import Icons from "@/pages/Icons.vue";
 import Maps from "@/pages/Maps.vue";
 import Notifications from "@/pages/Notifications.vue";
 import UserProfile from "@/pages/UserProfile.vue";
-import Customer from "@/pages/Customer.vue";
 import TableList from "@/pages/TableList.vue";
 import Typography from "@/pages/Typography.vue";
-// import UpgradeToPRO from "@/pages/UpgradeToPRO.vue";
 
 const routes = [
   {
@@ -25,6 +25,11 @@ const routes = [
         path: "customer",
         name: "Customer",
         component: Customer
+      },
+      {
+        path: "account",
+        name: "Account",
+        component: Account
       },
       {
         path: "icons",
