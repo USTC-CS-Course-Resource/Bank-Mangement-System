@@ -31,6 +31,15 @@
           <p>账户</p>
         </template>
       </sidebar-link>
+      <sidebar-link to="/loan">
+        <i class="tim-icons icon-coins"></i>
+        <template v-if="!isRTL">
+          <p>Loan</p>
+        </template>
+        <template v-else>
+          <p>贷款</p>
+        </template>
+      </sidebar-link>
       <sidebar-link to="/icons">
         <i class="tim-icons icon-atom"></i>
         <template v-if="!isRTL">

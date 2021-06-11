@@ -1,7 +1,7 @@
 from pymysql.cursors import Cursor
 from utils.err import *
 from utils.logger import Logger
-from typing import List
+from typing import List, Union
 import pandas as pd
 from enum import Enum
 
@@ -31,18 +31,43 @@ def insert_pay_loan(cursor: Cursor, loa_id: int, loa_pay_amount: float) -> int:
     return loa_pay_id
 
 
-def insert_loan_with_relations(cursor: Cursor, cus_ids: List[str], bra_name: str, loa_amount: float) -> int:
+def insert_loan_with_relations(cursor: Cursor, cus_ids: Union[str, List[str]], bra_name: str, loa_amount: float) -> int:
     loa_id = insert_loan(cursor, bra_name, loa_amount)
+    if type(cus_ids) == str:
+        cus_ids = [cus_ids]
     for cus_id in cus_ids:
         cursor.execute("insert into loan_relation (cus_id, loa_id) values(%s, %s)", (cus_id, loa_id))
     return loa_id
 
 
-def get_pay_load_records(cursor: Cursor, loa_id: int) -> pd.DataFrame:
+def search_loan(cursor: Cursor, loa_id: int = None, bra_name: str = None, cus_id: str = None, **kwargs):
+    if loa_id:
+        return get_loa_info(cursor, loa_id)
+    if not bra_name and not cus_id:
+        cursor.execute("select * from loan;")
+        return cursor.fetchall()
+    query = "select * from loan where "
+    tmp = []
+    if bra_name:
+        tmp.append(cursor.mogrify("bra_name = %s", bra_name))
+    if cus_id:
+        tmp.append(cursor.mogrify("loa_id in (select loa_id from loan_relation where cus_id = %s)", cus_id))
+    query += ' and '.join(tmp) + ';'
+    logger.info(query)
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+def get_loa_info(cursor: Cursor, loa_id: int):
+    cursor.execute("select * from loan where loa_id = %s;", (loa_id,))
+    return cursor.fetchall()
+
+
+def get_pay_loa_records(cursor: Cursor, loa_id: int) -> pd.DataFrame:
     cursor.execute("select loa_pay_id, loa_id, loa_pay_amount, loa_pay_date from pay_loan where loa_id = %s", (loa_id,))
     pay_loan_records = cursor.fetchall()
-    pay_loan_records = pd.DataFrame(pay_loan_records,
-                                    columns=('loa_pay_id', 'loa_id', 'loa_pay_amount', 'loa_pay_date'))
+    # pay_loan_records = pd.DataFrame(pay_loan_records,
+    #                                 columns=('loa_pay_id', 'loa_id', 'loa_pay_amount', 'loa_pay_date'))
     return pay_loan_records
 
 
