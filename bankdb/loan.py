@@ -24,6 +24,9 @@ def insert_loan(cursor: Cursor, bra_name: str, loa_amount: float) -> int:
 def insert_pay_loan(cursor: Cursor, loa_id: int, loa_pay_amount: float) -> int:
     if get_loan_state(cursor, loa_id) == LoanState.DONE:
         raise LoanAlreadyDone
+    payed = get_pay_amount(cursor, loa_id)
+    if payed + loa_pay_amount > get_loa_amount(cursor, loa_id):
+        raise PayTooMuch
     cursor.execute("insert into pay_loan (loa_id, loa_pay_amount, loa_pay_date) values (%s, %s, now())",
                    (loa_id, loa_pay_amount))
     cursor.execute("select last_insert_id() as id;")
@@ -76,10 +79,22 @@ def get_loa_amount(cursor: Cursor, loa_id: int) -> float:
     return cursor.fetchone().get('loa_amount')
 
 
+def get_pay_amount(cursor: Cursor, loa_id: int):
+    pay_loan_records = get_pay_loa_records(cursor, loa_id)
+    pay_loan_records = pd.DataFrame(pay_loan_records,
+                                    columns=('loa_pay_id', 'loa_id', 'loa_pay_amount', 'loa_pay_date'))
+    if len(pay_loan_records) == 0:
+        payed = 0
+    else:
+        payed = pay_loan_records.get('loa_pay_amount').sum()
+    logger.info(f'payed amount: {payed}')
+    return payed
+
+
 def get_loan_state(cursor: Cursor, loa_id: int):
-    pay_loan_records = get_pay_load_records(cursor, loa_id)
     loa_amount = get_loa_amount(cursor, loa_id)
-    if pay_loan_records.get('loa_pay_amount').sum() == loa_amount:
+    payed = get_pay_amount(cursor, loa_id)
+    if payed >= loa_amount:
         return LoanState.DONE
     else:
         return LoanState.PAYING

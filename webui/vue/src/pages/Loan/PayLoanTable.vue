@@ -16,27 +16,6 @@
               {{ itemValue(item, column) }}
             </td>
           </template>
-          <!-- operation buttons -->
-          <td class="td-actions text-right">
-            <!-- details button -->
-            <base-button
-              type="success"
-              size="sm"
-              icon
-              @click="showPayRecords(item)"
-            >
-              <i class="tim-icons icon-bullet-list-67"></i>
-            </base-button>
-            <!-- remove button -->
-            <base-button
-              type="danger"
-              size="sm"
-              icon
-              @click="removeLoan(item, index)"
-            >
-              <i class="tim-icons icon-simple-remove"></i>
-            </base-button>
-          </td>
         </slot>
       </tr>
     </tbody>
@@ -44,13 +23,9 @@
 </template>
 <script>
 import axios from "axios";
-import BaseButton from "@/components/BaseButton";
 
 export default {
   name: "search-results-table",
-  components: {
-    BaseButton
-  },
   data() {
     return {
       modals: {

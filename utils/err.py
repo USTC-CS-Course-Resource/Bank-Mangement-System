@@ -124,3 +124,7 @@ class DataNotFound(RuntimeError):
 
 class ImplicitAccType(RuntimeError):
     ...
+
+
+class PayTooMuch(RuntimeError):
+    ...

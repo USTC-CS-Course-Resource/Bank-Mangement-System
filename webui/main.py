@@ -174,6 +174,17 @@ def get_pay_loa_records():
     return jsonify(ret)
 
 
+@app.route('/loan/pay_loan', methods=['POST'])
+def pay_loan():
+    with create_conn() as conn:
+        data = request.get_json(silent=True)
+        logger.info(f'post args: {data}')
+        with conn.cursor() as cursor:
+            loan.insert_pay_loan(cursor, data.get('loa_id'), data.get('loa_pay_amount'))
+        conn.commit()
+    return "ok"
+
+
 @app.route('/loan/remove_loan', methods=['POST'])
 def remove_loan():
     with create_conn() as conn:

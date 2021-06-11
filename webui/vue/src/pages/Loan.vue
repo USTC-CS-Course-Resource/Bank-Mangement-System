@@ -78,30 +78,63 @@
             </div>
           </div>
         </a-tab-pane>
+        <a-tab-pane key="PayLoanTab" tab="Pay Loan" disabled>
+          <div class="row">
+            <div class="col-md-12">
+              <pay-loan
+                :model="payLoanModel"
+                v-on:searchResultsTableHandle="searchResultsTableHandle"
+              >
+              </pay-loan>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <card>
+                <template slot="header">
+                  <h4 class="card-title">Pay Loan Records</h4>
+                </template>
+                <div class="table-responsive text-left">
+                  <pay-loan-table
+                    v-on:searchResultsTableHandle="searchResultsTableHandle"
+                    :data="payLoanTableData"
+                    :columns="payLoanTableColumns"
+                    thead-classes="text-primary"
+                  >
+                  </pay-loan-table>
+                </div>
+              </card>
+            </div>
+          </div>
+        </a-tab-pane>
       </a-tabs>
     </div>
   </div>
 </template>
 <script>
 import axios from "axios";
-import { Card, BaseInput } from "@/components/index";
+import { Card } from "@/components/index";
 import BaseButton from "@/components/BaseButton";
 import Modal from "@/components/Modal";
 import InsertLoan from "./Loan/InsertLoan.vue";
 import SearchLoan from "./Loan/SearchLoan.vue";
+import PayLoan from "./Loan/PayLoan.vue";
 import SearchResultsTable from "./Loan/SearchResultsTable.vue";
+import PayLoanTable from "./Loan/PayLoanTable.vue";
 
 const tableColumns = ["loa_id", "bra_name", "loa_amount", "actions"];
+const payLoanTableColumns = ["loa_pay_id", "loa_pay_amount", "loa_pay_date"];
 
 export default {
   components: {
     Card,
-    BaseInput,
     BaseButton,
     Modal,
     InsertLoan,
     SearchLoan,
-    SearchResultsTable
+    PayLoan,
+    SearchResultsTable,
+    PayLoanTable
   },
   data() {
     return {
@@ -113,19 +146,13 @@ export default {
         cus_id: ["350500200001011111"],
         bra_name: "憨憨银行合肥分行"
       },
-      card: {
-        bra_name: "憨憨银行合肥分行",
-        title: "高级憨卡",
-        description: ``
-      },
-      search_results: {
-        type: Object,
-        default: () => {
-          return {};
-        }
+      payLoanModel: {
+        payLoanRecords: []
       },
       tableColumns: tableColumns,
       tableData: [],
+      payLoanTableColumns: payLoanTableColumns,
+      payLoanTableData: [],
       activeKey: "SearchTab",
       editLoanModel: {},
       modals: {
@@ -148,21 +175,19 @@ export default {
       if (event.type == "updateResults") {
         console.log(event.data);
         this.tableData = event.data;
-      } else if (event.type == "showStoreLoanModal") {
-        this.loanModalData = event.data;
-        console.log("showStoreLoanModal");
-        console.log(this.loanModalData);
-        this.modals.loanModal = true;
-      } else if (event.type == "showDetails") {
-        this.getDetails(event.data);
+      } else if (event.type == "showPayRecords") {
+        this.showPayRecords(event.data);
       }
     },
-    getDetails(item) {
+    showPayRecords(item) {
       axios
         .post("http://localhost:5000/loan/get_pay_loa_records", item)
         .then(response => {
-          console.log(response);
-          this.modals.loanModal = true;
+          this.payLoanModel = { payLoanRecords: response.data, ...item };
+          console.log("showPayRecords");
+          console.log(this.payLoanModel);
+          this.payLoanTableData = response.data;
+          this.activeKey = "PayLoanTab";
         })
         .catch(error => {
           this.$notifyVue(
