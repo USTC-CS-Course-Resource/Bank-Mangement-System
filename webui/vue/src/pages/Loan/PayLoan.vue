@@ -4,7 +4,7 @@
       <h5 class="title">Loan Information</h5>
     </template>
     <div class="row">
-      <div class="col-md-5 pr-md-1 text-left">
+      <div class="col-md-5 text-left">
         <base-input
           label="Loan ID"
           type="Number"
@@ -14,7 +14,7 @@
         >
         </base-input>
       </div>
-      <div class="col-md-5 px-md-1 text-left">
+      <div class="col-md-5 text-left">
         <base-input
           label="Branch Name"
           placeholder="憨憨银行合肥分行"
@@ -25,12 +25,22 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-5 pr-md-1 text-left">
+      <div class="col-md-5 text-left">
         <base-input
           label="Loan Amount"
-          type="Number"
-          placeholder="0"
-          v-model="model.loa_amount"
+          type="String"
+          placeholder="0.00"
+          v-model="format_loa_amount"
+          disabled
+        >
+        </base-input>
+      </div>
+      <div class="col-md-5 text-left">
+        <base-input
+          label="Loan Pay Amount Sum"
+          type="String"
+          placeholder="0.00"
+          v-model="format_loa_pay_amount_sum"
           disabled
         >
         </base-input>
@@ -38,23 +48,30 @@
     </div>
     <card>
       <div class="row">
-        <div class="col-md-5 pr-md-1 text-left">
+        <div class="col-md-5 text-left">
           <base-input
             label="Pay Loan Amount"
             type="Number"
-            placeholder="0"
+            placeholder="0.00"
             v-model="model.loa_pay_amount"
           >
           </base-input>
         </div>
-        <div class="col-md-5 pr-md-1 text-left">
-          <base-button type="success" fill @click="payLoan">Pay</base-button>
+        <div class="col-md-5 text-left">
+          <base-input
+            label="Formatted Pay Loan Amount"
+            type="String"
+            placeholder="0.00"
+            v-model="format_loa_pay_amount"
+            disabled
+          >
+          </base-input>
         </div>
       </div>
     </card>
-    <!-- <template slot="footer">
-      <base-button type="success" fill @click="search">Search</base-button>
-    </template> -->
+    <template slot="footer">
+      <base-button type="success" fill @click="payLoan">Pay</base-button>
+    </template>
   </card>
 </template>
 <script>
@@ -79,6 +96,17 @@ export default {
       default: function() {
         return {};
       }
+    }
+  },
+  computed: {
+    format_loa_pay_amount_sum: function() {
+      return this.$format_money(this.model.loa_pay_amount_sum);
+    },
+    format_loa_amount: function() {
+      return this.$format_money(this.model.loa_amount);
+    },
+    format_loa_pay_amount: function() {
+      return this.$format_money(this.model.loa_pay_amount);
     }
   },
   watch: {

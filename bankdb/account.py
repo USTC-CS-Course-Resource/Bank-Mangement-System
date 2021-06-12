@@ -233,8 +233,9 @@ def remove_have_account(cursor: Cursor, acc_id: str, cus_id: str, bra_name: str,
     else:
         raise UnknownAccountType
     acc_info = get_account_info(cursor, acc_type, acc_id)
+    logger.info(f'left relation: {acc_info}')
     if len(acc_info) == 0:
-        remove_account(cursor, acc_id, cascade=False)
+        remove_account(cursor, acc_id, cascade=True)
 
 
 

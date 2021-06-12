@@ -4,33 +4,47 @@
       <h5 class="title">Insert Loan</h5>
     </template>
     <div class="row">
-      <div class="col-md-5 px-md-1 text-left">
+      <div class="col-md-5 text-left">
         <base-input
           label="Branch Name"
           placeholder="憨憨银行合肥分行"
-          v-model="model.bra_name"
+          v-model="local_model.bra_name"
         >
         </base-input>
       </div>
-      <div class="col-md-5 pr-md-1 text-left">
+    </div>
+    <div class="row">
+      <div class="col-md-5 text-left">
         <base-input
           label="Loan Amount"
           type="Number"
           placeholder="0"
-          v-model="model.loa_amount"
+          v-model="local_model.loa_amount"
+          required
+        >
+        </base-input>
+      </div>
+      <div class="col-md-5 text-left">
+        <base-input
+          label="Formatted Loan Amount"
+          type="String"
+          placeholder="0.00"
+          v-model="format_loa_amount"
           required
         >
         </base-input>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-5 px-md-1 text-left">
-        <base-input
-          label="Customer ID"
-          placeholder="350500200001011111"
-          v-model="model.cus_ids[0]"
-        >
-        </base-input>
+      <div class="col-md-5 text-left">
+        <div class="grow-wrap">
+          <base-textarea
+            label="Customer ID"
+            placeholder="350500200001011111"
+            v-model="cus_ids_text"
+          >
+          </base-textarea>
+        </div>
       </div>
     </div>
     <template slot="footer">
@@ -39,7 +53,7 @@
   </card>
 </template>
 <script>
-import { Card, BaseInput } from "@/components/index";
+import { Card, BaseInput, BaseTextarea } from "@/components/index";
 
 import BaseButton from "@/components/BaseButton";
 import axios from "axios";
@@ -48,7 +62,8 @@ export default {
   components: {
     Card,
     BaseInput,
-    BaseButton
+    BaseButton,
+    BaseTextarea
   },
   props: {
     model: {
@@ -58,28 +73,42 @@ export default {
       }
     }
   },
-  computed: {
-    description() {
-      return {
-        cus_name: this.model.cus_id,
-        cus_id: this.model.cus_id,
-        cus_phone: this.model.cus_phone
-      };
+  data() {
+    return {
+      local_model: {
+        bra_name: "憨憨银行合肥分行",
+        loa_amount: 0,
+        cus_ids: ["350500200001011111"]
+      },
+      cus_ids_text: "350500200001011111"
+    };
+  },
+  watch: {
+    model: function() {
+      this.local_model = this.model;
     },
-    acc_type_int: function() {
-      if (this.accountType == "STORE") return 0;
-      else if (this.accountType == "CHECK") return 1;
-      else return -1;
+    cus_ids: function() {
+      this.local_model.cus_ids = this.cus_ids;
+    }
+  },
+  computed: {
+    format_loa_amount: function() {
+      return this.$format_money(this.local_model.loa_amount);
+    },
+    cus_ids: function() {
+      return this.cus_ids_text
+        .split("\n")
+        .map(e => e.replace(/^[\t\r\n ]*|[\t\r\n ]*$/g, ""));
     }
   },
   methods: {
     create() {
       axios
-        .post("http://localhost:5000/loan/insert_loan", this.model)
+        .post("http://localhost:5000/loan/insert_loan", this.local_model)
         .then(response => {
           console.log(response);
           this.$notifyVue(
-            `Create a loan(<b>id=${response.data}</b>) of <b>${this.model.loa_amount}</b> for <b>${this.model.cus_ids}</b>`,
+            `Create a loan(<b>id=${response.data}</b>) of <b>${this.local_model.loa_amount}</b> for <b>${this.local_model.cus_ids}</b>`,
             "top",
             "center",
             "success",

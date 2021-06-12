@@ -1,5 +1,6 @@
 import Card from "./Cards/Card.vue";
 import BaseInput from "./Inputs/BaseInput.vue";
+import BaseTextarea from "./Inputs/BaseTextarea.vue";
 import SidebarPlugin from "./SidebarPlugin/index";
 import BaseAlert from "./BaseAlert";
 import BaseButton from "./BaseButton";
@@ -12,9 +13,27 @@ import CloseButton from "./CloseButton";
 import DropDown from "./Dropdown.vue";
 import Notifications from "./NotificationPlugin/index";
 
-let components = {
+// let components = {
+//   Card,
+//   BaseInput,
+//   BaseTextarea,
+//   SidebarPlugin,
+//   BaseAlert,
+//   BaseButton,
+//   BaseCheckbox,
+//   BaseRadio,
+//   BaseTable,
+//   BaseNav,
+//   Modal,
+//   CloseButton,
+//   DropDown,
+//   Notifications
+// };
+
+export {
   Card,
   BaseInput,
+  BaseTextarea,
   SidebarPlugin,
   BaseAlert,
   BaseButton,
@@ -27,19 +46,3 @@ let components = {
   DropDown,
   Notifications
 };
-
-export{
-  Card,
-  BaseInput,
-  SidebarPlugin,
-  BaseAlert,
-  BaseButton,
-  BaseCheckbox,
-  BaseRadio,
-  BaseTable,
-  BaseNav,
-  Modal,
-  CloseButton,
-  DropDown,
-  Notifications
-}

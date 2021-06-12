@@ -169,9 +169,22 @@ def get_pay_loa_records():
         data = request.get_json(silent=True)
         logger.info(f'post args: {data}')
         with conn.cursor() as cursor:
-            ret = loan.get_pay_loa_records(cursor, data.get('loa_id'))
-        conn.commit()
+            records = loan.get_pay_loa_records(cursor, data.get('loa_id'))
+            loa_pay_amount_sum = loan.get_loa_pay_amount_sum(cursor, data.get('loa_id'))
+    ret = {'payLoanRecords': records, 'loa_pay_amount_sum': loa_pay_amount_sum}
+    logger.info(ret)
     return jsonify(ret)
+
+
+@app.route('/loan/get_customer_info', methods=['POST'])
+def get_customer_info():
+    with create_conn() as conn:
+        data = request.get_json(silent=True)
+        logger.info(f'post args: {data}')
+        with conn.cursor() as cursor:
+            cus_ids = loan.get_customer_info(cursor, data.get('loa_id'))
+    logger.info(cus_ids)
+    return jsonify(cus_ids)
 
 
 @app.route('/loan/pay_loan', methods=['POST'])

@@ -26,17 +26,6 @@ import axios from "axios";
 
 export default {
   name: "search-results-table",
-  data() {
-    return {
-      modals: {
-        checkAccountModal: false,
-        storeAccountModal: false,
-        modal1: false,
-        modal0: false,
-        modal3: false
-      }
-    };
-  },
   props: {
     tableClass: {
       type: String,
@@ -64,6 +53,10 @@ export default {
       return item[column.toLowerCase()] !== "undefined";
     },
     itemValue(item, column) {
+      column = column.toLowerCase();
+      if (column == "loa_pay_amount") {
+        return this.$format_money(item[column]);
+      }
       return item[column.toLowerCase()];
     },
     removeLoan(item, index) {

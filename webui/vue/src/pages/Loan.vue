@@ -1,44 +1,45 @@
 <template>
   <div class="content">
-    <!--------------------------- Loan Modal --------------------------->
+    <!--------------------------- Loan Customer Information Modal --------------------------->
     <div class="col-md-4">
-      <modal
-        :show.sync="modals.loanModal"
-        body-classes="p-0"
-        modal-classes="modal-dialog-centered modal-sm"
-      >
-        <card
-          type="secondary"
-          header-classes="bg-white pb-5"
-          body-classes="px-lg-5 py-lg-5"
-          class="border-0 mb-0"
-        >
-          <template>
-            <div class="text-center text-muted mb-4">
-              <small>Loan Pay Records</small>
-            </div>
-            <div class="table-responsive text-left">
-              <search-results-table
-                v-on:searchResultsTableHandle="searchResultsTableHandle"
-                :data="tableData"
-                :columns="tableColumns"
+      <modal :show.sync="modals.loanCustomerInfoModal">
+        <template slot="header">
+          <h5 class="modal-title">Loan Customer Information</h5>
+        </template>
+        <div>
+          <!-- use table -->
+          <!-- <div class="table-responsive text-left">
+              <loan-customer-info-modal-table
+                :data="loanCustomerInfoModalTableData"
+                :columns="loanCustomerInfoModalTableColumns"
                 thead-classes="text-primary"
               >
-              </search-results-table>
-            </div>
-            <div class="text-center">
-              <base-button
-                type="default"
-                class="my-4"
-                @click="modals.loanModal = false"
-                >OK</base-button
-              >
-            </div>
-          </template>
-        </card>
+              </loan-customer-info-modal-table>
+            </div> -->
+          <!-- simply disaplay -->
+          <div
+            v-for="(item, index) in loanCustomerInfoModalTableData"
+            :key="index"
+          >
+            <template
+              v-for="(column, index) in loanCustomerInfoModalTableColumns"
+            >
+              <p :key="index" v-if="hasValue(item, column)">
+                {{ itemValue(item, column) }}
+              </p>
+            </template>
+          </div>
+        </div>
+        <template slot="footer">
+          <base-button
+            type="secondary"
+            @click="modals.loanCustomerInfoModal = false"
+            >Close</base-button
+          >
+        </template>
       </modal>
     </div>
-    <!--------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------->
     <div class="col-md-12">
       <a-tabs default-active-key="InsertTab" v-model="activeKey">
         <a-tab-pane key="InsertTab" tab="Insert Loan">
@@ -120,10 +121,8 @@ import InsertLoan from "./Loan/InsertLoan.vue";
 import SearchLoan from "./Loan/SearchLoan.vue";
 import PayLoan from "./Loan/PayLoan.vue";
 import SearchResultsTable from "./Loan/SearchResultsTable.vue";
+// import LoanCustomerInfoModalTable from "./Loan/LoanCustomerInfoModalTable.vue";
 import PayLoanTable from "./Loan/PayLoanTable.vue";
-
-const tableColumns = ["loa_id", "bra_name", "loa_amount", "actions"];
-const payLoanTableColumns = ["loa_pay_id", "loa_pay_amount", "loa_pay_date"];
 
 export default {
   components: {
@@ -134,6 +133,7 @@ export default {
     SearchLoan,
     PayLoan,
     SearchResultsTable,
+    // LoanCustomerInfoModalTable,
     PayLoanTable
   },
   data() {
@@ -143,26 +143,28 @@ export default {
         bra_name: "憨憨银行合肥分行"
       },
       searchModel: {
-        cus_id: ["350500200001011111"],
+        cus_id: "350500200001011111",
         bra_name: "憨憨银行合肥分行"
       },
       payLoanModel: {
-        payLoanRecords: []
+        payLoanRecords: [],
+        loa_pay_amount_sum: 0
       },
-      tableColumns: tableColumns,
+      tableColumns: ["loa_id", "bra_name", "loa_amount", "actions"],
       tableData: [],
-      payLoanTableColumns: payLoanTableColumns,
+      payLoanTableColumns: ["loa_pay_id", "loa_pay_amount", "loa_pay_date"],
       payLoanTableData: [],
-      activeKey: "SearchTab",
-      editLoanModel: {},
+      loanCustomerInfoModalTableColumns: ["cus_id"],
+      loanCustomerInfoModalTableData: [],
       modals: {
-        loanModal: false
+        loanCustomerInfoModal: false
       },
       loanModalData: {
         acc_id: "xxxxxxxxxxxxxxxx",
         acc_balance: 0
       },
-      shouldReSearch: 0
+      shouldReSearch: 0,
+      activeKey: "SearchTab"
     };
   },
   computed: {
@@ -171,27 +173,59 @@ export default {
     }
   },
   methods: {
+    hasValue(item, column) {
+      return item[column.toLowerCase()] !== "undefined";
+    },
+    itemValue(item, column) {
+      column = column.toLowerCase();
+      if (column == "loa_amount") {
+        return this.$format_money(item[column]);
+      }
+      return item[column.toLowerCase()];
+    },
     searchResultsTableHandle(event) {
       if (event.type == "updateResults") {
         console.log(event.data);
         this.tableData = event.data;
       } else if (event.type == "showPayRecords") {
         this.showPayRecords(event.data);
+      } else if (event.type == "showCustomerInfo") {
+        this.showCustomerInfo(event.data);
       }
     },
     showPayRecords(item) {
       axios
         .post("http://localhost:5000/loan/get_pay_loa_records", item)
         .then(response => {
-          this.payLoanModel = { payLoanRecords: response.data, ...item };
+          let data = response.data;
+          this.payLoanModel = { ...data, ...item };
           console.log("showPayRecords");
           console.log(this.payLoanModel);
-          this.payLoanTableData = response.data;
+          this.payLoanTableData = response.data.payLoanRecords;
           this.activeKey = "PayLoanTab";
         })
         .catch(error => {
           this.$notifyVue(
             `Get Details Failed! (${error.response.data})`,
+            "top",
+            "center",
+            "danger",
+            2000
+          );
+        });
+    },
+    showCustomerInfo(item) {
+      axios
+        .post("http://localhost:5000/loan/get_customer_info", item)
+        .then(response => {
+          this.loanCustomerInfoModalTableData = response.data;
+          console.log("related customer info:");
+          console.log(this.loanCustomerInfoModalTableData);
+          this.modals.loanCustomerInfoModal = true;
+        })
+        .catch(error => {
+          this.$notifyVue(
+            `Get Customer Information Failed! (${error.response.data})`,
             "top",
             "center",
             "danger",

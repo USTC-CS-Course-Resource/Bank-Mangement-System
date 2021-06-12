@@ -16,36 +16,6 @@
               {{ itemValue(item, column) }}
             </td>
           </template>
-          <!-- operation buttons -->
-          <td class="td-actions text-right">
-            <!-- update balance button -->
-            <base-button
-              type="success"
-              size="sm"
-              icon
-              @click="showStoreAccountModal(item, index)"
-            >
-              <i class="tim-icons icon-pencil"></i>
-            </base-button>
-            <!-- edit button -->
-            <base-button
-              type="success"
-              size="sm"
-              icon
-              @click="editAccount(item)"
-            >
-              <i class="tim-icons icon-settings"></i>
-            </base-button>
-            <!-- remove button -->
-            <base-button
-              type="danger"
-              size="sm"
-              icon
-              @click="removeHaveAccount(item, index)"
-            >
-              <i class="tim-icons icon-simple-remove"></i>
-            </base-button>
-          </td>
         </slot>
       </tr>
     </tbody>
@@ -53,13 +23,9 @@
 </template>
 <script>
 import axios from "axios";
-import BaseButton from "@/components/BaseButton";
 
 export default {
   name: "search-results-table",
-  components: {
-    BaseButton
-  },
   data() {
     return {
       modals: {
@@ -99,34 +65,27 @@ export default {
     },
     itemValue(item, column) {
       column = column.toLowerCase();
-      if (["acc_balance", "che_overdraft"].indexOf(column) != -1) {
+      if (column == "loa_amount") {
         return this.$format_money(item[column]);
       }
       return item[column.toLowerCase()];
     },
-    removeHaveAccount(item, index) {
+    removeLoan(item, index) {
       axios
-        .post("http://localhost:5000/account/remove_have_account", item)
+        .post("http://localhost:5000/loan/remove_loan", item)
         .then(() => {
           this.$notifyVue(
-            `Remove Account: <b>${item.acc_id}</b>`,
+            `Remove Loan: <b>${item.loa_id}</b>`,
             "top",
             "center",
             "success",
             2000
           );
           this.data.splice(index, 1);
-          if (this.data[0].acc_type == "STORE") {
-            this.$emit("searchResultsTableHandle", {
-              data: { STORE: this.data },
-              type: "updateStoreResults"
-            });
-          } else if (this.data[0].acc_type == "CHECK") {
-            this.$emit("searchResultsTableHandle", {
-              data: { CHECK: this.data },
-              type: "updateCheckResults"
-            });
-          }
+          this.$emit("searchResultsTableHandle", {
+            data: this.data,
+            type: "updateResults"
+          });
         })
         .catch(error => {
           this.$notifyVue(
@@ -142,6 +101,18 @@ export default {
       this.$emit("searchResultsTableHandle", {
         type: "showStoreAccountModal",
         data: { ...item, index: index }
+      });
+    },
+    showPayRecords(item) {
+      this.$emit("searchResultsTableHandle", {
+        type: "showPayRecords",
+        data: item
+      });
+    },
+    showCustomerInfo(item) {
+      this.$emit("searchResultsTableHandle", {
+        type: "showCustomerInfo",
+        data: item
       });
     }
   }

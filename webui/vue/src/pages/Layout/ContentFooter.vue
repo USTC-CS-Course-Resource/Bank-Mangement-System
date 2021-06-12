@@ -3,18 +3,13 @@
     <div class="container-fluid">
       <ul class="nav">
         <li class="nav-item">
-          <a href="javascript:void(0)" class="nav-link">
+          <a href="https://rabbitwhite1.github.io" class="nav-link">
             Han-Han Bank
           </a>
         </li>
         <li class="nav-item">
-          <a href="javascript:void(0)" class="nav-link">
-            About Us
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="javascript:void(0)" class="nav-link">
-            Blog
+          <a href="https://rabbitwhite1.github.io" class="nav-link">
+            About Me
           </a>
         </li>
       </ul>
@@ -22,7 +17,9 @@
         &copy;
         {{ new Date().getFullYear() }} made with
         <i class="tim-icons icon-heart-2"></i> by
-        <a href="javascript:void(0)" target="_blank">Hank.Z.H.Wang</a>
+        <a href="https://rabbitwhite1.github.io" target="_blank"
+          >Hank.Z.H.Wang</a
+        >
       </div>
     </div>
   </footer>

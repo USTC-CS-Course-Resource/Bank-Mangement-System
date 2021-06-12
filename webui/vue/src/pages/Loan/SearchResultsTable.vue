@@ -18,6 +18,15 @@
           </template>
           <!-- operation buttons -->
           <td class="td-actions text-right">
+            <!-- customer information button -->
+            <base-button
+              type="success"
+              size="sm"
+              icon
+              @click="showCustomerInfo(item)"
+            >
+              <i class="tim-icons icon-single-02"></i>
+            </base-button>
             <!-- details button -->
             <base-button
               type="success"
@@ -51,17 +60,6 @@ export default {
   components: {
     BaseButton
   },
-  data() {
-    return {
-      modals: {
-        checkAccountModal: false,
-        storeAccountModal: false,
-        modal1: false,
-        modal0: false,
-        modal3: false
-      }
-    };
-  },
   props: {
     tableClass: {
       type: String,
@@ -89,6 +87,10 @@ export default {
       return item[column.toLowerCase()] !== "undefined";
     },
     itemValue(item, column) {
+      column = column.toLowerCase();
+      if (column == "loa_amount") {
+        return this.$format_money(item[column]);
+      }
       return item[column.toLowerCase()];
     },
     removeLoan(item, index) {
@@ -127,6 +129,12 @@ export default {
     showPayRecords(item) {
       this.$emit("searchResultsTableHandle", {
         type: "showPayRecords",
+        data: item
+      });
+    },
+    showCustomerInfo(item) {
+      this.$emit("searchResultsTableHandle", {
+        type: "showCustomerInfo",
         data: item
       });
     }

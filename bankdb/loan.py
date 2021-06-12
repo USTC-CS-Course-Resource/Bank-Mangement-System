@@ -24,8 +24,8 @@ def insert_loan(cursor: Cursor, bra_name: str, loa_amount: float) -> int:
 def insert_pay_loan(cursor: Cursor, loa_id: int, loa_pay_amount: float) -> int:
     if get_loan_state(cursor, loa_id) == LoanState.DONE:
         raise LoanAlreadyDone
-    payed = get_pay_amount(cursor, loa_id)
-    if payed + loa_pay_amount > get_loa_amount(cursor, loa_id):
+    loa_pay_amount_sum = get_loa_pay_amount_sum(cursor, loa_id)
+    if loa_pay_amount_sum + loa_pay_amount > get_loa_amount(cursor, loa_id):
         raise PayTooMuch
     cursor.execute("insert into pay_loan (loa_id, loa_pay_amount, loa_pay_date) values (%s, %s, now())",
                    (loa_id, loa_pay_amount))
@@ -49,6 +49,11 @@ def search_loan(cursor: Cursor, loa_id: int = None, bra_name: str = None, cus_id
     if not bra_name and not cus_id:
         cursor.execute("select * from loan;")
         return cursor.fetchall()
+    query = """
+        select loan.loa_id as loa_id, sum(loa_pay_amount) as loa_pay_amount_sum,
+        from loan, pay_loan 
+        where loan.loa_id = pay_loan.loa_id group by (loan.loa_id);
+    """
     query = "select * from loan where "
     tmp = []
     if bra_name:
@@ -79,25 +84,32 @@ def get_loa_amount(cursor: Cursor, loa_id: int) -> float:
     return cursor.fetchone().get('loa_amount')
 
 
-def get_pay_amount(cursor: Cursor, loa_id: int):
-    pay_loan_records = get_pay_loa_records(cursor, loa_id)
-    pay_loan_records = pd.DataFrame(pay_loan_records,
-                                    columns=('loa_pay_id', 'loa_id', 'loa_pay_amount', 'loa_pay_date'))
-    if len(pay_loan_records) == 0:
-        payed = 0
+def get_loa_pay_amount_sum(cursor: Cursor, loa_id: int):
+    query = """
+        select sum(loa_pay_amount) as loa_pay_amount_sum 
+        from loan, pay_loan where loan.loa_id = pay_loan.loa_id and loan.loa_id = %s group by (loan.loa_id);
+    """
+    cursor.execute(query, (loa_id,))
+    loa_pay_amount_sum = cursor.fetchone()
+    if loa_pay_amount_sum:
+        loa_pay_amount_sum = loa_pay_amount_sum.get('loa_pay_amount_sum')
     else:
-        payed = pay_loan_records.get('loa_pay_amount').sum()
-    logger.info(f'payed amount: {payed}')
-    return payed
+        loa_pay_amount_sum = 0
+    return loa_pay_amount_sum
 
 
 def get_loan_state(cursor: Cursor, loa_id: int):
     loa_amount = get_loa_amount(cursor, loa_id)
-    payed = get_pay_amount(cursor, loa_id)
-    if payed >= loa_amount:
+    loa_pay_amount_sum = get_loa_pay_amount_sum(cursor, loa_id)
+    if loa_pay_amount_sum >= loa_amount:
         return LoanState.DONE
     else:
         return LoanState.PAYING
+
+
+def get_customer_info(cursor: Cursor, loa_id: int):
+    cursor.execute("select cus_id from loan_relation where loa_id = %s", (loa_id,))
+    return cursor.fetchall()
 
 
 def remove_loan_with_relations(cursor: Cursor, loa_id: int):

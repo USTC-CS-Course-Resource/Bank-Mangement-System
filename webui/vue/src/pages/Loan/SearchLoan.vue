@@ -4,7 +4,7 @@
       <h5 class="title">Search Conditions</h5>
     </template>
     <div class="row">
-      <div class="col-md-5 px-md-1 text-left">
+      <div class="col-md-5 text-left">
         <base-input
           label="Branch Name"
           placeholder="憨憨银行合肥分行"
@@ -12,7 +12,7 @@
         >
         </base-input>
       </div>
-      <div class="col-md-5 pr-md-1 text-left">
+      <div class="col-md-5 text-left">
         <base-input
           label="Loan ID"
           type="Number"
@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-5 px-md-1 text-left">
+      <div class="col-md-5 text-left">
         <base-input
           label="Customer ID"
           placeholder="350500200001011111"
