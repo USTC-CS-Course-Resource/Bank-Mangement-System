@@ -11,6 +11,8 @@ from utils.err import *
 from utils import create_conn
 from webui import preprocess
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
+import pandas as pd
 
 logger = Logger.get_logger('web')
 
@@ -111,6 +113,36 @@ def search_account():
     print({'STORE': store_ret, 'CHECK': check_ret})
     logger.info({'STORE': store_ret, 'CHECK': check_ret})
     return jsonify({'STORE': store_ret, 'CHECK': check_ret})
+
+
+@app.route('/account/get_cus_count_summary', methods=['GET'])
+def get_cus_count_summary():
+    with create_conn() as conn:
+        with conn.cursor() as cursor:
+            ret = account.get_cus_count_summary(cursor)
+    return jsonify(ret)
+
+
+@app.route('/account/get_account_summary', methods=['GET'])
+def get_account_summary():
+    ret = pd.DataFrame(columns=['bra_name', 'date', 'balance', 'cus_count'])
+    with create_conn() as conn:
+        with conn.cursor() as cursor:
+            begin = sql_str2datetime('2020-07-01 00:00:00')
+            end = datetime.now()
+            timedelta = relativedelta(months=+1)
+            for i in range(12):
+                date = begin + timedelta * i
+                balance_summary = account.get_balance_summary(cursor, date)
+                balance_summary = pd.DataFrame(balance_summary, columns=['bra_name', 'balance'])
+                cus_count_summary = account.get_cus_count_summary(cursor, date)
+                cus_count_summary = pd.DataFrame(cus_count_summary, columns=['bra_name', 'cus_count'])
+                account_summary = balance_summary.merge(cus_count_summary, on='bra_name')
+                account_summary['date'] = date.strftime('%Y-%m-%d')
+                logger.info(f'account summary up to {date}:\n{account_summary}')
+                ret = pd.concat([ret, account_summary])
+    ret = ret.sort_values(by=['bra_name', 'date'])
+    return jsonify(ret.to_dict('records'))
 
 
 @app.route('/account/remove_have_account', methods=['POST'])

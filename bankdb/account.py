@@ -242,7 +242,7 @@ def remove_account(cursor: Cursor, acc_id: str, cus_id: str, date: Union[datetim
 def remove_have_account(cursor: Cursor, acc_id: str, cus_id: str, bra_name: str, date: Union[datetime, str], **_):
     if type(date) is datetime:
         date = date.strftime(sql_datetime_format)
-    update_account_log(cursor, acc_id=acc_id, cus_id=cus_id, log_type=0)
+    update_account_log(cursor, acc_id=acc_id, cus_id=cus_id, log_type=0, log_date=date)
     update_last_visit_time(cursor, acc_id, cus_id, date)
     acc_type = get_acc_type(cursor, acc_id)
     acc_balance = get_balance(cursor, acc_id)
@@ -292,11 +292,13 @@ def update_account_update_log(cursor: Cursor, acc_id: str, log_date: Union[datet
     logger.info(f'inserted account update log for {acc_id}')
 
 
-def update_account_log(cursor: Cursor, acc_id: str, cus_id: str, log_type: int):
+def update_account_log(cursor: Cursor, acc_id: str, cus_id: str, log_type: int, log_date: Union[datetime, str] = None):
+    if type(log_date) is datetime:
+        log_date = log_date.strftime(sql_datetime_format)
     data = get_account_info(cursor, acc_id=acc_id, cus_id=cus_id)
     data = data[0]
     data['log_type'] = log_type
-    data['log_date'] = data['acc_open_date']
+    data['log_date'] = log_date or data['acc_open_date']
     query = """
         insert into 
         account_log (bra_name, acc_id, cus_id, acc_type, log_type, log_date)
@@ -306,5 +308,40 @@ def update_account_log(cursor: Cursor, acc_id: str, cus_id: str, log_type: int):
     logger.info(f'inserted account log: {data["cus_id"]} has {acc_id}')
 
 
-def get_account_summary(cursor: Cursor):
-    raise Unimplemented
+def get_cus_count_summary(cursor: Cursor, date: Union[datetime, str] = None):
+    if not date:
+        date = datetime.now()
+    if type(date) is datetime:
+        date = date.strftime(sql_datetime_format)
+    query = """
+        select bra_name, count(*) as cus_count from account_log al
+        where al.acc_type = 0 and al.log_type = 1 and al.log_date < %(date)s and al.cus_id not in (
+              select distinct cus_id from account_log where acc_type = 0 and log_type = 0 and log_date < %(date)s
+           )
+        group by bra_name;
+    """
+    cursor.execute(query, {'date': date})
+    cus_count_summary = cursor.fetchall()
+    return cus_count_summary
+
+
+def get_balance_summary(cursor: Cursor, date: Union[datetime, str] = None):
+    if not date:
+        date = datetime.now()
+    if type(date) is datetime:
+        date = date.strftime(sql_datetime_format)
+    query = """
+        select bra_name, sum(acc_balance) balance from account_update_log aul, 
+           (
+              select acc_id, max(log_date) as log_date 
+              from account_update_log 
+              where log_date < %(log_date)s
+              group by acc_id
+           ) max_date
+        where aul.acc_type = 0 and aul.log_date = max_date.log_date and aul.acc_id = max_date.acc_id
+        group by bra_name;
+    """
+    logger.debug(cursor.mogrify(query, {'log_date': date}))
+    cursor.execute(query, {'log_date': date})
+    balance_summary = cursor.fetchall()
+    return balance_summary

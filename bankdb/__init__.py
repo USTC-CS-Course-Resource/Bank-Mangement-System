@@ -70,44 +70,44 @@ def initialize(cursor: Cursor):
     customer.insert_customer_with_contacts(cursor, cus_id='350500200001011114', cus_name='超级憨憨', cus_phone='123456',
                                            cus_address='超级憨憨家', con_name='超级珑珑', con_phone='181111',
                                            con_email='6663@hanhan.com', con_relation='情侣')
-    logger.info("It's 2020-06")
+    logger.info("It's 2020-07")
     account.open_account(cursor,
                          acc_id='0000000000000001', acc_type=account.AccountType.STORE,
                          cus_id='350500200001011111', bra_name='憨憨银行合肥分行', sto_interest_rate=0.06,
-                         sto_currency_type='CNY', date=datetime.strptime("2020-06-16 09:00:00", sql_datetime_format))
+                         sto_currency_type='CNY', date=datetime.strptime("2020-07-16 09:00:00", sql_datetime_format))
     account.update_account(cursor, acc_id='0000000000000001', cus_id='350500200001011111', acc_balance=66,
-                           date=sql_str2datetime("2020-06-20 09:00:00"))
-    logger.info("It's 2020-07")
+                           date=sql_str2datetime("2020-07-20 09:00:00"))
+    logger.info("It's 2020-08")
     account.open_account(cursor,
                          acc_id='0000000000000002', acc_type=account.AccountType.STORE,
                          cus_id='350500200001011112', bra_name='憨憨银行合肥分行', sto_interest_rate=0.06,
-                         sto_currency_type='CNY', date=sql_str2datetime("2020-07-22 09:00:00"))
+                         sto_currency_type='CNY', date=sql_str2datetime("2020-08-22 09:00:00"))
     account.update_account(cursor, acc_id='0000000000000002', cus_id='350500200001011112', acc_balance=6666,
-                           date=sql_str2datetime("2020-07-25 09:00:00"))
-    account.update_account(cursor, acc_id='0000000000000001', cus_id='350500200001011111', acc_balance=6,
-                           date=sql_str2datetime("2020-07-30 09:00:00"))
-    logger.info("It's 2020-08")
-    account.update_account(cursor, acc_id='0000000000000002', cus_id='350500200001011112', acc_balance=777,
                            date=sql_str2datetime("2020-08-25 09:00:00"))
-    account.update_account(cursor, acc_id='0000000000000001', cus_id='350500200001011111', acc_balance=75,
+    account.update_account(cursor, acc_id='0000000000000001', cus_id='350500200001011111', acc_balance=6,
                            date=sql_str2datetime("2020-08-30 09:00:00"))
     logger.info("It's 2020-09")
+    account.update_account(cursor, acc_id='0000000000000002', cus_id='350500200001011112', acc_balance=777,
+                           date=sql_str2datetime("2020-09-25 09:00:00"))
+    account.update_account(cursor, acc_id='0000000000000001', cus_id='350500200001011111', acc_balance=75,
+                           date=sql_str2datetime("2020-09-30 09:00:00"))
+    logger.info("It's 2020-10")
     account.open_account(cursor,
                          acc_id='0000000000000020', acc_type=account.AccountType.CHECK, cus_id='350500200001011112',
-                         bra_name='憨憨银行合肥分行', date=sql_str2datetime("2020-09-02 09:00:00"))
+                         bra_name='憨憨银行合肥分行', date=sql_str2datetime("2020-10-02 09:00:00"))
     account.update_account(cursor, acc_id='0000000000000020', cus_id='350500200001011112',
                            acc_balance=0, che_overdraft=66,
-                           date=sql_str2datetime("2020-09-15 09:00:00"))
-    logger.info("It's 2020-10")
-    account.update_account(cursor, acc_id='0000000000000002', cus_id='350500200001011112', acc_balance=66,
-                           date=sql_str2datetime("2020-10-25 09:00:00"))
-    account.update_account(cursor, acc_id='0000000000000001', cus_id='350500200001011111', acc_balance=6,
-                           date=sql_str2datetime("2020-10-30 09:00:00"))
+                           date=sql_str2datetime("2020-10-15 09:00:00"))
     logger.info("It's 2020-11")
-    account.update_account(cursor, acc_id='0000000000000002', cus_id='350500200001011112', acc_balance=66666,
+    account.update_account(cursor, acc_id='0000000000000002', cus_id='350500200001011112', acc_balance=66,
                            date=sql_str2datetime("2020-11-25 09:00:00"))
-    account.update_account(cursor, acc_id='0000000000000001', cus_id='350500200001011111', acc_balance=66666,
+    account.update_account(cursor, acc_id='0000000000000001', cus_id='350500200001011111', acc_balance=6,
                            date=sql_str2datetime("2020-11-30 09:00:00"))
+    logger.info("It's 2020-12")
+    account.update_account(cursor, acc_id='0000000000000002', cus_id='350500200001011112', acc_balance=6666,
+                           date=sql_str2datetime("2020-12-25 09:00:00"))
+    account.update_account(cursor, acc_id='0000000000000001', cus_id='350500200001011111', acc_balance=6666,
+                           date=sql_str2datetime("2020-12-30 09:00:00"))
     logger.info("It's 2021-01")
     account.open_account(cursor,
                          acc_id='0000000000000003', acc_type=account.AccountType.STORE,
@@ -118,7 +118,7 @@ def initialize(cursor: Cursor):
     account.update_account(cursor, acc_id='0000000000000001', cus_id='350500200001011111', acc_balance=6666,
                            date=sql_str2datetime("2021-01-30 09:00:00"))
     account.update_account(cursor, acc_id='0000000000000003', cus_id='350500200001011113', acc_balance=6666,
-                           date=sql_str2datetime("2020-01-26 09:00:00"))
+                           date=sql_str2datetime("2021-01-26 09:00:00"))
     logger.info("It's 2021-02")
     account.update_account(cursor, acc_id='0000000000000002', cus_id='350500200001011112', acc_balance=0,
                            date=sql_str2datetime("2021-02-25 09:00:00"))
@@ -128,9 +128,16 @@ def initialize(cursor: Cursor):
     account.open_account(cursor,
                          acc_id='0000000000000040', acc_type=account.AccountType.CHECK, cus_id='350500200001011114',
                          bra_name='憨憨银行泉州分行', date=sql_str2datetime("2021-03-02 09:00:00"))
+    account.open_account(cursor,
+                         acc_id='0000000000000004', acc_type=account.AccountType.STORE,
+                         cus_id='350500200001011114', bra_name='憨憨银行泉州分行', sto_interest_rate=0.06,
+                         sto_currency_type='CNY', date=sql_str2datetime("2021-03-05 09:00:00"))
     account.update_account(cursor, acc_id='0000000000000040', cus_id='350500200001011114',
                            acc_balance=77, che_overdraft=0,
-                           date=sql_str2datetime("2020-09-15 09:00:00"))
+                           date=sql_str2datetime("2021-04-15 09:00:00"))
+    account.update_account(cursor, acc_id='0000000000000004', cus_id='350500200001011114',
+                           acc_balance=666,
+                           date=sql_str2datetime("2021-04-15 09:00:00"))
 
 
 __name__ = [account,

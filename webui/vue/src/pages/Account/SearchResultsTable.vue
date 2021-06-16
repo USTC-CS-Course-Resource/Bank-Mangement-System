@@ -27,15 +27,6 @@
             >
               <i class="tim-icons icon-pencil"></i>
             </base-button>
-            <!-- edit button -->
-            <base-button
-              type="success"
-              size="sm"
-              icon
-              @click="editAccount(item)"
-            >
-              <i class="tim-icons icon-settings"></i>
-            </base-button>
             <!-- remove button -->
             <base-button
               type="danger"
