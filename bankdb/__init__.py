@@ -29,7 +29,8 @@ all_tables = ['have_check_account',
               'customer',
               'branch',
               'account_log',
-              'account_update_log']
+              'account_update_log',
+              'loan_log']
 
 
 def clear_table(cursor: Cursor, tables: Union[str, List[str]]):
@@ -50,12 +51,12 @@ def drop_tables(cursor: Cursor, tables: Union[str, List[str]]):
 
 
 def initialize(cursor: Cursor):
-    # drop_tables(cursor, all_tables)
-    # execute_sql(cursor, osp.join(osp.dirname(__file__), '..', 'design', 'account_log.sql'))
-    # logger.info(f'initialized account log tables')
-    # execute_sql(cursor, osp.join(osp.dirname(__file__), '..', 'design', 'powerdesigner-models', 'crebas.sql'))
-    # logger.info(f'initialized bankdb tables')
-    clear_table(cursor, all_tables)
+    drop_tables(cursor, all_tables)
+    execute_sql(cursor, osp.join(osp.dirname(__file__), '..', 'design', 'log.sql'))
+    logger.info(f'initialized account log tables')
+    execute_sql(cursor, osp.join(osp.dirname(__file__), '..', 'design', 'powerdesigner-models', 'crebas.sql'))
+    logger.info(f'initialized bankdb tables')
+    # clear_table(cursor, all_tables)
     branch.insert_branch(cursor, bra_name='憨憨银行合肥分行', bra_city='合肥')
     branch.insert_branch(cursor, bra_name='憨憨银行泉州分行', bra_city='泉州')
     customer.insert_customer_with_contacts(cursor, cus_id='350500200001011111', cus_name='小憨憨', cus_phone='123456',
@@ -78,6 +79,9 @@ def initialize(cursor: Cursor):
     account.update_account(cursor, acc_id='0000000000000001', cus_id='350500200001011111', acc_balance=66,
                            date=sql_str2datetime("2020-07-20 09:00:00"))
     logger.info("It's 2020-08")
+    loan.insert_loan_with_relations(cursor, cus_ids=['350500200001011111', '350500200001011112'],
+                                    bra_name='憨憨银行合肥分行', loa_amount=666,
+                                    date=sql_str2datetime("2020-08-03 09:00:00"))
     account.open_account(cursor,
                          acc_id='0000000000000002', acc_type=account.AccountType.STORE,
                          cus_id='350500200001011112', bra_name='憨憨银行合肥分行', sto_interest_rate=0.06,
@@ -86,11 +90,17 @@ def initialize(cursor: Cursor):
                            date=sql_str2datetime("2020-08-25 09:00:00"))
     account.update_account(cursor, acc_id='0000000000000001', cus_id='350500200001011111', acc_balance=6,
                            date=sql_str2datetime("2020-08-30 09:00:00"))
+    loan.insert_loan_with_relations(cursor, cus_ids=['350500200001011111'],
+                                    bra_name='憨憨银行合肥分行', loa_amount=333,
+                                    date=sql_str2datetime("2020-08-30 09:00:00"))
     logger.info("It's 2020-09")
     account.update_account(cursor, acc_id='0000000000000002', cus_id='350500200001011112', acc_balance=777,
                            date=sql_str2datetime("2020-09-25 09:00:00"))
     account.update_account(cursor, acc_id='0000000000000001', cus_id='350500200001011111', acc_balance=75,
                            date=sql_str2datetime("2020-09-30 09:00:00"))
+    loan.insert_loan_with_relations(cursor, cus_ids=['350500200001011112'],
+                                    bra_name='憨憨银行合肥分行', loa_amount=777,
+                                    date=sql_str2datetime("2020-09-30 09:00:00"))
     logger.info("It's 2020-10")
     account.open_account(cursor,
                          acc_id='0000000000000020', acc_type=account.AccountType.CHECK, cus_id='350500200001011112',
@@ -103,10 +113,13 @@ def initialize(cursor: Cursor):
                            date=sql_str2datetime("2020-11-25 09:00:00"))
     account.update_account(cursor, acc_id='0000000000000001', cus_id='350500200001011111', acc_balance=6,
                            date=sql_str2datetime("2020-11-30 09:00:00"))
+    loan.insert_loan_with_relations(cursor, cus_ids=['350500200001011113'],
+                                    bra_name='憨憨银行合肥分行', loa_amount=999,
+                                    date=sql_str2datetime("2020-11-30 09:00:00"))
     logger.info("It's 2020-12")
     account.update_account(cursor, acc_id='0000000000000002', cus_id='350500200001011112', acc_balance=6666,
                            date=sql_str2datetime("2020-12-25 09:00:00"))
-    account.update_account(cursor, acc_id='0000000000000001', cus_id='350500200001011111', acc_balance=6666,
+    account.update_account(cursor, acc_id='0000000000000001', cus_id='350500200001011111', acc_balance=3333,
                            date=sql_str2datetime("2020-12-30 09:00:00"))
     logger.info("It's 2021-01")
     account.open_account(cursor,
@@ -123,7 +136,10 @@ def initialize(cursor: Cursor):
     account.update_account(cursor, acc_id='0000000000000002', cus_id='350500200001011112', acc_balance=0,
                            date=sql_str2datetime("2021-02-25 09:00:00"))
     account.remove_have_account(cursor, cus_id='350500200001011112', acc_id='0000000000000002',
-                                bra_name='憨憨银行合肥分行', date=sql_str2datetime("2021-02-27 09:00:00"))
+                                bra_name='憨憨银行合肥分行', date=sql_str2datetime("2021-02-26 09:00:00"))
+    loan.insert_loan_with_relations(cursor, cus_ids=['350500200001011114', '350500200001011113'],
+                                    bra_name='憨憨银行合肥分行', loa_amount=555,
+                                    date=sql_str2datetime("2021-02-27 09:00:00"))
     logger.info("It's 2021-03")
     account.open_account(cursor,
                          acc_id='0000000000000040', acc_type=account.AccountType.CHECK, cus_id='350500200001011114',
@@ -132,12 +148,16 @@ def initialize(cursor: Cursor):
                          acc_id='0000000000000004', acc_type=account.AccountType.STORE,
                          cus_id='350500200001011114', bra_name='憨憨银行泉州分行', sto_interest_rate=0.06,
                          sto_currency_type='CNY', date=sql_str2datetime("2021-03-05 09:00:00"))
+    logger.info("It's 2021-04")
     account.update_account(cursor, acc_id='0000000000000040', cus_id='350500200001011114',
                            acc_balance=77, che_overdraft=0,
                            date=sql_str2datetime("2021-04-15 09:00:00"))
     account.update_account(cursor, acc_id='0000000000000004', cus_id='350500200001011114',
                            acc_balance=666,
                            date=sql_str2datetime("2021-04-15 09:00:00"))
+    loan.insert_loan_with_relations(cursor, cus_ids=['350500200001011111'],
+                                    bra_name='憨憨银行合肥分行', loa_amount=666,
+                                    date=sql_str2datetime("2021-04-27 09:00:00"))
 
 
 __name__ = [account,

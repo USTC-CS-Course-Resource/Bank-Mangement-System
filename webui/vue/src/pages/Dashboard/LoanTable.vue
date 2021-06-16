@@ -8,7 +8,6 @@
       </tr>
     </thead>
     <tbody :class="tbodyClasses">
-      <!-- <store-account-modal :modals="modals"> </store-account-modal> -->
       <tr v-for="(item, index) in data" :key="index">
         <slot :row="item">
           <template v-for="(column, index) in columns">

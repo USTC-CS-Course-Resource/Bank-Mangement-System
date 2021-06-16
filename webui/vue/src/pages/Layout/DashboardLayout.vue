@@ -49,7 +49,7 @@
           <p>图标</p>
         </template>
       </sidebar-link>
-      <sidebar-link to="/maps">
+      <!-- <sidebar-link to="/maps">
         <i class="tim-icons icon-pin"></i>
         <template v-if="!isRTL">
           <p>Maps</p>
@@ -57,8 +57,8 @@
         <template v-else>
           <p>地图</p>
         </template>
-      </sidebar-link>
-      <sidebar-link to="/notifications">
+      </sidebar-link> -->
+      <!-- <sidebar-link to="/notifications">
         <i class="tim-icons icon-bell-55"></i>
         <template v-if="!isRTL">
           <p>Notifications</p>
@@ -66,25 +66,7 @@
         <template v-else>
           <p>通知</p>
         </template>
-      </sidebar-link>
-      <!-- <sidebar-link to="/user">
-        <i class="tim-icons icon-single-02"></i>
-        <template v-if="!isRTL">
-          <p>Customer</p>
-        </template>
-        <template v-else>
-          <p>客户</p>
-        </template>
       </sidebar-link> -->
-      <sidebar-link to="/table">
-        <i class="tim-icons icon-puzzle-10"></i>
-        <template v-if="!isRTL">
-          <p>Table List</p>
-        </template>
-        <template v-else>
-          <p>表</p>
-        </template>
-      </sidebar-link>
       <sidebar-link to="/typography">
         <i class="tim-icons icon-align-center"></i>
         <template v-if="!isRTL">

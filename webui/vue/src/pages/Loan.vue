@@ -7,16 +7,6 @@
           <h5 class="modal-title">Loan Customer Information</h5>
         </template>
         <div>
-          <!-- use table -->
-          <!-- <div class="table-responsive text-left">
-              <loan-customer-info-modal-table
-                :data="loanCustomerInfoModalTableData"
-                :columns="loanCustomerInfoModalTableColumns"
-                thead-classes="text-primary"
-              >
-              </loan-customer-info-modal-table>
-            </div> -->
-          <!-- simply disaplay -->
           <div
             v-for="(item, index) in loanCustomerInfoModalTableData"
             :key="index"
@@ -54,7 +44,6 @@
             <div class="col-md-12">
               <search-loan
                 v-on:searchResultsTableHandle="searchResultsTableHandle"
-                :model="searchModel"
                 :shouldReSearch="shouldReSearch"
               >
               </search-loan>
@@ -140,10 +129,6 @@ export default {
     return {
       insertModel: {
         cus_ids: ["350500200001011111"],
-        bra_name: "憨憨银行合肥分行"
-      },
-      searchModel: {
-        cus_id: "350500200001011111",
         bra_name: "憨憨银行合肥分行"
       },
       payLoanModel: {

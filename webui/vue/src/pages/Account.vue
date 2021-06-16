@@ -113,7 +113,6 @@
             <div class="col-md-12">
               <search-account
                 v-on:searchResultsTableHandle="searchResultsTableHandle"
-                :model="searchModel"
                 :shouldReSearch="shouldReSearch"
               >
               </search-account>
@@ -213,9 +212,6 @@ export default {
         bra_name: "憨憨银行合肥分行",
         sto_interest_rate: 0.02,
         sto_currency_type: "CNY"
-      },
-      searchModel: {
-        acc_id: "0000000000000000"
       },
       card: {
         bra_name: "憨憨银行合肥分行",

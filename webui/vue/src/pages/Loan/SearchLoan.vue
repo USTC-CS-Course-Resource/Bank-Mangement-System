@@ -7,7 +7,7 @@
       <div class="col-md-5 text-left">
         <base-input
           label="Branch Name"
-          placeholder="憨憨银行合肥分行"
+          placeholder="Branch Name"
           v-model="model.bra_name"
         >
         </base-input>
@@ -16,7 +16,7 @@
         <base-input
           label="Loan ID"
           type="Number"
-          placeholder="0"
+          placeholder="Loan ID"
           v-model="model.loa_id"
           required
         >
@@ -27,7 +27,7 @@
       <div class="col-md-5 text-left">
         <base-input
           label="Customer ID"
-          placeholder="350500200001011111"
+          placeholder="Customer ID"
           v-model="model.cus_id"
         >
         </base-input>
@@ -54,13 +54,12 @@ export default {
     shouldReSearch: {
       type: Number,
       default: 0
-    },
-    model: {
-      type: Object,
-      default: function() {
-        return {};
-      }
     }
+  },
+  data() {
+    return {
+      model: {}
+    };
   },
   watch: {
     shouldReSearch: function() {

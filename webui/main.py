@@ -173,6 +173,7 @@ def update_account():
 def insert_loan():
     with create_conn() as conn:
         data = request.get_json(silent=True)
+        data['date'] = datetime.now()
         logger.info(f'post args: {data}')
         with conn.cursor() as cursor:
             loa_id = loan.insert_loan_with_relations(cursor, **data)
@@ -235,6 +236,15 @@ def remove_loan():
             loan.remove_loan_with_relations(cursor, data.get('loa_id'))
         conn.commit()
     return "ok"
+
+
+@app.route('/loan/get_loan_summary', methods=['GET'])
+def get_loan_summary():
+    # ret = pd.DataFrame(columns=['bra_name', 'date', 'balance', 'cus_count'])
+    with create_conn() as conn:
+        with conn.cursor() as cursor:
+            ret = loan.get_loan_summary(cursor)
+    return jsonify(ret)
 
 
 @app.route('/bankdb/clear', methods=['GET'])
