@@ -7,7 +7,7 @@
       <div class="col-md-5 pr-md-1 text-left">
         <base-input
           label="Customer Id"
-          placeholder="350581200001016666"
+          placeholder="Customer Id"
           v-model="model.cus_id"
         >
         </base-input>
@@ -15,65 +15,8 @@
       <div class="col-md-3 px-md-1 text-left">
         <base-input
           label="Customer Name"
-          placeholder="Jack"
+          placeholder="Customer Name"
           v-model="model.cus_name"
-        >
-        </base-input>
-      </div>
-      <div class="col-md-4 pl-md-1 text-left">
-        <base-input
-          label="Customer Phone"
-          placeholder="+86 188 8888 8888"
-          v-model="model.cus_phone"
-        >
-        </base-input>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12 text-left">
-        <base-input
-          label="Customer Address"
-          placeholder="USTC, Hefei, Anhui, China"
-          v-model="model.cus_address"
-        >
-        </base-input>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-4 text-left">
-        <base-input
-          label="Contacts Name"
-          placeholder="Jack"
-          v-model="model.con_name"
-        >
-        </base-input>
-      </div>
-      <div class="col-md-4 pl-md-1 text-left">
-        <base-input
-          label="Contacts Phone"
-          placeholder="+86 188 8888 8888"
-          v-model="model.con_phone"
-        >
-        </base-input>
-      </div>
-      <div class="col-md-4 pl-md-1 text-left">
-        <base-input
-          label="Contacts Email"
-          placeholder="+86 188 8888 8888"
-          v-model="model.con_email"
-        >
-        </base-input>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12 text-left">
-        <base-input
-          label="Relation between Customer and Contacts"
-          placeholder="couple"
-          v-model="model.con_relation"
         >
         </base-input>
       </div>
@@ -96,16 +39,13 @@ export default {
     BaseInput,
     BaseButton
   },
-  props: {
-    model: {
-      type: Object,
-      default: () => {
-        return {};
-      }
-    }
-  },
   data() {
-    return {};
+    return {
+      model: {
+        cus_id: "350500200001011111",
+        cus_name: "小憨憨"
+      }
+    };
   },
   methods: {
     search() {
@@ -113,25 +53,33 @@ export default {
         .post("http://localhost:5000/customer/search_customer", this.model)
         .then(response => {
           this.$notifyVue(
-            `Search Customer: <b>${this.model.cus_name}</b>`,
+            `Search Customer: <br />` +
+              `<b>cus_name</b>: ${this.model.cus_name}<br />` +
+              `<b>cus_id</b>: ${this.model.cus_id}<br />` +
+              `<b>#entities</b>: ${response.data.length}`,
             "top",
             "center",
             "success",
             2000
           );
           console.log("emit from search");
+          console.log(this.model);
           this.$emit("searchResultsTableHandle", {
             data: response.data,
             type: "updateResults"
           });
         })
         .catch(error => {
+          if (!error.response) {
+            this.$notify_connection_error(error);
+            return;
+          }
           this.$notifyVue(
             `Search Failed! (${error.response.data})`,
             "top",
             "center",
             "danger",
-            2000
+            4000
           );
           this.$emit("searchResultsTableHandle", {
             data: [],

@@ -68,6 +68,17 @@ Vue.prototype.$format_money = function(s) {
   return s;
 };
 
+Vue.prototype.$notify_connection_error = function(error) {
+  console.log(error);
+  this.$notifyVue(
+    `Connecting Failed, please Check Back-end Server! (net::ERR_CONNECTION_REFUSED)`,
+    "top",
+    "center",
+    "danger",
+    2000
+  );
+};
+
 new Vue({
   router,
   i18n,

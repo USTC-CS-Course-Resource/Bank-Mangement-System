@@ -15,7 +15,7 @@
         >
           <template>
             <div class="text-center text-muted mb-4">
-              <small>Update account</small>
+              <big>Update account</big>
             </div>
             <div class="row">
               <div class="col-md-6 pr-md-1 text-left">
@@ -31,7 +31,7 @@
                 <base-input
                   label="Type"
                   v-model="accountModalData.acc_type"
-                  placeholder="Account ID"
+                  placeholder="Account Type"
                   disabled
                 >
                 </base-input>
@@ -289,13 +289,21 @@ export default {
           this.modals.accountModal = false;
         })
         .catch(error => {
+          if (!error.response) {
+            this.$notify_connection_error(error);
+            return;
+          }
           this.$notifyVue(
             `Update Failed! (${error.response.data})`,
             "top",
             "center",
             "danger",
-            2000
+            4000
           );
+          if (!error.response) {
+            this.$notify_connection_error(error);
+            return;
+          }
         });
     }
   }

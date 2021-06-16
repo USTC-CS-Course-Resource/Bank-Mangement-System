@@ -4,6 +4,7 @@ from utils.logger import Logger
 from typing import List, Union
 import pandas as pd
 from enum import Enum
+from datetime import datetime
 
 
 logger = Logger.get_logger('bankdb')
@@ -21,14 +22,14 @@ def insert_loan(cursor: Cursor, bra_name: str, loa_amount: float) -> int:
     return loa_id
 
 
-def insert_pay_loan(cursor: Cursor, loa_id: int, loa_pay_amount: float) -> int:
+def insert_pay_loan(cursor: Cursor, loa_id: int, loa_pay_amount: float, date: datetime) -> int:
     if get_loan_state(cursor, loa_id) == LoanState.DONE:
         raise LoanAlreadyDone
     loa_pay_amount_sum = get_loa_pay_amount_sum(cursor, loa_id)
     if loa_pay_amount_sum + loa_pay_amount > get_loa_amount(cursor, loa_id):
         raise PayTooMuch
-    cursor.execute("insert into pay_loan (loa_id, loa_pay_amount, loa_pay_date) values (%s, %s, now())",
-                   (loa_id, loa_pay_amount))
+    cursor.execute("insert into pay_loan (loa_id, loa_pay_amount, loa_pay_date) values (%s, %s, %s)",
+                   (loa_id, loa_pay_amount, date))
     cursor.execute("select last_insert_id() as id;")
     loa_pay_id = cursor.fetchone().get('id')
     return loa_pay_id

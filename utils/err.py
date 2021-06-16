@@ -128,3 +128,11 @@ class ImplicitAccType(RuntimeError):
 
 class PayTooMuch(RuntimeError):
     ...
+
+
+class InformationNotEnough(RuntimeError):
+    ...
+
+
+class AccountNotExists(RuntimeError):
+    ...

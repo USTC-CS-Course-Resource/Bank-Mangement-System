@@ -60,17 +60,6 @@ export default {
   components: {
     BaseButton
   },
-  data() {
-    return {
-      modals: {
-        checkAccountModal: false,
-        storeAccountModal: false,
-        modal1: false,
-        modal0: false,
-        modal3: false
-      }
-    };
-  },
   props: {
     tableClass: {
       type: String,
@@ -105,6 +94,7 @@ export default {
       return item[column.toLowerCase()];
     },
     removeHaveAccount(item, index) {
+      let acc_type = this.data[0].acc_type;
       axios
         .post("http://localhost:5000/account/remove_have_account", item)
         .then(() => {
@@ -116,12 +106,12 @@ export default {
             2000
           );
           this.data.splice(index, 1);
-          if (this.data[0].acc_type == "STORE") {
+          if (acc_type == "STORE") {
             this.$emit("searchResultsTableHandle", {
               data: { STORE: this.data },
               type: "updateStoreResults"
             });
-          } else if (this.data[0].acc_type == "CHECK") {
+          } else if (acc_type == "CHECK") {
             this.$emit("searchResultsTableHandle", {
               data: { CHECK: this.data },
               type: "updateCheckResults"
@@ -129,12 +119,17 @@ export default {
           }
         })
         .catch(error => {
+          if (!error.response) {
+            console.log(error);
+            this.$notify_connection_error(error);
+            return;
+          }
           this.$notifyVue(
             `Removing Failed! (${error.response.data})`,
             "top",
             "center",
             "danger",
-            2000
+            4000
           );
         });
     },

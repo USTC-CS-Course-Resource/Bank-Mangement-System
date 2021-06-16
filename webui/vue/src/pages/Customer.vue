@@ -6,10 +6,10 @@
         <a-tab-pane key="InsertTab" tab="Insert">
           <div class="row">
             <div class="col-md-8">
-              <insert-customer :model="model"> </insert-customer>
+              <insert-customer :model="insertModel"> </insert-customer>
             </div>
             <div class="col-md-4">
-              <customer-card :cus="cus" :model="model"></customer-card>
+              <customer-card :cus="cus" :model="insertModel"></customer-card>
             </div>
           </div>
         </a-tab-pane>
@@ -18,7 +18,6 @@
             <div class="col-md-12">
               <search-customer
                 v-on:searchResultsTableHandle="searchResultsTableHandle"
-                :model="model"
               >
               </search-customer>
             </div>
@@ -84,12 +83,12 @@ export default {
   },
   data() {
     return {
-      model: {
-        cus_id: "350500200001011111",
-        cus_name: "小憨憨",
+      insertModel: {
+        cus_id: "350500200001011110",
+        cus_name: "小小憨憨",
         cus_phone: "123456",
         cus_address: "憨憨家",
-        con_name: "小恐龙",
+        con_name: "小小珑珑",
         con_phone: "181111",
         con_email: "666@hanhan.com",
         con_relation: "情侣"

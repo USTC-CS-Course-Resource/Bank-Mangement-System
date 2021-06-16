@@ -128,7 +128,7 @@ export default {
         .post("http://localhost:5000/account/open_account", data)
         .then(() => {
           this.$notifyVue(
-            `Create <b>${this.model.acc_type}</b> for <b>${data.cus_id}</b>`,
+            `Create <b>${this.accountType} ACCOUNT</b> for <b>${data.cus_id}</b>`,
             "top",
             "center",
             "success",
@@ -136,12 +136,16 @@ export default {
           );
         })
         .catch(error => {
+          if (!error.response) {
+            this.$notify_connection_error(error);
+            return;
+          }
           this.$notifyVue(
             `Creating Failed! (${error.response.data})`,
             "top",
             "center",
             "danger",
-            2000
+            4000
           );
         });
     }

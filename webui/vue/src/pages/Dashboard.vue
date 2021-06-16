@@ -1,5 +1,50 @@
 <template>
   <div class="content">
+    <div class="col-md-12">
+      <a-tabs default-active-key="LoanTab" v-model="activeKey">
+        <a-tab-pane key="AccountTab" tab="Account Dashboard" force-render>
+          TODO
+        </a-tab-pane>
+        <a-tab-pane key="LoanTab" tab="Loan Dashboard">
+          <div class="row">
+            <div class="col-md-12">
+              <card>
+                <template slot="header">
+                  <h5 class="title">Search Conditions</h5>
+                </template>
+                <div class="row">
+                  <div class="col-md-5 text-left">
+                    <base-input
+                      label="Branch Name"
+                      placeholder="憨憨银行合肥分行"
+                      v-model="bra_name"
+                    >
+                    </base-input>
+                  </div>
+                </div>
+              </card>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <card>
+                <template slot="header">
+                  <h4 class="card-title">Loan Table</h4>
+                </template>
+                <div class="table-responsive text-left">
+                  <loan-table
+                    :data="tableData"
+                    :columns="tableColumns"
+                    thead-classes="text-primary"
+                  >
+                  </loan-table>
+                </div>
+              </card>
+            </div>
+          </div>
+        </a-tab-pane>
+      </a-tabs>
+    </div>
     <div class="row">
       <div class="col-12">
         <card type="chart">
@@ -10,13 +55,13 @@
                   <h5 class="card-category">Total Shipments</h5>
                 </template>
                 <template v-else>
-                  <h5 class="card-category">مجموع الشحنات</h5>
+                  <h5 class="card-category">总货量</h5>
                 </template>
                 <template v-if="!isRTL">
                   <h2 class="card-title">Performance</h2>
                 </template>
                 <template v-else>
-                  <h2 class="card-title">أداء</h2>
+                  <h2 class="card-title">表现</h2>
                 </template>
               </div>
               <div class="col-sm-6">
@@ -143,7 +188,7 @@
               <h6 class="title d-inline">Tasks(5)</h6>
             </template>
             <template v-else>
-              <h6 class="title d-inline">الشحنات</h6>
+              <h6 class="title d-inline">任务(5)</h6>
             </template>
             <template v-if="!isRTL">
               <p class="card-category d-inline">Today</p>
@@ -169,40 +214,36 @@
           </div>
         </card>
       </div>
-      <div class="col-lg-6 col-md-12">
-        <card class="card">
-          <h4 slot="header" class="card-title">
-            <template v-if="!isRTL"> Simple Table </template>
-            <template v-else> جدول بسيط </template>
-          </h4>
-          <div class="table-responsive">
-            <user-table></user-table>
-          </div>
-        </card>
-      </div>
     </div>
   </div>
 </template>
 <script>
-import { Card } from "@/components/index";
+import { Card, BaseInput } from "@/components/index";
 
 import LineChart from "@/components/Charts/LineChart";
 import BarChart from "@/components/Charts/BarChart";
 import * as chartConfigs from "@/components/Charts/config";
 import TaskList from "./Dashboard/TaskList";
-import UserTable from "./Dashboard/UserTable";
 import config from "@/config";
+import LoanTable from "./Dashboard/LoanTable";
 
 export default {
   components: {
     Card,
+    BaseInput,
     LineChart,
     BarChart,
     TaskList,
-    UserTable
+    LoanTable
   },
   data() {
     return {
+      activeKey: "LoanTab",
+      bra_name: "憨憨银行合肥分行",
+      tableData: [],
+      tableColumns: [],
+      //
+      //
       bigLineChartCategories: ["Accounts", "Purchases", "Sessions"],
       bigLineChartCategoriesAr: ["حسابات", "المشتريات", "جلسات"],
       bigLineChart: {

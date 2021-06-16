@@ -205,12 +205,16 @@ export default {
           this.activeKey = "PayLoanTab";
         })
         .catch(error => {
+          if (!error.response) {
+            this.$notify_connection_error(error);
+            return;
+          }
           this.$notifyVue(
             `Get Details Failed! (${error.response.data})`,
             "top",
             "center",
             "danger",
-            2000
+            4000
           );
         });
     },
@@ -224,12 +228,16 @@ export default {
           this.modals.loanCustomerInfoModal = true;
         })
         .catch(error => {
+          if (!error.response) {
+            this.$notify_connection_error(error);
+            return;
+          }
           this.$notifyVue(
             `Get Customer Information Failed! (${error.response.data})`,
             "top",
             "center",
             "danger",
-            2000
+            4000
           );
         });
     }

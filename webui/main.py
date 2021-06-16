@@ -9,6 +9,8 @@ import threading
 from utils.logger import *
 from utils.err import *
 from utils import create_conn
+from webui import preprocess
+from datetime import datetime
 
 logger = Logger.get_logger('web')
 
@@ -38,9 +40,10 @@ def insert_customer():
 def search_customer():
     with create_conn() as conn:
         data = request.get_json(silent=True)
+        data = preprocess(data)
         logger.info(f'post args: {data}')
         with conn.cursor() as cursor:
-            ret = customer.get_customer_with_contacts(cursor, data['cus_id'])
+            ret = customer.get_customer_with_contacts(cursor, **data)
     return jsonify(ret)
 
 
@@ -70,7 +73,9 @@ def update_customer():
 def open_account():
     with create_conn() as conn:
         data = request.get_json(silent=True)
+        data = preprocess(data)
         logger.info(f'post args: {data}')
+        data['date'] = datetime.now()
         with conn.cursor() as cursor:
             account.open_account(cursor, **data)
         conn.commit()
@@ -108,21 +113,11 @@ def search_account():
     return jsonify({'STORE': store_ret, 'CHECK': check_ret})
 
 
-@app.route('/account/remove_account', methods=['POST'])
-def remove_account():
-    with create_conn() as conn:
-        data = request.get_json(silent=True)
-        logger.info(f'post args: {data}')
-        with conn.cursor() as cursor:
-            account.remove_account(cursor, data.get('acc_id'))
-        conn.commit()
-    return "ok"
-
-
 @app.route('/account/remove_have_account', methods=['POST'])
 def remove_have_account():
     with create_conn() as conn:
         data = request.get_json(silent=True)
+        data['date'] = datetime.now()
         logger.info(f'post args: {data}')
         with conn.cursor() as cursor:
             account.remove_have_account(cursor, **data)
@@ -134,6 +129,7 @@ def remove_have_account():
 def update_account():
     with create_conn() as conn:
         data = request.get_json(silent=True)
+        data['date'] = datetime.now()
         logger.info(f'post args: {data}')
         with conn.cursor() as cursor:
             account.update_account(cursor, **data)

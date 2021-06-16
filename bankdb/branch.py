@@ -11,4 +11,5 @@ def insert_branch(cursor: Cursor, bra_name: str, bra_city: str):
         values (%(bra_name)s, %(bra_city)s);
     """
     cursor.execute(query, {'bra_name': bra_name, 'bra_city': bra_city})
+    logger.info(f'insert branch {bra_name} in {bra_city}')
 

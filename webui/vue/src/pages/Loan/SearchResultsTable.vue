@@ -111,12 +111,16 @@ export default {
           });
         })
         .catch(error => {
+          if (!error.response) {
+            this.$notify_connection_error(error);
+            return;
+          }
           this.$notifyVue(
             `Removing Failed! (${error.response.data})`,
             "top",
             "center",
             "danger",
-            2000
+            4000
           );
         });
     },

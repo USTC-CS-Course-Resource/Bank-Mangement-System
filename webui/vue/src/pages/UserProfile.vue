@@ -43,7 +43,7 @@ export default {
         cus_name: "小憨憨",
         cus_phone: "123456",
         cus_address: "憨憨家",
-        con_name: "小恐龙",
+        con_name: "小珑珑",
         con_phone: "181111",
         con_email: "666@hanhan.com",
         con_relation: "情侣"

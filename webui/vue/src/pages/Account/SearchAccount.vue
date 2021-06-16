@@ -7,7 +7,7 @@
       <div class="col-md-4 pr-md-1 text-left">
         <base-input
           label="Account ID"
-          placeholder="0000000000000000"
+          placeholder="Account ID(16 digits)"
           v-model="model.acc_id"
         >
         </base-input>
@@ -15,7 +15,7 @@
       <div class="col-md-4 pr-md-1 text-left">
         <base-input
           label="Customer Id"
-          placeholder="350581200001016666"
+          placeholder="Customer Id(18 digits)"
           v-model="model.cus_id"
         >
         </base-input>
@@ -23,7 +23,7 @@
       <div class="col-md-4 px-md-1 text-left">
         <base-input
           label="Branch Name"
-          placeholder="憨憨银行合肥分行"
+          placeholder="Branch Name"
           v-model="model.bra_name"
         >
         </base-input>
@@ -84,12 +84,16 @@ export default {
           });
         })
         .catch(error => {
+          if (!error.response) {
+            this.$notify_connection_error(error);
+            return;
+          }
           this.$notifyVue(
             `Search Failed! (${error.response.data})`,
             "top",
             "center",
             "danger",
-            2000
+            4000
           );
           this.$emit("searchResultsTableHandle", {
             data: [],

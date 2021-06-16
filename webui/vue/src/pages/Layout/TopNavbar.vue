@@ -180,12 +180,16 @@ export default {
           this.$notifyVue(`Clear All Tables`, "top", "center", "success", 2000);
         })
         .catch(error => {
+          if (!error.response) {
+            this.$notify_connection_error(error);
+            return;
+          }
           this.$notifyVue(
             `Failed to Clear All Tables! (${error.response.data})`,
             "top",
             "center",
             "danger",
-            2000
+            4000
           );
         });
     },
@@ -202,12 +206,16 @@ export default {
           );
         })
         .catch(error => {
+          if (!error.response) {
+            this.$notify_connection_error(error);
+            return;
+          }
           this.$notifyVue(
             `Initialization Failed! (${error.response.data})`,
             "top",
             "center",
             "danger",
-            2000
+            4000
           );
         });
     }

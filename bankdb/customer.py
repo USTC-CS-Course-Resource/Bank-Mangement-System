@@ -22,14 +22,15 @@ def insert_customer_with_contacts(
         insert into customer (cus_id, cus_name, cus_phone, cus_address)
         values (%(cus_id)s, %(cus_name)s, %(cus_phone)s, %(cus_address)s);
     """
-    logger.info(cursor.mogrify(query, kwargs))
+    logger.debug(cursor.mogrify(query, kwargs))
     cursor.execute(query, kwargs)
     # insert corresponding contacts
     query = """
         insert into contacts (cus_id, con_name, con_phone, con_email, con_relation)
         values (%(cus_id)s, %(con_name)s, %(con_phone)s, %(con_email)s, %(con_relation)s);
     """
-    logger.info(cursor.mogrify(query, kwargs))
+    logger.debug(cursor.mogrify(query, kwargs))
+    logger.info(f'inserted customer {cus_name}({cus_id})')
     cursor.execute(query, kwargs)
 
 
@@ -66,28 +67,26 @@ def remove_customer_with_contacts(cursor: Cursor, cus_id: str):
     cursor.execute(query, {'cus_id': cus_id})
     query = "delete from customer where customer.cus_id = %(cus_id)s;"
     cursor.execute(query, {'cus_id': cus_id})
+    logger.info(f'removed customer {cus_id}')
 
 
-def get_customer_with_contacts(cursor: Cursor, cus_id: str = None):
+def get_customer_with_contacts(cursor: Cursor, cus_id: str = None, cus_name: str = None):
+    query = """
+        select cus.cus_id as cus_id, cus_name, cus_phone, cus_address, 
+        con_name, con_phone, con_email, con_relation
+        from customer as cus, contacts as con
+        where cus.cus_id = con.cus_id
+    """
+    conditions = []
     if cus_id:
-        query = """
-            select cus.cus_id as cus_id, cus_name, cus_phone, cus_address, 
-            con_name, con_phone, con_email, con_relation
-            from customer as cus, contacts as con
-            where con.cus_id = cus.cus_id and cus.cus_id = %s;
-        """
-        cursor.execute(query, cus_id)
+        conditions.append(cursor.mogrify("cus.cus_id = %s", cus_id))
+    if cus_name:
+        conditions.append(cursor.mogrify("cus_name = %s", cus_name))
+    if len(conditions) > 0:
+        cursor.execute(f'{query} and {" and ".join(conditions)} ;')
     else:
-        query = """
-            select cus.cus_id as cus_id, cus_name, cus_phone, cus_address, 
-            con_name, con_phone, con_email, con_relation
-            from customer as cus, contacts as con
-            where cus.cus_id = con.cus_id;
-        """
-        cursor.execute(query)
+        cursor.execute(f'{query};')
     result = cursor.fetchall()
-    if cus_id:
-        assert len(result) <= 1
     return result
 
 

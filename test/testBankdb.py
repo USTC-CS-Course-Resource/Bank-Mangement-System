@@ -17,7 +17,7 @@ class TestBankdb(unittest.TestCase):
                       cursorclass=pymysql.cursors.DictCursor)
     customer_with_contacts_data = [
         {'cus_id': '350500200001011111', 'cus_name': '小憨憨', 'cus_phone': '123456',
-         'cus_address': '憨憨家', 'con_name': '小恐龙', 'con_phone': '181111',
+         'cus_address': '憨憨家', 'con_name': '小珑珑', 'con_phone': '181111',
          'con_email': '666@hanhan.com', 'con_relation': '情侣'}
     ]
 
@@ -41,10 +41,10 @@ class TestBankdb(unittest.TestCase):
             result = customer.get_customer_with_contacts(cursor, '350500200001011111')
             self.assertEqual(result, [data])
             # update
-            customer.update_customer_with_contacts(cursor, cus_id='350500200001011111', cus_name='大憨憨', con_name='大恐龙')
+            customer.update_customer_with_contacts(cursor, cus_id='350500200001011111', cus_name='大憨憨', con_name='大珑珑')
             result = customer.get_customer_with_contacts(cursor, '350500200001011111')
             data['cus_name'] = '大憨憨'
-            data['con_name'] = '大恐龙'
+            data['con_name'] = '大珑珑'
             self.assertEqual(result, [data])
             # remove
             customer.remove_customer_with_contacts(cursor, '350500200001011111')

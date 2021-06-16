@@ -22,8 +22,6 @@
   </table>
 </template>
 <script>
-import axios from "axios";
-
 export default {
   props: {
     tableClass: {
@@ -57,49 +55,6 @@ export default {
         return this.$format_money(item[column]);
       }
       return item[column.toLowerCase()];
-    },
-    removeLoan(item, index) {
-      axios
-        .post("http://localhost:5000/loan/remove_loan", item)
-        .then(() => {
-          this.$notifyVue(
-            `Remove Loan: <b>${item.loa_id}</b>`,
-            "top",
-            "center",
-            "success",
-            2000
-          );
-          this.data.splice(index, 1);
-          this.$emit("searchResultsTableHandle", {
-            data: this.data,
-            type: "updateResults"
-          });
-        })
-        .catch(error => {
-          if (!error.response) {
-            this.$notify_connection_error(error);
-            return;
-          }
-          this.$notifyVue(
-            `Removing Failed! (${error.response.data})`,
-            "top",
-            "center",
-            "danger",
-            4000
-          );
-        });
-    },
-    showStoreAccountModal(item, index) {
-      this.$emit("searchResultsTableHandle", {
-        type: "showStoreAccountModal",
-        data: { ...item, index: index }
-      });
-    },
-    showPayRecords(item) {
-      this.$emit("searchResultsTableHandle", {
-        type: "showPayRecords",
-        data: item
-      });
     }
   }
 };
