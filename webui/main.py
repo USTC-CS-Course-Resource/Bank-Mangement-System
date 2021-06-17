@@ -277,14 +277,15 @@ def remove_loan():
 
 @app.route('/loan/get_loan_summary', methods=['POST'])
 def get_loan_summary():
-    # ret = pd.DataFrame(columns=['bra_name', 'date', 'balance', 'cus_count'])
     with create_conn() as conn:
         data = request.get_json(silent=True)
         jwt_decode(data['token'])
         data.pop('token')
         with conn.cursor() as cursor:
-            ret = loan.get_loan_summary(cursor)
-    return jsonify(ret)
+            ret_month = loan.get_loan_summary(cursor)
+            ret_season = loan.convert_loan_summary(ret_month, time_cycle='season')
+            ret_year = loan.convert_loan_summary(ret_month, time_cycle='year')
+    return jsonify({'month': ret_month, 'season': ret_season, 'year': ret_year})
 
 
 @app.route('/login', methods=['POST'])

@@ -144,6 +144,20 @@ export default {
       if (this.time_cycle == "month") {
         tmp = accountData;
       } else if (this.time_cycle == "season") {
+        const month2season = {
+          "01": "S1",
+          "02": "S1",
+          "03": "S1",
+          "04": "S2",
+          "05": "S2",
+          "06": "S2",
+          "07": "S3",
+          "08": "S3",
+          "09": "S3",
+          "10": "S4",
+          "11": "S4",
+          "12": "S4"
+        };
         tmp = accountData.filter(
           item => Number(item.date.substr(-5, 2)) % 3 == 0
         );
@@ -151,12 +165,21 @@ export default {
         if (lastOne.date && Number(lastOne.date.substr(-5, 2)) % 3 != 0) {
           tmp.push(lastOne);
         }
+        tmp = tmp.map(item => {
+          return {
+            ...item,
+            date: item.date.slice(0, 5) + month2season[item.date.substr(-5, 2)]
+          };
+        });
       } else if (this.time_cycle == "year") {
         tmp = accountData.filter(item => item.date.substr(-5, 2) == "01");
         let lastOne = accountData.slice(-1)[0];
         if (lastOne.date && lastOne.date.substr(-5, 2) != "01") {
           tmp.push(lastOne);
         }
+        tmp = tmp.map(item => {
+          return { ...item, date: item.date.slice(0, 4) };
+        });
       } else {
         tmp = accountData;
       }

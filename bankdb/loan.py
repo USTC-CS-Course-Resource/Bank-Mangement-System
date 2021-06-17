@@ -154,4 +154,57 @@ def get_loan_summary(cursor: Cursor):
     cus_count_summary['date'] = cus_count_summary['date'].map(lambda date: str(date)[:-3])
     summary = loan_summary.merge(cus_count_summary, on=['bra_name', 'date'])
     logger.info(f'loan summary:\n{summary}')
+    convert_loan_summary(summary.to_dict('records'))
     return summary.to_dict('records')
+
+
+def convert_loan_summary(summary: dict, time_cycle='month'):
+    if time_cycle == 'month':
+        return summary
+    elif time_cycle == 'season':
+        month2season = {
+            "01": "S1", "02": "S1", "03": "S1", "04": "S2", "05": "S2", "06": "S2",
+            "07": "S3", "08": "S3", "09": "S3", "10": "S4", "11": "S4", "12": "S4"
+        }
+        data_dict = {}
+        for item in summary:
+            bra_name = item['bra_name']
+            date_in_season = item['date'][:5] + month2season[item['date'][-2:]]
+            if bra_name not in data_dict:
+                data_dict[bra_name] = {}
+            if date_in_season in data_dict[bra_name]:
+                data_dict[bra_name][date_in_season]['loa_amount'] += item['loa_amount']
+                data_dict[bra_name][date_in_season]['cus_count'] += item['cus_count']
+            else:
+                data_dict[bra_name][date_in_season] = {'loa_amount': item['loa_amount'], 'cus_count': item['cus_count']}
+        data = []
+        for bra_name in data_dict.keys():
+            for date in data_dict[bra_name].keys():
+                data.append({'bra_name': bra_name,
+                             'date': date,
+                             'loa_amount': data_dict[bra_name][date]['loa_amount'],
+                             'cus_count': data_dict[bra_name][date]['cus_count']})
+        logger.info(f'converted to(season): {data}')
+        return data
+    elif time_cycle == 'year':
+        data_dict = {}
+        for item in summary:
+            bra_name = item['bra_name']
+            date_in_year = item['date'][:4]
+            if bra_name not in data_dict:
+                data_dict[bra_name] = {}
+            if date_in_year in data_dict[bra_name]:
+                data_dict[bra_name][date_in_year]['loa_amount'] += item['loa_amount']
+                data_dict[bra_name][date_in_year]['cus_count'] += item['cus_count']
+            else:
+                data_dict[bra_name][date_in_year] = {'loa_amount': item['loa_amount'], 'cus_count': item['cus_count']}
+        data = []
+        for bra_name in data_dict.keys():
+            for date in data_dict[bra_name].keys():
+                data.append({'bra_name': bra_name,
+                             'date': date,
+                             'loa_amount': data_dict[bra_name][date]['loa_amount'],
+                             'cus_count': data_dict[bra_name][date]['cus_count']})
+        logger.info(f'converted to(year): {data}')
+        return data
+

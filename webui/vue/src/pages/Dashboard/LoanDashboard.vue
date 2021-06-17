@@ -130,37 +130,31 @@ export default {
       bra_name: "憨憨银行合肥分行",
       loanTableColumns: ["bra_name", "date", "loa_amount", "cus_count"],
       time_cycle: "month",
-      rawLoanData: []
+      rawLoanDataInMonth: [],
+      rawLoanDataInSeason: [],
+      rawLoanDataInYear: []
     };
   },
   computed: {
     loanTableData() {
-      var tmp;
-      let loanData = this.rawLoanData.filter(
-        item => item.bra_name == this.bra_name
-      );
-      if (this.time_cycle == "month") {
-        tmp = loanData;
-      } else if (this.time_cycle == "season") {
-        tmp = loanData.filter(item => Number(item.date.substr(-5, 2)) % 3 == 0);
-        let lastOne = loanData.slice(-1)[0];
-        if (lastOne.date && Number(lastOne.date.substr(-5, 2)) % 3 != 0) {
-          tmp.push(lastOne);
-        }
+      if (this.time_cycle == "season") {
+        return this.rawLoanDataInSeason.filter(
+          item => item.bra_name == this.bra_name
+        );
       } else if (this.time_cycle == "year") {
-        tmp = loanData.filter(item => item.date.substr(-5, 2) == "01");
-        let lastOne = loanData.slice(-1)[0];
-        if (lastOne.date && lastOne.date.substr(-5, 2) != "01") {
-          tmp.push(lastOne);
-        }
+        return this.rawLoanDataInYear.filter(
+          item => item.bra_name == this.bra_name
+        );
       } else {
-        tmp = loanData;
+        return this.rawLoanDataInMonth.filter(
+          item => item.bra_name == this.bra_name
+        );
       }
-      console.log(tmp);
-      return tmp;
     },
     bra_names() {
-      return Array.from(new Set(this.rawLoanData.map(item => item.bra_name)));
+      return Array.from(
+        new Set(this.rawLoanDataInMonth.map(item => item.bra_name))
+      );
     },
     loaAmountBarChartLabels() {
       return this.loanTableData
@@ -252,7 +246,9 @@ export default {
         .then(response => {
           this.$notifyVue(`Got Loan Summary`, "top", "center", "success", 2000);
           console.log(response.data);
-          this.rawLoanData = response.data;
+          this.rawLoanDataInMonth = response.data.month;
+          this.rawLoanDataInSeason = response.data.season;
+          this.rawLoanDataInYear = response.data.year;
         })
         .catch(error => {
           if (!error.response) {
