@@ -23,53 +23,23 @@
           </a>
         </li>
 
-        <li class="button-container">
-          <a
-            href="https://www.creative-tim.com/product/vue-white-dashboard"
-            target="_blank"
-            class="btn btn-primary btn-block btn-round"
-            >Download Now</a
-          >
-          <a
-            href="https://demos.creative-tim.com/vue-white-dashboard/documentation"
-            target="_blank"
-            class="btn btn-default btn-block btn-round"
-          >
-            Documentation
-          </a>
-        </li>
-
-        <li class="header-title">Thank you for sharing!</li>
+        <li class="header-title">Welcome to my Github</li>
 
         <li class="button-container text-center">
           <social-sharing
-            url="https://www.creative-tim.com/product/vue-white-dashboard"
+            url="https://github.com/RabbitWhite1"
             inline-template
-            title="Vue White Dashboard - Free Bootstrap Admin Template for Vue.js"
-            hashtags="vuejs, dashboard, bootstrap"
-            twitter-user="creativetim"
+            title="Han-Han-Bank Management System"
           >
             <div>
-              <base-button
-                network="twitter"
-                class="btn btn-round btn-info sharrre"
-              >
-                <i class="fab fa-twitter"></i>
-              </base-button>
-              <base-button
-                network="facebook"
-                class="btn btn-round btn-info sharrre"
-              >
-                <i class="fab fa-facebook"></i>
-              </base-button>
+              <h3>
+                <a href="https://github.com/RabbitWhite1" target="_blank">
+                  <i class="fab fa-github"></i>
+                </a>
+              </h3>
             </div>
           </social-sharing>
         </li>
-
-        <!-- <li class="button-container d-flex justify-content-center">
-          <gh-btns-star slug="creativetimofficial/vue-white-dashboard" show-count></gh-btns-star>
-          <gh-btns-fork slug="creativetimofficial/vue-white-dashboard" show-count></gh-btns-fork>
-        </li> -->
       </ul>
     </div>
   </div>

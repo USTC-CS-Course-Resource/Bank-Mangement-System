@@ -2,10 +2,13 @@
   <div class="content">
     <card>
       <template slot="header">
-        <h3 class="title">Login Before Continuing</h3>
+        <h3 class="title">
+          <i class="tim-icons icon-badge text-primary"></i>
+          Login Before Continuing
+        </h3>
       </template>
       <div class="row">
-        <div class="col-md-5 pr-md-1 text-left">
+        <div class="col-md-3 pr-md-1 text-left">
           <base-input
             label="User Name"
             placeholder="User Name"
@@ -18,6 +21,7 @@
         <div class="col-md-3 pr-md-1 text-left">
           <base-input
             label="Password"
+            type="password"
             placeholder="Password"
             v-model="password"
           >
@@ -72,7 +76,7 @@ export default {
             this.$store.state.username = response.data.username;
             this.$store.state.token = response.data.token;
             this.$notifyVue(
-              `Welcome ${this.username}!`,
+              `Welcome <b>${this.username}!</b>`,
               "top",
               "center",
               "success",
@@ -108,6 +112,9 @@ export default {
           );
         });
     }
+  },
+  mounted() {
+    this.$notifyVue(`Please Login`, "top", "center", "info", 4000);
   }
 };
 </script>

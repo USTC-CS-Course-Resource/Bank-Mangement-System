@@ -7,36 +7,30 @@
       <div class="block block-four"></div>
       <a href="#">
         <img class="avatar" src="../../assets/img/anime3.png" alt="..." />
-        <h5 class="title">{{ model.cus_name }}</h5>
+        <h4 class="title">{{ model.cus_name }}</h4>
       </a>
       <p class="description">
         {{ cus.title }}
       </p>
     </div>
-    <p class="card-description">phone: {{ model.cus_phone }}</p>
-    <div slot="footer" class="button-container">
-      <base-button icon round class="btn-facebook">
-        <i class="fab fa-facebook"></i>
-      </base-button>
-      <base-button icon round class="btn-twitter">
-        <i class="fab fa-twitter"></i>
-      </base-button>
-      <base-button icon round class="btn-google">
-        <i class="fab fa-google-plus"></i>
-      </base-button>
-    </div>
+    <p class="card-description">
+      ID: {{ model.cus_id }} <br />
+      Phone: {{ model.cus_phone }} <br />
+      Address: {{ model.cus_address }} <br />
+      Contacts Name: {{ model.con_name }} <br />
+      Contacts Phone: {{ model.con_phone }} <br />
+      Contacts Email: {{ model.con_email }} <br />
+    </p>
   </card>
 </template>
 <script>
 import { Card } from "@/components/index";
 
-import BaseButton from "@/components/BaseButton";
 import { eventBus } from "./eventbus";
 
 export default {
   components: {
-    Card,
-    BaseButton
+    Card
   },
   props: {
     cus: {

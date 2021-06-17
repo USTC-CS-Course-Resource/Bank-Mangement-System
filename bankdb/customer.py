@@ -38,27 +38,29 @@ def remove_customer_with_contacts(cursor: Cursor, cus_id: str):
     # check if still has store account
     query = """
         select count(*) as count from have_store_account
-            where have_store_account.cus_id = cus_id;
+            where have_store_account.cus_id = %s;
     """
-    cursor.execute(query)
-    count = cursor.fetchone().get('count')
-    if count > 0:
+    cursor.execute(query, cus_id)
+    result = cursor.fetchone()
+    if result.get('count') > 0:
+        logger.info(f'still have_account: {result}')
         raise StillHasAccount
     # check if still has check account
     query = """
         select count(*) as count from have_check_account
-            where have_check_account.cus_id = cus_id;
+            where have_check_account.cus_id = %s;
     """
-    cursor.execute(query)
-    count = cursor.fetchone().get('count')
-    if count > 0:
+    cursor.execute(query, cus_id)
+    result = cursor.fetchone()
+    if result.get('count') > 0:
+        logger.info(f'still have_account: {result}')
         raise StillHasAccount
     # check if still has loan
     query = """
         select count(*) as count from loan_relation
-            where loan_relation.cus_id = cus_id;
+            where loan_relation.cus_id = %s;
     """
-    cursor.execute(query)
+    cursor.execute(query, cus_id)
     count = cursor.fetchone().get('count')
     if count > 0:
         raise StillHasLoan

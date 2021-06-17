@@ -111,13 +111,13 @@ export default {
   methods: {
     submit() {
       axios
-        .post("http://localhost:5000/customer/insert_customer", {
+        .post("http://localhost:5000/customer/update_customer", {
           ...this.model,
           token: this.$store.state.token
         })
         .then(() => {
           this.$notifyVue(
-            `Inserted Customer: <b>${this.model.cus_name}</b>`,
+            `Updated Customer: <b>${this.model.cus_name}</b>`,
             "top",
             "center",
             "success",
@@ -136,7 +136,7 @@ export default {
               this.$loginExpiredAction();
             } else {
               this.$notifyVue(
-                `Inserted Failed! (${error.response.data})`,
+                `Updating Failed! (${error.response.data})`,
                 "top",
                 "center",
                 "danger",

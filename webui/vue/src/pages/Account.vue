@@ -52,6 +52,7 @@
               <div class="col-md-6 pr-md-1 text-left">
                 <base-input
                   label="Overdraft"
+                  type="Number"
                   v-model="accountModalData.che_overdraft"
                   placeholder="overdraft"
                 >
@@ -208,7 +209,7 @@ export default {
     return {
       model: {
         acc_id: "0000000000000000",
-        cus_id: "350500200001011111",
+        cus_id: "350500200001011110",
         bra_name: "憨憨银行合肥分行",
         sto_interest_rate: 0.02,
         sto_currency_type: "CNY"
@@ -260,7 +261,7 @@ export default {
       } else if (event.type == "updateStoreResults") {
         this.storeTableData = event.data["STORE"];
       } else if (event.type == "updateCheckResults") {
-        this.storeTableData = event.data["CHECK"];
+        this.checkTableData = event.data["CHECK"];
       } else if (event.type == "showStoreAccountModal") {
         this.accountModalData = event.data;
         console.log("showStoreAccountModal");

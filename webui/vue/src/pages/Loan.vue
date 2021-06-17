@@ -110,7 +110,6 @@ import InsertLoan from "./Loan/InsertLoan.vue";
 import SearchLoan from "./Loan/SearchLoan.vue";
 import PayLoan from "./Loan/PayLoan.vue";
 import SearchResultsTable from "./Loan/SearchResultsTable.vue";
-// import LoanCustomerInfoModalTable from "./Loan/LoanCustomerInfoModalTable.vue";
 import PayLoanTable from "./Loan/PayLoanTable.vue";
 
 export default {
@@ -122,7 +121,6 @@ export default {
     SearchLoan,
     PayLoan,
     SearchResultsTable,
-    // LoanCustomerInfoModalTable,
     PayLoanTable
   },
   data() {
@@ -185,8 +183,7 @@ export default {
           token: this.$store.state.token
         })
         .then(response => {
-          let data = response.data;
-          this.payLoanModel = { ...data, ...item };
+          this.payLoanModel = { ...item, ...response.data };
           console.log("showPayRecords");
           console.log(this.payLoanModel);
           this.payLoanTableData = response.data.payLoanRecords;

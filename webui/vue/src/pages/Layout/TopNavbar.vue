@@ -32,22 +32,22 @@
       </button>
       <div class="collapse navbar-collapse show text-left" v-show="showMenu">
         <ul class="navbar-nav" :class="$rtl.isRTL ? 'mr-auto' : 'ml-auto'">
-          <!-- Initialize whole database -->
+          <!------------------------------------ Initialize whole database ------------------------------------>
           <li class="search-bar input-group" @click="initializeBankDB">
             <button class="btn btn-link" id="initialize-button">
               <i class="tim-icons icon-refresh-01"></i>
               <span class="d-lg-none d-md-block">Initialize</span>
             </button>
           </li>
-          <!-- Clear BankDB button -->
+          <!------------------------------------ Clear BankDB button ------------------------------------>
           <li class="search-bar input-group" @click="clearBankDB">
             <button class="btn btn-link" id="clear-button">
               <i class="tim-icons icon-simple-remove"></i>
               <span class="d-lg-none d-md-block">Clear</span>
             </button>
           </li>
-          <!-- Search button -->
-          <li class="search-bar input-group" @click="searchModalVisible = true">
+          <!------------------------------------ Search button ------------------------------------>
+          <!-- <li class="search-bar input-group" @click="searchModalVisible = true">
             <button
               class="btn btn-link"
               id="search-button"
@@ -73,9 +73,9 @@
               id="inlineFormInputGroup"
               placeholder="SEARCH"
             />
-          </modal>
-          <!-- Notification -->
-          <drop-down>
+          </modal> -->
+          <!------------------------------------ Notification ------------------------------------>
+          <!-- <drop-down>
             <a
               href="javascript:void(0)"
               data-toggle="dropdown"
@@ -87,32 +87,15 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-right dropdown-navbar">
               <li class="nav-link">
-                <a href="#" class="nav-item dropdown-item"
-                  >Mike John responded to your email</a
-                >
+                <a href="#" class="nav-item dropdown-item">notification 1</a>
               </li>
               <li class="nav-link">
                 <a href="javascript:void(0)" class="nav-item dropdown-item"
-                  >You have 5 more tasks</a
-                >
-              </li>
-              <li class="nav-link">
-                <a href="javascript:void(0)" class="nav-item dropdown-item"
-                  >Your friend Michael is in town</a
-                >
-              </li>
-              <li class="nav-link">
-                <a href="javascript:void(0)" class="nav-item dropdown-item"
-                  >Another notification</a
-                >
-              </li>
-              <li class="nav-link">
-                <a href="javascript:void(0)" class="nav-item dropdown-item"
-                  >Another one</a
+                  >notification 2</a
                 >
               </li>
             </ul>
-          </drop-down>
+          </drop-down> -->
           <!-- User -->
           <drop-down>
             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
@@ -123,7 +106,7 @@
               <p class="d-lg-none">Log out</p>
             </a>
             <ul class="dropdown-menu dropdown-navbar">
-              <li class="nav-link">
+              <!-- <li class="nav-link">
                 <a href="javascript:void(0)" class="nav-item dropdown-item"
                   >Profile</a
                 >
@@ -133,9 +116,9 @@
                   >Settings</a
                 >
               </li>
-              <li class="dropdown-divider"></li>
+              <li class="dropdown-divider"></li> -->
               <li class="nav-link">
-                <a href="javascript:void(0)" class="nav-item dropdown-item"
+                <a href="/login" class="nav-item dropdown-item" @click="logout"
                   >Log out</a
                 >
               </li>
@@ -148,15 +131,15 @@
 </template>
 <script>
 import DropDown from "@/components/Dropdown.vue";
-import Modal from "@/components/Modal.vue";
+// import Modal from "@/components/Modal.vue";
 import axios from "axios";
 
 // import { SidebarPlugin } from "@/components/index";
 
 export default {
   components: {
-    DropDown,
-    Modal
+    DropDown
+    // Modal
     // SidebarPlugin
   },
   data() {
@@ -172,6 +155,10 @@ export default {
     },
     toggleMenu() {
       this.showMenu = !this.showMenu;
+    },
+    logout() {
+      this.$store.state.username = null;
+      this.$store.state.token = null;
     },
     clearBankDB() {
       axios

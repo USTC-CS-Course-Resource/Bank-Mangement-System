@@ -3,12 +3,20 @@
     <div class="container-fluid">
       <ul class="nav">
         <li class="nav-item">
-          <a href="https://rabbitwhite1.github.io" class="nav-link">
+          <a
+            href="https://rabbitwhite1.github.io"
+            target="_blank"
+            class="nav-link"
+          >
             Han-Han Bank
           </a>
         </li>
         <li class="nav-item">
-          <a href="https://rabbitwhite1.github.io" class="nav-link">
+          <a
+            href="https://rabbitwhite1.github.io"
+            target="_blank"
+            class="nav-link"
+          >
             About Me
           </a>
         </li>

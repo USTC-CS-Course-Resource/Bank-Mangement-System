@@ -18,6 +18,15 @@
           </template>
           <!-- operation buttons -->
           <td class="td-actions text-right">
+            <!-- details button -->
+            <base-button
+              type="success"
+              size="sm"
+              icon
+              @click="showPayRecords(item)"
+            >
+              <i class="tim-icons icon-pencil"></i>
+            </base-button>
             <!-- customer information button -->
             <base-button
               type="success"
@@ -26,15 +35,6 @@
               @click="showCustomerInfo(item)"
             >
               <i class="tim-icons icon-single-02"></i>
-            </base-button>
-            <!-- details button -->
-            <base-button
-              type="success"
-              size="sm"
-              icon
-              @click="showPayRecords(item)"
-            >
-              <i class="tim-icons icon-bullet-list-67"></i>
             </base-button>
             <!-- remove button -->
             <base-button

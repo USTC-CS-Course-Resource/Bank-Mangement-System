@@ -7,7 +7,7 @@
       <div class="col-md-5 pr-md-1 text-left">
         <base-input
           label="Account Id"
-          placeholder="0000000000000000"
+          placeholder="Account Id"
           v-model="model.acc_id"
         >
         </base-input>
@@ -17,7 +17,7 @@
       <div class="col-md-5 pr-md-1 text-left">
         <base-input
           label="Customer Id"
-          placeholder="350581200001016666"
+          placeholder="Customer Id"
           v-model="model.cus_id"
         >
         </base-input>
@@ -25,7 +25,7 @@
       <div class="col-md-5 px-md-1 text-left">
         <base-input
           label="Branch Name"
-          placeholder="憨憨银行合肥分行"
+          placeholder="Branch Name"
           v-model="model.bra_name"
         >
         </base-input>
