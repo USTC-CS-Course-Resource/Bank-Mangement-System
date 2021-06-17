@@ -333,12 +333,13 @@ def get_balance_summary(cursor: Cursor, date: Union[datetime, str] = None):
     query = """
         select bra_name, sum(acc_balance) balance from account_update_log aul, 
            (
-              select acc_id, max(log_date) as log_date 
+              select acc_id, max(log_date) as log_date, max(log_id) as log_id
               from account_update_log 
               where log_date < %(log_date)s
               group by acc_id
            ) max_date
-        where aul.acc_type = 0 and aul.log_date = max_date.log_date and aul.acc_id = max_date.acc_id
+        where aul.acc_type = 0 and aul.log_date = max_date.log_date 
+            and aul.acc_id = max_date.acc_id and aul.log_id = max_date.log_id
         group by bra_name;
     """
     logger.debug(cursor.mogrify(query, {'log_date': date}))

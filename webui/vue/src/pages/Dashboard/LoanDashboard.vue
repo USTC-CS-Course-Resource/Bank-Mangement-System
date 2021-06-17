@@ -246,7 +246,9 @@ export default {
   methods: {
     updateLoanTable() {
       axios
-        .get("http://localhost:5000/loan/get_loan_summary")
+        .post("http://localhost:5000/loan/get_loan_summary", {
+          token: this.$store.state.token
+        })
         .then(response => {
           this.$notifyVue(`Got Loan Summary`, "top", "center", "success", 2000);
           console.log(response.data);

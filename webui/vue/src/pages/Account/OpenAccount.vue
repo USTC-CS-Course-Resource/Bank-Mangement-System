@@ -125,7 +125,10 @@ export default {
       console.log(this.model);
       console.log(data);
       axios
-        .post("http://localhost:5000/account/open_account", data)
+        .post("http://localhost:5000/account/open_account", {
+          ...data,
+          token: this.$store.state.token
+        })
         .then(() => {
           this.$notifyVue(
             `Create <b>${this.accountType} ACCOUNT</b> for <b>${data.cus_id}</b>`,
@@ -138,15 +141,23 @@ export default {
         .catch(error => {
           if (!error.response) {
             this.$notify_connection_error(error);
-            return;
+          } else {
+            console.log(error.response);
+            if (
+              error.response.data == "LoginExpired" ||
+              error.response.data.includes("ExpiredSignatureError")
+            ) {
+              this.$loginExpiredAction();
+            } else {
+              this.$notifyVue(
+                `Creating Failed! (${error.response.data})`,
+                "top",
+                "center",
+                "danger",
+                4000
+              );
+            }
           }
-          this.$notifyVue(
-            `Creating Failed! (${error.response.data})`,
-            "top",
-            "center",
-            "danger",
-            4000
-          );
         });
     }
   }

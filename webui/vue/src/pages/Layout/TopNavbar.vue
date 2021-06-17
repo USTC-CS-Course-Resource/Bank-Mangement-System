@@ -175,27 +175,39 @@ export default {
     },
     clearBankDB() {
       axios
-        .get("http://localhost:5000/bankdb/clear")
+        .post("http://localhost:5000/bankdb/clear", {
+          token: this.$store.state.token
+        })
         .then(() => {
           this.$notifyVue(`Clear All Tables`, "top", "center", "success", 2000);
         })
         .catch(error => {
           if (!error.response) {
             this.$notify_connection_error(error);
-            return;
+          } else {
+            console.log(error.response);
+            if (
+              error.response.data == "LoginExpired" ||
+              error.response.data.includes("ExpiredSignatureError")
+            ) {
+              this.$loginExpiredAction();
+            } else {
+              this.$notifyVue(
+                `Failed to Clear All Tables! (${error.response.data})`,
+                "top",
+                "center",
+                "danger",
+                4000
+              );
+            }
           }
-          this.$notifyVue(
-            `Failed to Clear All Tables! (${error.response.data})`,
-            "top",
-            "center",
-            "danger",
-            4000
-          );
         });
     },
     initializeBankDB() {
       axios
-        .get("http://localhost:5000/bankdb/initialize")
+        .post("http://localhost:5000/bankdb/initialize", {
+          token: this.$store.state.token
+        })
         .then(() => {
           this.$notifyVue(
             `Initialization succeed!`,
@@ -208,15 +220,23 @@ export default {
         .catch(error => {
           if (!error.response) {
             this.$notify_connection_error(error);
-            return;
+          } else {
+            console.log(error.response);
+            if (
+              error.response.data == "LoginExpired" ||
+              error.response.data.includes("ExpiredSignatureError")
+            ) {
+              this.$loginExpiredAction();
+            } else {
+              this.$notifyVue(
+                `Initialization Failed! (${error.response.data})`,
+                "top",
+                "center",
+                "danger",
+                4000
+              );
+            }
           }
-          this.$notifyVue(
-            `Initialization Failed! (${error.response.data})`,
-            "top",
-            "center",
-            "danger",
-            4000
-          );
         });
     }
   },

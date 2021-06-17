@@ -104,7 +104,10 @@ export default {
   methods: {
     create() {
       axios
-        .post("http://localhost:5000/loan/insert_loan", this.local_model)
+        .post("http://localhost:5000/loan/insert_loan", {
+          ...this.local_model,
+          token: this.$store.state.token
+        })
         .then(response => {
           console.log(response);
           this.$notifyVue(
@@ -118,15 +121,23 @@ export default {
         .catch(error => {
           if (!error.response) {
             this.$notify_connection_error(error);
-            return;
+          } else {
+            console.log(error.response);
+            if (
+              error.response.data == "LoginExpired" ||
+              error.response.data.includes("ExpiredSignatureError")
+            ) {
+              this.$loginExpiredAction();
+            } else {
+              this.$notifyVue(
+                `Creating Failed! (${error.response.data})`,
+                "top",
+                "center",
+                "danger",
+                4000
+              );
+            }
           }
-          this.$notifyVue(
-            `Creating Failed! (${error.response.data})`,
-            "top",
-            "center",
-            "danger",
-            4000
-          );
         });
     }
   }

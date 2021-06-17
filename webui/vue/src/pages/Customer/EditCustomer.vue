@@ -111,7 +111,10 @@ export default {
   methods: {
     submit() {
       axios
-        .post("http://localhost:5000/customer/insert_customer", this.model)
+        .post("http://localhost:5000/customer/insert_customer", {
+          ...this.model,
+          token: this.$store.state.token
+        })
         .then(() => {
           this.$notifyVue(
             `Inserted Customer: <b>${this.model.cus_name}</b>`,
@@ -124,15 +127,23 @@ export default {
         .catch(error => {
           if (!error.response) {
             this.$notify_connection_error(error);
-            return;
+          } else {
+            console.log(error.response);
+            if (
+              error.response.data == "LoginExpired" ||
+              error.response.data.includes("ExpiredSignatureError")
+            ) {
+              this.$loginExpiredAction();
+            } else {
+              this.$notifyVue(
+                `Inserted Failed! (${error.response.data})`,
+                "top",
+                "center",
+                "danger",
+                4000
+              );
+            }
           }
-          this.$notifyVue(
-            `Inserted Failed! (${error.response.data})`,
-            "top",
-            "center",
-            "danger",
-            4000
-          );
         });
     }
   },

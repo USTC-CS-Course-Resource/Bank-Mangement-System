@@ -42,15 +42,18 @@ export default {
   data() {
     return {
       model: {
-        cus_id: "350500200001011111",
-        cus_name: "小憨憨"
+        cus_id: null,
+        cus_name: null
       }
     };
   },
   methods: {
     search() {
       axios
-        .post("http://localhost:5000/customer/search_customer", this.model)
+        .post("http://localhost:5000/customer/search_customer", {
+          ...this.model,
+          token: this.$store.state.token
+        })
         .then(response => {
           this.$notifyVue(
             `Search Customer: <br />` +
@@ -72,19 +75,27 @@ export default {
         .catch(error => {
           if (!error.response) {
             this.$notify_connection_error(error);
-            return;
+          } else {
+            console.log(error.response);
+            if (
+              error.response.data == "LoginExpired" ||
+              error.response.data.includes("ExpiredSignatureError")
+            ) {
+              this.$loginExpiredAction();
+            } else {
+              this.$notifyVue(
+                `Search Failed! (${error.response.data})`,
+                "top",
+                "center",
+                "danger",
+                4000
+              );
+            }
+            this.$emit("searchResultsTableHandle", {
+              data: [],
+              type: "updateResults"
+            });
           }
-          this.$notifyVue(
-            `Search Failed! (${error.response.data})`,
-            "top",
-            "center",
-            "danger",
-            4000
-          );
-          this.$emit("searchResultsTableHandle", {
-            data: [],
-            type: "updateResults"
-          });
         });
     }
   }

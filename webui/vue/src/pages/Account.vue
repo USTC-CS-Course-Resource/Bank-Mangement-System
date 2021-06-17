@@ -270,10 +270,10 @@ export default {
     },
     updateAccount() {
       axios
-        .post(
-          "http://localhost:5000/account/update_account",
-          this.accountModalData
-        )
+        .post("http://localhost:5000/account/update_account", {
+          ...this.accountModalData,
+          token: this.$store.state.token
+        })
         .then(() => {
           this.$notifyVue(`Update Succeed!`, "top", "center", "success", 2000);
           console.log("updateAccount");
@@ -287,18 +287,22 @@ export default {
         .catch(error => {
           if (!error.response) {
             this.$notify_connection_error(error);
-            return;
-          }
-          this.$notifyVue(
-            `Update Failed! (${error.response.data})`,
-            "top",
-            "center",
-            "danger",
-            4000
-          );
-          if (!error.response) {
-            this.$notify_connection_error(error);
-            return;
+          } else {
+            console.log(error.response);
+            if (
+              error.response.data == "LoginExpired" ||
+              error.response.data.includes("ExpiredSignatureError")
+            ) {
+              this.$loginExpiredAction();
+            } else {
+              this.$notifyVue(
+                `Update Failed! (${error.response.data})`,
+                "top",
+                "center",
+                "danger",
+                4000
+              );
+            }
           }
         });
     }

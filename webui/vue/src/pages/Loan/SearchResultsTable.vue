@@ -95,7 +95,10 @@ export default {
     },
     removeLoan(item, index) {
       axios
-        .post("http://localhost:5000/loan/remove_loan", item)
+        .post("http://localhost:5000/loan/remove_loan", {
+          ...item,
+          token: this.$store.state.token
+        })
         .then(() => {
           this.$notifyVue(
             `Remove Loan: <b>${item.loa_id}</b>`,
@@ -113,15 +116,27 @@ export default {
         .catch(error => {
           if (!error.response) {
             this.$notify_connection_error(error);
-            return;
+          } else {
+            console.log(error.response);
+            if (
+              error.response.data == "LoginExpired" ||
+              error.response.data.includes("ExpiredSignatureError")
+            ) {
+              this.$loginExpiredAction();
+            } else {
+              this.$notifyVue(
+                `Removing Failed! (${error.response.data})`,
+                "top",
+                "center",
+                "danger",
+                4000
+              );
+            }
+            this.$emit("searchResultsTableHandle", {
+              data: [],
+              type: "updateResults"
+            });
           }
-          this.$notifyVue(
-            `Removing Failed! (${error.response.data})`,
-            "top",
-            "center",
-            "danger",
-            4000
-          );
         });
     },
     showStoreAccountModal(item, index) {

@@ -1,18 +1,15 @@
 from flask import Flask
 from flask import request
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from flask import jsonify
 from bankdb import *
-import time
-import os
-import threading
-from utils.logger import *
 from utils.err import *
 from utils import create_conn
 from webui import preprocess
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import pandas as pd
+from login import *
 
 logger = Logger.get_logger('web')
 
@@ -27,10 +24,18 @@ def handle_bad_request(e):
     return f'[{e.__class__.__name__}] {e}', 400
 
 
+@app.errorhandler(LoginExpired)
+def handle_bad_request(e):
+    logger.error(f'[{e.__class__}] {e}')
+    return f'LoginExpired', 400
+
+
 @app.route('/customer/insert_customer', methods=['POST'])
 def insert_customer():
     with create_conn() as conn:
         data = request.get_json(silent=True)
+        jwt_decode(data['token'])
+        data.pop('token')
         logger.info(f'post args: {data}')
         with conn.cursor() as cursor:
             customer.insert_customer_with_contacts(cursor, **data)
@@ -42,6 +47,8 @@ def insert_customer():
 def search_customer():
     with create_conn() as conn:
         data = request.get_json(silent=True)
+        jwt_decode(data['token'])
+        data.pop('token')
         data = preprocess(data)
         logger.info(f'post args: {data}')
         with conn.cursor() as cursor:
@@ -53,6 +60,8 @@ def search_customer():
 def remove_customer():
     with create_conn() as conn:
         data = request.get_json(silent=True)
+        jwt_decode(data['token'])
+        data.pop('token')
         logger.info(f'post args: {data}')
         with conn.cursor() as cursor:
             customer.remove_customer_with_contacts(cursor, data['cus_id'])
@@ -64,6 +73,8 @@ def remove_customer():
 def update_customer():
     with create_conn() as conn:
         data = request.get_json(silent=True)
+        jwt_decode(data['token'])
+        data.pop('token')
         logger.info(f'post args: {data}')
         with conn.cursor() as cursor:
             customer.update_customer_with_contacts(cursor, **data)
@@ -75,6 +86,8 @@ def update_customer():
 def open_account():
     with create_conn() as conn:
         data = request.get_json(silent=True)
+        jwt_decode(data['token'])
+        data.pop('token')
         data = preprocess(data)
         logger.info(f'post args: {data}')
         data['date'] = datetime.now()
@@ -88,6 +101,8 @@ def open_account():
 def search_account():
     with create_conn() as conn:
         data = request.get_json(silent=True)
+        jwt_decode(data['token'])
+        data.pop('token')
         logger.info(f'post args: {data}')
         with conn.cursor() as cursor:
             store_ret = []
@@ -115,23 +130,29 @@ def search_account():
     return jsonify({'STORE': store_ret, 'CHECK': check_ret})
 
 
-@app.route('/account/get_cus_count_summary', methods=['GET'])
+@app.route('/account/get_cus_count_summary', methods=['POST'])
 def get_cus_count_summary():
     with create_conn() as conn:
+        data = request.get_json(silent=True)
+        jwt_decode(data['token'])
+        data.pop('token')
         with conn.cursor() as cursor:
             ret = account.get_cus_count_summary(cursor)
     return jsonify(ret)
 
 
-@app.route('/account/get_account_summary', methods=['GET'])
+@app.route('/account/get_account_summary', methods=['POST'])
 def get_account_summary():
     ret = pd.DataFrame(columns=['bra_name', 'date', 'balance', 'cus_count'])
     with create_conn() as conn:
+        data = request.get_json(silent=True)
+        jwt_decode(data['token'])
+        data.pop('token')
         with conn.cursor() as cursor:
             begin = sql_str2datetime('2020-07-01 00:00:00')
             end = datetime.now()
             timedelta = relativedelta(months=+1)
-            for i in range(12):
+            for i in range(13):
                 date = begin + timedelta * i
                 balance_summary = account.get_balance_summary(cursor, date)
                 balance_summary = pd.DataFrame(balance_summary, columns=['bra_name', 'balance'])
@@ -149,6 +170,8 @@ def get_account_summary():
 def remove_have_account():
     with create_conn() as conn:
         data = request.get_json(silent=True)
+        jwt_decode(data['token'])
+        data.pop('token')
         data['date'] = datetime.now()
         logger.info(f'post args: {data}')
         with conn.cursor() as cursor:
@@ -161,6 +184,8 @@ def remove_have_account():
 def update_account():
     with create_conn() as conn:
         data = request.get_json(silent=True)
+        jwt_decode(data['token'])
+        data.pop('token')
         data['date'] = datetime.now()
         logger.info(f'post args: {data}')
         with conn.cursor() as cursor:
@@ -171,8 +196,10 @@ def update_account():
 
 @app.route('/loan/insert_loan', methods=['POST'])
 def insert_loan():
-    with create_conn() as conn:
+    with create_conn() as conn: 
         data = request.get_json(silent=True)
+        jwt_decode(data['token'])
+        data.pop('token')
         data['date'] = datetime.now()
         logger.info(f'post args: {data}')
         with conn.cursor() as cursor:
@@ -185,6 +212,8 @@ def insert_loan():
 def search_loan():
     with create_conn() as conn:
         data = request.get_json(silent=True)
+        jwt_decode(data['token'])
+        data.pop('token')
         logger.info(f'post args: {data}')
         with conn.cursor() as cursor:
             ret = loan.search_loan(cursor, **data)
@@ -196,6 +225,8 @@ def search_loan():
 def get_pay_loa_records():
     with create_conn() as conn:
         data = request.get_json(silent=True)
+        jwt_decode(data['token'])
+        data.pop('token')
         logger.info(f'post args: {data}')
         with conn.cursor() as cursor:
             records = loan.get_pay_loa_records(cursor, data.get('loa_id'))
@@ -209,6 +240,8 @@ def get_pay_loa_records():
 def get_customer_info():
     with create_conn() as conn:
         data = request.get_json(silent=True)
+        jwt_decode(data['token'])
+        data.pop('token')
         logger.info(f'post args: {data}')
         with conn.cursor() as cursor:
             cus_ids = loan.get_customer_info(cursor, data.get('loa_id'))
@@ -220,9 +253,11 @@ def get_customer_info():
 def pay_loan():
     with create_conn() as conn:
         data = request.get_json(silent=True)
+        jwt_decode(data['token'])
+        data.pop('token')
         logger.info(f'post args: {data}')
         with conn.cursor() as cursor:
-            loan.insert_pay_loan(cursor, data.get('loa_id'), data.get('loa_pay_amount'))
+            loan.insert_pay_loan(cursor, data.get('loa_id'), data.get('loa_pay_amount'), datetime.now())
         conn.commit()
     return "ok"
 
@@ -231,6 +266,8 @@ def pay_loan():
 def remove_loan():
     with create_conn() as conn:
         data = request.get_json(silent=True)
+        jwt_decode(data['token'])
+        data.pop('token')
         logger.info(f'post args: {data}')
         with conn.cursor() as cursor:
             loan.remove_loan_with_relations(cursor, data.get('loa_id'))
@@ -238,19 +275,50 @@ def remove_loan():
     return "ok"
 
 
-@app.route('/loan/get_loan_summary', methods=['GET'])
+@app.route('/loan/get_loan_summary', methods=['POST'])
 def get_loan_summary():
     # ret = pd.DataFrame(columns=['bra_name', 'date', 'balance', 'cus_count'])
     with create_conn() as conn:
+        data = request.get_json(silent=True)
+        jwt_decode(data['token'])
+        data.pop('token')
         with conn.cursor() as cursor:
             ret = loan.get_loan_summary(cursor)
     return jsonify(ret)
 
 
-@app.route('/bankdb/clear', methods=['GET'])
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json(silent=True)
+    logger.info(f'get login info {data}')
+    if 'token' in data:
+        # 传来了 token, 尝试先验证 token
+        payload = jwt_decode(data['token'])
+        if payload['username'] in ['admin']:
+            logger.info('token: ok')
+            return jsonify({'status': 'ok'})
+        else:
+            logger.info('token: error')
+            return jsonify({'status': 'error'})
+    else:
+        username_password_dict = {
+            'admin': '123456'
+        }
+        if username_password_dict.get(data['username']) == data['password']:
+            token = jwt_encode(data['username'])
+            logger.info('username-password: match')
+            return jsonify({'status': 'ok', 'username': data['username'], 'token': token})
+        else:
+            logger.info('username-password: not match')
+            return jsonify({'status': 'password wrong'})
+
+
+@app.route('/bankdb/clear', methods=['POST'])
 def clear_bankdb():
-    # TODO: add authentication
     with create_conn() as conn:
+        data = request.get_json(silent=True)
+        jwt_decode(data['token'])
+        data.pop('token')
         with conn.cursor() as cursor:
             clear_table(cursor, ['pay_loan', 'loan_relation', 'loan', 'have_store_account', 'store_account', 'account',
                                  'branch', 'contacts', 'customer'])
@@ -258,10 +326,12 @@ def clear_bankdb():
     return "ok"
 
 
-@app.route('/bankdb/initialize', methods=['GET'])
+@app.route('/bankdb/initialize', methods=['POST'])
 def initialize_bankdb():
-    # TODO: add authentication
     with create_conn() as conn:
+        data = request.get_json(silent=True)
+        jwt_decode(data['token'])
+        data.pop('token')
         with conn.cursor() as cursor:
             initialize(cursor)
         conn.commit()

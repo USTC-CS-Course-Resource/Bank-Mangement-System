@@ -87,7 +87,10 @@ export default {
     removeHaveAccount(item, index) {
       let acc_type = this.data[0].acc_type;
       axios
-        .post("http://localhost:5000/account/remove_have_account", item)
+        .post("http://localhost:5000/account/remove_have_account", {
+          ...item,
+          token: this.$store.state.token
+        })
         .then(() => {
           this.$notifyVue(
             `Remove Account: <b>${item.acc_id}</b>`,

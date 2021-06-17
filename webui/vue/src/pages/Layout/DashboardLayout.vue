@@ -58,15 +58,6 @@
           <p>地图</p>
         </template>
       </sidebar-link> -->
-      <!-- <sidebar-link to="/notifications">
-        <i class="tim-icons icon-bell-55"></i>
-        <template v-if="!isRTL">
-          <p>Notifications</p>
-        </template>
-        <template v-else>
-          <p>通知</p>
-        </template>
-      </sidebar-link> -->
       <sidebar-link to="/typography">
         <i class="tim-icons icon-align-center"></i>
         <template v-if="!isRTL">
@@ -74,15 +65,6 @@
         </template>
         <template v-else>
           <p>排版</p>
-        </template>
-      </sidebar-link>
-      <sidebar-link to="/dashboard?enableRTL=true">
-        <i class="tim-icons icon-world"></i>
-        <template v-if="!isRTL">
-          <p>RTL Support</p>
-        </template>
-        <template v-else>
-          <p>RTL 支持</p>
         </template>
       </sidebar-link>
     </side-bar>

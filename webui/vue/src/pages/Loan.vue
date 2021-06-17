@@ -180,7 +180,10 @@ export default {
     },
     showPayRecords(item) {
       axios
-        .post("http://localhost:5000/loan/get_pay_loa_records", item)
+        .post("http://localhost:5000/loan/get_pay_loa_records", {
+          ...item,
+          token: this.$store.state.token
+        })
         .then(response => {
           let data = response.data;
           this.payLoanModel = { ...data, ...item };
@@ -192,20 +195,31 @@ export default {
         .catch(error => {
           if (!error.response) {
             this.$notify_connection_error(error);
-            return;
+          } else {
+            console.log(error.response);
+            if (
+              error.response.data == "LoginExpired" ||
+              error.response.data.includes("ExpiredSignatureError")
+            ) {
+              this.$loginExpiredAction();
+            } else {
+              this.$notifyVue(
+                `Get Details Failed! (${error.response.data})`,
+                "top",
+                "center",
+                "danger",
+                4000
+              );
+            }
           }
-          this.$notifyVue(
-            `Get Details Failed! (${error.response.data})`,
-            "top",
-            "center",
-            "danger",
-            4000
-          );
         });
     },
     showCustomerInfo(item) {
       axios
-        .post("http://localhost:5000/loan/get_customer_info", item)
+        .post("http://localhost:5000/loan/get_customer_info", {
+          ...item,
+          token: this.$store.state.token
+        })
         .then(response => {
           this.loanCustomerInfoModalTableData = response.data;
           console.log("related customer info:");
@@ -215,15 +229,23 @@ export default {
         .catch(error => {
           if (!error.response) {
             this.$notify_connection_error(error);
-            return;
+          } else {
+            console.log(error.response);
+            if (
+              error.response.data == "LoginExpired" ||
+              error.response.data.includes("ExpiredSignatureError")
+            ) {
+              this.$loginExpiredAction();
+            } else {
+              this.$notifyVue(
+                `Get Customer Information Failed! (${error.response.data})`,
+                "top",
+                "center",
+                "danger",
+                4000
+              );
+            }
           }
-          this.$notifyVue(
-            `Get Customer Information Failed! (${error.response.data})`,
-            "top",
-            "center",
-            "danger",
-            4000
-          );
         });
     }
   }

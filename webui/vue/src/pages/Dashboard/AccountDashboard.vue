@@ -270,7 +270,9 @@ export default {
   methods: {
     updateAccountTable() {
       axios
-        .get("http://localhost:5000/account/get_account_summary")
+        .post("http://localhost:5000/account/get_account_summary", {
+          token: this.$store.state.token
+        })
         .then(response => {
           this.$notifyVue(
             `Got Account Summary`,

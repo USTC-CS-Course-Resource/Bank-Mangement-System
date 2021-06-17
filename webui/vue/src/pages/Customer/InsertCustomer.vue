@@ -108,7 +108,10 @@ export default {
   methods: {
     submit() {
       axios
-        .post("http://localhost:5000/customer/insert_customer", this.model)
+        .post("http://localhost:5000/customer/insert_customer", {
+          ...this.model,
+          token: this.$store.state.token
+        })
         .then(() => {
           this.$notifyVue(
             `Inserted Customer: <b>${this.model.cus_name}</b>`,

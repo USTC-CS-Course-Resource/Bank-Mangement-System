@@ -136,3 +136,7 @@ class InformationNotEnough(RuntimeError):
 
 class AccountNotExists(RuntimeError):
     ...
+
+
+class LoginExpired(RuntimeError):
+    ...

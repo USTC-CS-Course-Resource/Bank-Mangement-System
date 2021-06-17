@@ -4,6 +4,13 @@ PB18111697 王章瀚
 
 -----
 
+## Requirements
+
+- python packages:
+  - dateutils
+  - flask
+  - pyjwt
+
 ## Design
 
 ### 客户管理

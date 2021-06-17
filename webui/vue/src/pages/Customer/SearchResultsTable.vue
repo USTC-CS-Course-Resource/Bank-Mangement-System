@@ -81,7 +81,10 @@ export default {
       console.log(this.data);
       console.log(item);
       axios
-        .post("http://localhost:5000/customer/remove_customer", item)
+        .post("http://localhost:5000/customer/remove_customer", {
+          ...item,
+          token: this.$store.state.token
+        })
         .then(() => {
           this.$notifyVue(
             `Remove Customer: <b>${item.cus_name}</b>`,
@@ -99,15 +102,27 @@ export default {
         .catch(error => {
           if (!error.response) {
             this.$notify_connection_error(error);
-            return;
+          } else {
+            console.log(error.response);
+            if (
+              error.response.data == "LoginExpired" ||
+              error.response.data.includes("ExpiredSignatureError")
+            ) {
+              this.$loginExpiredAction();
+            } else {
+              this.$notifyVue(
+                `Removing Failed! (${error.response.data})`,
+                "top",
+                "center",
+                "danger",
+                4000
+              );
+            }
+            this.$emit("searchResultsTableHandle", {
+              data: [],
+              type: "updateResults"
+            });
           }
-          this.$notifyVue(
-            `Removing Failed! (${error.response.data})`,
-            "top",
-            "center",
-            "danger",
-            4000
-          );
         });
     },
     editCustomer(item) {

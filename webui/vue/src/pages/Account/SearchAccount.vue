@@ -73,7 +73,10 @@ export default {
   methods: {
     search() {
       axios
-        .post("http://localhost:5000/account/search_account", this.model)
+        .post("http://localhost:5000/account/search_account", {
+          ...this.model,
+          token: this.$store.state.token
+        })
         .then(response => {
           console.log(response);
           this.$notifyVue(`Search Succeed!`, "top", "center", "success", 2000);
@@ -86,19 +89,23 @@ export default {
         .catch(error => {
           if (!error.response) {
             this.$notify_connection_error(error);
-            return;
+          } else {
+            console.log(error.response);
+            if (
+              error.response.data == "LoginExpired" ||
+              error.response.data.includes("ExpiredSignatureError")
+            ) {
+              this.$loginExpiredAction();
+            } else {
+              this.$notifyVue(
+                `Search Failed! (${error.response.data})`,
+                "top",
+                "center",
+                "danger",
+                4000
+              );
+            }
           }
-          this.$notifyVue(
-            `Search Failed! (${error.response.data})`,
-            "top",
-            "center",
-            "danger",
-            4000
-          );
-          this.$emit("searchResultsTableHandle", {
-            data: [],
-            type: "updateResults"
-          });
         });
     }
   }

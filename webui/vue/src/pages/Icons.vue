@@ -10,7 +10,8 @@
       </template>
       <div class="row">
         <div
-          v-for="icon in icons"
+          v-for="(icon, index) in icons"
+          :key="index"
           class="font-icon-list col-lg-2 col-md-3 col-sm-4 col-xs-6 col-xs-6"
         >
           <div class="font-icon-detail">
