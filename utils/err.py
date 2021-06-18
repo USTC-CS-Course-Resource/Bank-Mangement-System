@@ -62,7 +62,6 @@ def cursor_with_exception_handler(conn: Connection, tx=False):
         logger.error(e)
         if tx:
             conn.rollback()
-        yield 'fuck'
     except Exception as e:
         logger.error(e)
         if tx:

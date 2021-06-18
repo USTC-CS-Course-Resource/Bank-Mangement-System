@@ -12,6 +12,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import pandas as pd
 from login import *
+import traceback
 
 logger = Logger.get_logger('web')
 
@@ -22,7 +23,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.errorhandler(Exception)
 def handle_bad_request(e):
-    logger.error(f'[{e.__class__}] {e}')
+    logger.error(f'[{e.__class__}] {traceback.format_exc()}')
     return f'[{e.__class__.__name__}] {e}', 400
 
 
@@ -35,7 +36,7 @@ def handle_bad_request(e):
 @app.route('/customer/insert_customer', methods=['POST'])
 def insert_customer():
     with create_conn() as conn:
-        data = request.get_json(silent=True)
+        data = preprocess(request.get_json(silent=True))
         jwt_decode(data['token'])
         data.pop('token')
         logger.info(f'post args: {data}')
@@ -48,7 +49,7 @@ def insert_customer():
 @app.route('/customer/search_customer', methods=['POST'])
 def search_customer():
     with create_conn() as conn:
-        data = request.get_json(silent=True)
+        data = preprocess(request.get_json(silent=True))
         jwt_decode(data['token'])
         data.pop('token')
         data = preprocess(data)
@@ -61,7 +62,7 @@ def search_customer():
 @app.route('/customer/remove_customer', methods=['POST'])
 def remove_customer():
     with create_conn() as conn:
-        data = request.get_json(silent=True)
+        data = preprocess(request.get_json(silent=True))
         jwt_decode(data['token'])
         data.pop('token')
         logger.info(f'post args: {data}')
@@ -74,7 +75,7 @@ def remove_customer():
 @app.route('/customer/update_customer', methods=['POST'])
 def update_customer():
     with create_conn() as conn:
-        data = request.get_json(silent=True)
+        data = preprocess(request.get_json(silent=True))
         jwt_decode(data['token'])
         data.pop('token')
         logger.info(f'post args: {data}')
@@ -87,7 +88,7 @@ def update_customer():
 @app.route('/account/open_account', methods=['POST'])
 def open_account():
     with create_conn() as conn:
-        data = request.get_json(silent=True)
+        data = preprocess(request.get_json(silent=True))
         jwt_decode(data['token'])
         data.pop('token')
         data = preprocess(data)
@@ -102,7 +103,7 @@ def open_account():
 @app.route('/account/search_account', methods=['POST'])
 def search_account():
     with create_conn() as conn:
-        data = request.get_json(silent=True)
+        data = preprocess(request.get_json(silent=True))
         jwt_decode(data['token'])
         data.pop('token')
         logger.info(f'post args: {data}')
@@ -135,7 +136,7 @@ def search_account():
 @app.route('/account/get_cus_count_summary', methods=['POST'])
 def get_cus_count_summary():
     with create_conn() as conn:
-        data = request.get_json(silent=True)
+        data = preprocess(request.get_json(silent=True))
         jwt_decode(data['token'])
         data.pop('token')
         with conn.cursor() as cursor:
@@ -147,7 +148,7 @@ def get_cus_count_summary():
 def get_account_summary():
     ret = pd.DataFrame(columns=['bra_name', 'date', 'balance', 'cus_count'])
     with create_conn() as conn:
-        data = request.get_json(silent=True)
+        data = preprocess(request.get_json(silent=True))
         jwt_decode(data['token'])
         data.pop('token')
         with conn.cursor() as cursor:
@@ -171,7 +172,7 @@ def get_account_summary():
 @app.route('/account/remove_have_account', methods=['POST'])
 def remove_have_account():
     with create_conn() as conn:
-        data = request.get_json(silent=True)
+        data = preprocess(request.get_json(silent=True))
         jwt_decode(data['token'])
         data.pop('token')
         data['date'] = datetime.now()
@@ -185,7 +186,7 @@ def remove_have_account():
 @app.route('/account/update_account', methods=['POST'])
 def update_account():
     with create_conn() as conn:
-        data = request.get_json(silent=True)
+        data = preprocess(request.get_json(silent=True))
         jwt_decode(data['token'])
         data.pop('token')
         data['date'] = datetime.now()
@@ -199,7 +200,7 @@ def update_account():
 @app.route('/loan/insert_loan', methods=['POST'])
 def insert_loan():
     with create_conn() as conn: 
-        data = request.get_json(silent=True)
+        data = preprocess(request.get_json(silent=True))
         jwt_decode(data['token'])
         data.pop('token')
         data['date'] = datetime.now()
@@ -213,7 +214,7 @@ def insert_loan():
 @app.route('/loan/search_loan', methods=['POST'])
 def search_loan():
     with create_conn() as conn:
-        data = request.get_json(silent=True)
+        data = preprocess(request.get_json(silent=True))
         jwt_decode(data['token'])
         data.pop('token')
         logger.info(f'post args: {data}')
@@ -226,7 +227,7 @@ def search_loan():
 @app.route('/loan/get_pay_loa_records', methods=['POST'])
 def get_pay_loa_records():
     with create_conn() as conn:
-        data = request.get_json(silent=True)
+        data = preprocess(request.get_json(silent=True))
         jwt_decode(data['token'])
         data.pop('token')
         logger.info(f'post args: {data}')
@@ -241,7 +242,7 @@ def get_pay_loa_records():
 @app.route('/loan/get_customer_info', methods=['POST'])
 def get_customer_info():
     with create_conn() as conn:
-        data = request.get_json(silent=True)
+        data = preprocess(request.get_json(silent=True))
         jwt_decode(data['token'])
         data.pop('token')
         logger.info(f'post args: {data}')
@@ -254,7 +255,7 @@ def get_customer_info():
 @app.route('/loan/pay_loan', methods=['POST'])
 def pay_loan():
     with create_conn() as conn:
-        data = request.get_json(silent=True)
+        data = preprocess(request.get_json(silent=True))
         jwt_decode(data['token'])
         data.pop('token')
         logger.info(f'post args: {data}')
@@ -267,7 +268,7 @@ def pay_loan():
 @app.route('/loan/remove_loan', methods=['POST'])
 def remove_loan():
     with create_conn() as conn:
-        data = request.get_json(silent=True)
+        data = preprocess(request.get_json(silent=True))
         jwt_decode(data['token'])
         data.pop('token')
         logger.info(f'post args: {data}')
@@ -280,7 +281,7 @@ def remove_loan():
 @app.route('/loan/get_loan_summary', methods=['POST'])
 def get_loan_summary():
     with create_conn() as conn:
-        data = request.get_json(silent=True)
+        data = preprocess(request.get_json(silent=True))
         jwt_decode(data['token'])
         data.pop('token')
         with conn.cursor() as cursor:
@@ -292,7 +293,7 @@ def get_loan_summary():
 
 @app.route('/login', methods=['POST'])
 def login():
-    data = request.get_json(silent=True)
+    data = preprocess(request.get_json(silent=True))
     logger.info(f'get login info {data}')
     if 'token' in data:
         # 传来了 token, 尝试先验证 token
@@ -319,7 +320,7 @@ def login():
 @app.route('/bankdb/clear', methods=['POST'])
 def clear_bankdb():
     with create_conn() as conn:
-        data = request.get_json(silent=True)
+        data = preprocess(request.get_json(silent=True))
         jwt_decode(data['token'])
         data.pop('token')
         with conn.cursor() as cursor:
@@ -331,7 +332,7 @@ def clear_bankdb():
 @app.route('/bankdb/initialize', methods=['POST'])
 def initialize_bankdb():
     with create_conn() as conn:
-        data = request.get_json(silent=True)
+        data = preprocess(request.get_json(silent=True))
         jwt_decode(data['token'])
         data.pop('token')
         with conn.cursor() as cursor:

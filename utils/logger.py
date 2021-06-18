@@ -34,14 +34,6 @@ class Logger:
         return Logger.loggers[log_type]
 
     @staticmethod
-    def update(level=None, fmt: str = None, filename: str = None):
-        Logger.init_logger(level=level or Logger.level,
-                           fmt=fmt or Logger.fmt,
-                           filename=filename or Logger.filename,
-                           overwrite=True)
-        return Logger.logger
-
-    @staticmethod
     def init_logger(level=logging.INFO,
                     fmt='%(asctime)s  %(filename)s : %(levelname)s  %(message)s',
                     filename: str = None):
