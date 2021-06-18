@@ -3,6 +3,7 @@ from pymysql.cursors import Cursor
 from bankdb import customer, account, branch, loan
 import bankdb
 from utils.err import *
+from datetime import datetime
 
 unittest.TestLoader.sortTestMethodsUsing = None
 logger = Logger.get_logger('bankdb')
@@ -25,17 +26,16 @@ class TestBankdb(unittest.TestCase):
     def prepare_customer(cursor: Cursor):
         # 0.0. clear
         bankdb.clear_table(cursor,
-                            ['have_store_account', 'store_account', 'account', 'branch', 'contacts', 'customer'])
+                           ['have_store_account', 'store_account', 'account', 'branch', 'contacts', 'customer'])
         # 0.1. insert branch and customer
         branch.insert_branch(cursor, bra_name='憨憨银行合肥分行', bra_city='合肥')
         customer.insert_customer_with_contacts(cursor, **TestBankdb.customer_with_contacts_data[0])
 
     def test_remove_insert_update_customer(self):
-        with cursor_with_exception_handler(self.conn) as cursor:
+        with self.conn.cursor() as cursor:
             data = self.customer_with_contacts_data[0]
             # clear
-            bankdb.clear_table(cursor,
-                                ['have_store_account', 'store_account', 'account', 'branch', 'contacts', 'customer'])
+            bankdb.clear_table(cursor, bankdb.all_tables)
             # insert
             customer.insert_customer_with_contacts(cursor, **data)
             result = customer.get_customer_with_contacts(cursor, '350500200001011111')
@@ -52,14 +52,14 @@ class TestBankdb(unittest.TestCase):
             self.assertEqual(result, ())
 
     def test_account(self):
-        with cursor_with_exception_handler(self.conn) as cursor:
+        with self.conn.cursor() as cursor:
             # 0. prepare the customer
             TestBankdb.prepare_customer(cursor)
             # 1. test open account
             acc_id = account.open_account(cursor=cursor, acc_id="0000000000000000", acc_type=account.AccountType.STORE,
                                           cus_id='350500200001011111', bra_name='憨憨银行合肥分行',
-                                          sto_interest_rate=0.02, sto_currency_type='CNY')
-            result = account.get_account_info(cursor, acc_id)[0]
+                                          sto_interest_rate=0.02, sto_currency_type='CNY', date=datetime.now())
+            result = account.get_account_info(cursor, acc_id=acc_id)[0]
             result.pop('sto_last_visit_date')
             result.pop('acc_open_date')
             self.assertEqual(result,
@@ -70,11 +70,10 @@ class TestBankdb(unittest.TestCase):
             result = customer.get_customer_with_contacts(cursor, '350500200001011111')
             self.assertEqual(result, self.customer_with_contacts_data)
             # 3. clear used tables
-            bankdb.clear_table(cursor,
-                                ['have_store_account', 'store_account', 'account', 'branch', 'contacts', 'customer'])
+            bankdb.clear_table(cursor, bankdb.all_tables)
 
     def test_loan(self):
-        with cursor_with_exception_handler(self.conn) as cursor:
+        with self.conn.cursor() as cursor:
             # 0. prepare the customer
             TestBankdb.prepare_customer(cursor)
             # 1. test insert loan
@@ -83,22 +82,21 @@ class TestBankdb(unittest.TestCase):
                                                      bra_name='憨憨银行合肥分行',
                                                      loa_amount=66666)
             # 2. pay loan
-            loan.insert_pay_loan(cursor, loa_id, 66)
-            loan.insert_pay_loan(cursor, loa_id, 666)
+            loan.insert_pay_loan(cursor, loa_id, 66, date=datetime.now())
+            loan.insert_pay_loan(cursor, loa_id, 666, date=datetime.now())
             # 3. get pay loan information
             state = loan.get_loan_state(cursor, loa_id)
             # 4. pay until done and test
-            loan.insert_pay_loan(cursor, loa_id, 65934)
+            loan.insert_pay_loan(cursor, loa_id, 65934, date=datetime.now())
             exception = None
             try:
-                loan.insert_pay_loan(cursor, loa_id, 6666)
+                loan.insert_pay_loan(cursor, loa_id, 6666, date=datetime.now())
             except Exception as e:
                 exception = e
             logger.info('[LoanAlreadyDone] ok')
             self.assertIsInstance(exception, LoanAlreadyDone)
             # 5. clear
-            bankdb.clear_table(cursor,
-                                ['pay_loan', 'loan_relation', 'loan', 'branch', 'contacts', 'customer'])
+            bankdb.clear_table(cursor, bankdb.all_tables)
 
 
 if __name__ == '__main__':

@@ -6,7 +6,7 @@
       <div class="block block-three"></div>
       <div class="block block-four"></div>
       <a href="#">
-        <h5 class="title">{{ card.bra_name }}</h5>
+        <h5 class="title">{{ model.bra_name }}</h5>
       </a>
       <p class="description">{{ card.title }} -- {{ model.acc_type }} type</p>
     </div>
@@ -41,8 +41,6 @@ export default {
   mounted() {
     eventBus.$on("description", msg => {
       console.log("get", msg);
-      this.cus.fullName = msg.cus_name;
-      this.cus.description = `${msg.cus_phone}`;
     });
   }
 };

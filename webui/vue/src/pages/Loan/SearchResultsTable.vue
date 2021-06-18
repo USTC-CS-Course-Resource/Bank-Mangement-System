@@ -132,10 +132,6 @@ export default {
                 4000
               );
             }
-            this.$emit("searchResultsTableHandle", {
-              data: [],
-              type: "updateResults"
-            });
           }
         });
     },

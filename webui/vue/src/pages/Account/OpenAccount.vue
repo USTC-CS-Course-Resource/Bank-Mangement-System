@@ -35,7 +35,7 @@
           <select
             id="inputAccountType"
             class="form-control"
-            v-model="accountType"
+            v-model="model.acc_type"
           >
             <option selected>STORE</option>
             <option>CHECK</option>
@@ -43,7 +43,7 @@
         </base-input>
       </div>
     </div>
-    <div class="row" v-if="accountType == 'STORE'">
+    <div class="row" v-if="model.acc_type == 'STORE'">
       <div class="col-md-6 pr-md-1 text-left">
         <base-input
           label="Interest Rate"
@@ -53,7 +53,7 @@
         </base-input>
       </div>
       <div class="col-md-2 px-md-1 text-left">
-        <base-input label="Account Type">
+        <base-input label="Currency Type">
           <select
             label="Currency Type"
             class="form-control"
@@ -92,22 +92,18 @@ export default {
       }
     }
   },
-  data() {
-    return {
-      accountType: "STORE"
-    };
-  },
   computed: {
     description() {
       return {
+        acc_type: this.model.acc_type,
         cus_name: this.model.cus_id,
         cus_id: this.model.cus_id,
         cus_phone: this.model.cus_phone
       };
     },
     acc_type_int: function() {
-      if (this.accountType == "STORE") return 0;
-      else if (this.accountType == "CHECK") return 1;
+      if (this.model.acc_type == "STORE") return 0;
+      else if (this.model.acc_type == "CHECK") return 1;
       else return -1;
     }
   },
@@ -120,7 +116,7 @@ export default {
   methods: {
     create() {
       let data = { ...this.model };
-      console.log(this.accountType);
+      console.log(this.model.acc_type);
       data.acc_type = this.acc_type_int;
       console.log(this.model);
       console.log(data);
@@ -131,7 +127,7 @@ export default {
         })
         .then(() => {
           this.$notifyVue(
-            `Create <b>${this.accountType} ACCOUNT</b> for <b>${data.cus_id}</b>`,
+            `Create <b>${this.model.acc_type} ACCOUNT</b> for <b>${data.cus_id}</b>`,
             "top",
             "center",
             "success",

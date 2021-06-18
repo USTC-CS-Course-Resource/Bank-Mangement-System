@@ -2,6 +2,8 @@ from flask import Flask
 from flask import request
 from flask_cors import CORS
 from flask import jsonify
+
+import bankdb
 from bankdb import *
 from utils.err import *
 from utils import create_conn
@@ -321,8 +323,7 @@ def clear_bankdb():
         jwt_decode(data['token'])
         data.pop('token')
         with conn.cursor() as cursor:
-            clear_table(cursor, ['pay_loan', 'loan_relation', 'loan', 'have_store_account', 'store_account', 'account',
-                                 'branch', 'contacts', 'customer'])
+            clear_table(cursor, bankdb.all_tables)
         conn.commit()
     return "ok"
 

@@ -37,6 +37,8 @@ def insert_pay_loan(cursor: Cursor, loa_id: int, loa_pay_amount: float, date: da
 
 def insert_loan_with_relations(cursor: Cursor, cus_ids: Union[str, List[str]], bra_name: str, loa_amount: float,
                                date: Union[datetime, str] = None) -> int:
+    if not date:
+        date = datetime.now()
     if type(date) is datetime:
         date = date.strftime(sql_datetime_format)
     loa_id = insert_loan(cursor, bra_name, loa_amount)

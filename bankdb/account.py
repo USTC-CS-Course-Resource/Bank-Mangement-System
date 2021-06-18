@@ -217,7 +217,7 @@ def get_overdraft(cursor: Cursor, acc_id: str):
     return cursor.fetchone().get('che_overdraft')
 
 
-def remove_account(cursor: Cursor, acc_id: str, cus_id: str, date: Union[datetime, str], cascade=True):
+def remove_account(cursor: Cursor, acc_id: str, cascade=True):
     acc_type = get_acc_type(cursor, acc_id)
     acc_balance = get_balance(cursor, acc_id)
     if acc_balance != 0:
@@ -263,7 +263,7 @@ def remove_have_account(cursor: Cursor, acc_id: str, cus_id: str, bra_name: str,
     logger.info(f'remove have account relation: {cus_id} has {acc_id}')
     logger.info(f'left relation: {acc_info}')
     if len(acc_info) == 0:
-        remove_account(cursor, acc_id, cus_id=cus_id, date=date, cascade=True)
+        remove_account(cursor, acc_id, cascade=True)
 
 
 def update_account_update_log(cursor: Cursor, acc_id: str, log_date: Union[datetime, str], **kwargs):

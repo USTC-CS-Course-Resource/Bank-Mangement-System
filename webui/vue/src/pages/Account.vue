@@ -211,6 +211,7 @@ export default {
         acc_id: "0000000000000000",
         cus_id: "350500200001011110",
         bra_name: "憨憨银行合肥分行",
+        acc_type: "STORE",
         sto_interest_rate: 0.02,
         sto_currency_type: "CNY"
       },
