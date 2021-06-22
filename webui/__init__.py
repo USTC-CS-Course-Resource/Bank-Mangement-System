@@ -19,7 +19,7 @@ def preprocess(data: dict):
     """
     ret = {}
     for key, value in data.items():
-        if value is None:
+        if value is None or value == '':
             continue
         elif key == 'cus_id':
             ret[key] = preprocess_cus_id(value)
