@@ -11,7 +11,7 @@ from webui import preprocess
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import pandas as pd
-from login import *
+from webui.login import *
 import traceback
 
 logger = Logger.get_logger('web')
@@ -311,6 +311,7 @@ def login():
         if username_password_dict.get(data['username']) == data['password']:
             token = jwt_encode(data['username'])
             logger.info('username-password: match')
+            logger.info({'status': 'ok', 'username': data['username'], 'token': token})
             return jsonify({'status': 'ok', 'username': data['username'], 'token': token})
         else:
             logger.info('username-password: not match')

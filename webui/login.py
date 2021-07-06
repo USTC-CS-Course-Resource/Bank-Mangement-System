@@ -38,10 +38,13 @@ def jwt_encode(username):
                            algorithm="HS256",  # 指明签名算法方式, 默认也是HS256
                            headers=headers  # json web token 数据结构包含两部分, payload(有效载体), headers(标头)
                            )
-    return jwt_token
+    return str(jwt_token, encoding='utf-8')
 
 
 def jwt_decode(token):
+    print(type(token))
+    if type(token) is not bytes:
+        token = bytes(token, encoding='utf-8')
     payload = jwt.decode(token, key, algorithms=["HS256"])
     return payload
 

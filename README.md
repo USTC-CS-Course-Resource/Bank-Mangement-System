@@ -10,6 +10,31 @@ PB18111697 王章瀚
   - dateutils
   - flask
   - pyjwt
+  - pymysql
+- nodejs: see [nodejs requirements](./webui/vue/package.json)
+
+## Report
+
+My Report is in [report.pdf](./report/db-lab03-report.pdf) or [report.docx](.report/db-lab03-report.docx)
+
+## Run This Project
+
+1. install nodejs requirements:
+   ```shell
+   cd webui/vue
+   npm install
+   ```
+2. start vue server:
+   ```shell
+   cd webui/vue
+   npm run serve
+   ```
+3. start flask server:
+   ```shell
+   python -m webui.main
+   ```
+  
+Then just enter the vue server's local address.
 
 ## Design
 
